@@ -1,7 +1,9 @@
 #pragma once
 
 #include "SDL.h"
-#include "GameConstants.h"
+#include "FPSManager.h"
+#include "ScoreScreen.h"
+//#include "GameConstants.h"
 #include "Renderer.h"
 
 class GameManager
@@ -19,6 +21,9 @@ private:
 	bool gameRunning = false;
 	SDL_Window* window = nullptr;
 	TSharedPtr<class renderer> Renderer = nullptr;
-
+	SDL_Surface* main_surf = nullptr;
+	const char* TITLE = "Arkanoid - By Avry Luy";
+	int countedframes = 0;
+	ScoreScreen* scorescreen;
 };
 

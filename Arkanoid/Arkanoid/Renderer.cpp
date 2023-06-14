@@ -51,6 +51,7 @@ void renderer::DrawRect(int x, int y, int w, int h, int r, int g, int b, int a)
 	mRect.w = w;
 	mRect.h = h;
 	SDL_SetRenderDrawColor(NativeRenderer, r, g, b, a);
+	SDL_RenderFillRect(NativeRenderer, &mRect);
 	SDL_RenderDrawRect(NativeRenderer, &mRect);
 
 }

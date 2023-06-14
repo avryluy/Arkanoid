@@ -8,11 +8,11 @@
 class renderer
 {
 public:
+	//renderer();
 	explicit renderer(struct SDL_Renderer* RendererPtr);
 	~renderer();
 
 	static TSharedPtr<renderer> Construct(struct SDL_Window* Window);
-
 
 
 	void clear(int r, int g, int b, int a);

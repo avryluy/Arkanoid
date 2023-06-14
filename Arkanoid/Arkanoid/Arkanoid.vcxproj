@@ -148,14 +148,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="FPSManager.cpp" />
     <ClCompile Include="GameManager.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Renderer.cpp" />
+    <ClCompile Include="ScoreScreen.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="FPSManager.h" />
     <ClInclude Include="GameConstants.h" />
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="Renderer.h" />
+    <ClInclude Include="ScoreScreen.h" />
     <ClInclude Include="Templates.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
