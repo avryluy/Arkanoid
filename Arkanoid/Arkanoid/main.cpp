@@ -1,11 +1,10 @@
-#include "SDL.h"
 #include "GameManager.h"
 
 
-int main(int argc, char* args[])
+int main(int argc, char* argv[])
 {
 	GameManager Game;
-	Game.GameLoop();
+	Game.Init();
 
 	return 0;
 }

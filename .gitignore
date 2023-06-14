@@ -31,3 +31,7 @@
 *.out
 *.app
 Arkanoid/.vs/
+Arkanoid/Arkanoid/x64/
+Arkanoid/x64/
+Arkanoid/Arkanoid/Debug/
+Arkanoid/Debug/
