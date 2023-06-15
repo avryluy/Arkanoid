@@ -56,6 +56,24 @@ void renderer::DrawRect(int x, int y, int w, int h, int r, int g, int b, int a)
 
 }
 
+void renderer::DrawText(std::string textureText, SDL_Color textColor, int x, int y)
+{
+	mFont = TTF_OpenFont("C:/Users/avryl/Documents/CODE/Arkanoid/Arkanoid/Arkanoid/Helvetica-Bold.ttf", 120);
+	if (mFont == NULL)
+	{
+		SDL_Log("Font failed to load. SDL_ttf error: %s\n", TTF_GetError());
+	}
+	SDL_Surface* textSurf = TTF_RenderText_Solid(mFont, textureText.c_str(), textColor);
+	mTexture = SDL_CreateTextureFromSurface(NativeRenderer, textSurf);
+	SDL_Rect renderQuad = { x, y, 350, 100};
+	//SDL_Rect clip = {10, 10, 300, 300};
+
+
+	SDL_RenderCopyEx(NativeRenderer, mTexture, 0, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
+
+
+	
+}
 
 //void renderer::DrawSurface() {
 //

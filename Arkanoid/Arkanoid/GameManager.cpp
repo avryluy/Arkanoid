@@ -15,6 +15,7 @@ int GameManager::Init() {
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{
 		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
+		TTF_Init();
 	};
 	//Create Renderer
 	Renderer = renderer::Construct(window);
@@ -64,11 +65,14 @@ void GameManager::Render(const TSharedPtr<renderer>& nRenderer)
 {
 	nRenderer->clear(88, 154, 186, 255);
 	scorescreen->draw_screen(nRenderer);
+	nRenderer->DrawText("Arkanoid", { 0, 0, 0 }, (scorescreen->get_x() + 10), (scorescreen->get_y() + 30));
 	nRenderer->Present();
 }
 
 void GameManager::Quit()
 {
 	Renderer->~renderer();
+	delete scorescreen;
+	scorescreen = NULL;
 	SDL_Quit();
 }

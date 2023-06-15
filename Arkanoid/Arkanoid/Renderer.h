@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SDL.h"
+#include "SDL_ttf.h"
 #include "Templates.h"
 #include <iostream>
 #include<stdio.h>
@@ -21,6 +22,8 @@ public:
 	void DrawRect(int x, int y, int w, int h, int r, int g, int b, int a);
 	//void FillRect(int r, int g, int b, int a, struct SDL_Rect& rect);
 
+	void DrawText(std::string textureText, SDL_Color textColor, int x, int y);
+
 	//void DrawCirle();
 	//void FillCirle(int r, int g, int b, int a);
 
@@ -35,4 +38,6 @@ public:
 
 private:
 	struct SDL_Renderer* NativeRenderer = nullptr;
+	SDL_Texture* mTexture = NULL;
+	TTF_Font* mFont = NULL;
 };
