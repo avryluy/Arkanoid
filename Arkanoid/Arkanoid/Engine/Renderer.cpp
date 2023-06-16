@@ -57,7 +57,22 @@ void renderer::DrawRect(int x, int y, int w, int h, int r, int g, int b, int a)
 
 }
 
+void renderer::DrawCircle(int x, int y, int radius, int r, int g, int b, int a) {
+	SDL_SetRenderDrawColor(NativeRenderer, r, g, b, a);
+	for (int w = 0; w < radius * 2; w++)
+	{
+		for (int h = 0; h < radius * 2; h++)
+		{
+			int dx = radius - w;
+			int dy = radius - h;
+			if ((dx * dx + dy * dy) <= (radius * radius))
+			{
+				SDL_RenderDrawPoint(NativeRenderer, x + dx, y + dy);
+			}
+		}
+	}
 
+}
 
 
 

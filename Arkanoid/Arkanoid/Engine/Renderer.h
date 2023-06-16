@@ -23,7 +23,7 @@ public:
 
 
 
-	//void DrawCirle();
+	void DrawCircle(int x, int y, int radius, int r, int g, int b, int a);
 	//void FillCirle(int r, int g, int b, int a);
 
 	//void DrawSurface();

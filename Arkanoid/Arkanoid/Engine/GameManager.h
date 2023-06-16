@@ -4,6 +4,7 @@
 #include "Engine\FPSManager.h"
 #include "Data\ScoreScreen.h"
 #include "Data\Platform.h"
+#include "../Ball.h"
 #include "Engine\TextTextures.h"
 //#include "GameConstants.h"
 #include "Engine\Renderer.h"
@@ -28,6 +29,7 @@ private:
 	int countedframes = 0;
 	ScoreScreen* scorescreen;
 	Platform* platform;
+	Ball* ball;
 	TextTextures* text;
 	TextTextures* subtext;
 };

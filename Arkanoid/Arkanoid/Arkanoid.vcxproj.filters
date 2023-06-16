@@ -42,6 +42,9 @@
     <ClCompile Include="Engine\TextTextures.cpp">
       <Filter>Source Files\Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Ball.cpp">
+      <Filter>Source Files\Data</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Data\GameConstants.h">
@@ -67,6 +70,9 @@
     </ClInclude>
     <ClInclude Include="Engine\TextTextures.h">
       <Filter>Source Files\Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Ball.h">
+      <Filter>Source Files\Data</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

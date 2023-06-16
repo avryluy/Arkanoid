@@ -7,9 +7,9 @@ ScoreScreen::ScoreScreen()
 	this->w = (1080 - this->x);
 	this->h = this->x;
 
-	this->r = 255;
-	this->g = 20;
-	this->b = 0;
+	this->r = 50;
+	this->g = 120;
+	this->b = 186;
 	this->a = 255;
 	SDL_Log("ScoreScreen()\n");
 }

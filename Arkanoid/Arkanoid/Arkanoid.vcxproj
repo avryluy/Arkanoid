@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Ball.cpp" />
     <ClCompile Include="Data\Platform.cpp" />
     <ClCompile Include="Data\ScoreScreen.cpp" />
     <ClCompile Include="Engine\FPSManager.cpp" />
@@ -157,6 +158,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Ball.h" />
     <ClInclude Include="Data\GameConstants.h" />
     <ClInclude Include="Data\Platform.h" />
     <ClInclude Include="Data\ScoreScreen.h" />
