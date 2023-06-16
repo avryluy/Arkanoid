@@ -5,6 +5,8 @@ GameManager::GameManager()
 {
 	scorescreen = new ScoreScreen();
 	platform = new Platform();
+	text = new TextTextures("Title");
+	subtext = new TextTextures("Sub-title");
 }
 
 GameManager::~GameManager()
@@ -21,7 +23,8 @@ int GameManager::Init() {
 	//Create Renderer
 	Renderer = renderer::Construct(window);
 	main_surf = SDL_GetWindowSurface(window);
-	Renderer->DrawText("Arkanoid", { 0, 0, 0 }, 200);
+	text->DrawText(Renderer,"Arkanoid", { 0, 0, 0 }, 200);
+	subtext->DrawText(Renderer, "Programmed by Avry Luy", { 0, 0, 0 }, 85);
 	//Start gameLoop
 	GameLoop();
 	return 0;
@@ -57,9 +60,10 @@ void GameManager::HandleEvents()
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
 	{
-		if (event.type == SDL_QUIT)
+		if (event.type == SDL_QUIT || (event.key.keysym.sym == SDLK_ESCAPE))
 		{
 			gameRunning = false;
+		
 		}
 		platform->update(event);
 	}
@@ -70,7 +74,8 @@ void GameManager::Render(const TSharedPtr<renderer>& nRenderer)
 	nRenderer->clear(88, 154, 186, 255);
 	platform->draw_screen(nRenderer);
 	scorescreen->draw_screen(nRenderer);
-	nRenderer->renderText((scorescreen->get_x() + 10), (scorescreen->get_y() + 30), 350, 100);
+	text->renderText(nRenderer,(scorescreen->get_x() + 10), (scorescreen->get_y() + 30), 350, 100);
+	subtext->renderText(nRenderer, (scorescreen->get_x() + 30), (scorescreen->get_y() + 130), 300, 70);
 	nRenderer->Present();
 }
 
@@ -79,5 +84,13 @@ void GameManager::Quit()
 	Renderer->~renderer();
 	delete scorescreen;
 	scorescreen = NULL;
+	delete platform;
+	platform = NULL;
+	delete text;
+	text = NULL;
+	delete subtext;
+	subtext = NULL;
+	SDL_DestroyWindow(window);
+	window = NULL;
 	SDL_Quit();
 }

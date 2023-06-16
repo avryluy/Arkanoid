@@ -32,12 +32,6 @@ renderer::~renderer()
 }
 
 
-void renderer::freeTexture() {
-	if (mTexture != NULL)
-	{
-		SDL_DestroyTexture(mTexture);
-	}
-}
 
 void renderer::clear(int r, int g, int b, int a)
 {
@@ -63,43 +57,6 @@ void renderer::DrawRect(int x, int y, int w, int h, int r, int g, int b, int a)
 
 }
 
-void renderer::DrawText(std::string textureText, SDL_Color textColor, int fontSize)
-{
-	mFont = TTF_OpenFont("C:/Users/avryl/Documents/CODE/Arkanoid/Arkanoid/Arkanoid/Helvetica-Bold.ttf", 200);
-	if (mFont == NULL)
-	{
-		SDL_Log("Font failed to load. SDL_ttf error: %s\n", TTF_GetError());
-	}
-	else
-	{
-		freeTexture();
-		SDL_Surface* textSurf = TTF_RenderText_Solid(mFont, textureText.c_str(), textColor);
-		if (textSurf == NULL)
-		{
-			SDL_Log("Unable to render text surface: %s", TTF_GetError());
-		}
-		else
-		{
-			mTexture = SDL_CreateTextureFromSurface(NativeRenderer, textSurf);
-			if (mTexture == NULL)
-			{
-				SDL_Log("Unable to render texture: %s", TTF_GetError());
-			}
-			else
-			{
-				SDL_FreeSurface(textSurf);
-			}
-		}
-
-	}
-}
-
-void renderer::renderText(int x, int y, int w, int h)
-{
-	SDL_Rect renderQuad = { x, y, w, h };
-	SDL_RenderCopyEx(NativeRenderer, mTexture, 0, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
-
-}
 
 
 

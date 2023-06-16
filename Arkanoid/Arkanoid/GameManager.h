@@ -28,5 +28,7 @@ private:
 	int countedframes = 0;
 	ScoreScreen* scorescreen;
 	Platform* platform;
+	TextTextures* text;
+	TextTextures* subtext;
 };
 
