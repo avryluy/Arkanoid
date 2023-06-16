@@ -22,7 +22,10 @@ public:
 	void DrawRect(int x, int y, int w, int h, int r, int g, int b, int a);
 	//void FillRect(int r, int g, int b, int a, struct SDL_Rect& rect);
 
-	void DrawText(std::string textureText, SDL_Color textColor, int x, int y);
+	void freeTexture();
+	void DrawText(std::string textureText, SDL_Color textColor, int fontSize);
+	void renderText(int x, int y, int w, int h);
+
 
 	//void DrawCirle();
 	//void FillCirle(int r, int g, int b, int a);

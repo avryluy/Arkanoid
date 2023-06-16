@@ -4,6 +4,7 @@
 GameManager::GameManager()
 {
 	scorescreen = new ScoreScreen();
+	platform = new Platform();
 }
 
 GameManager::~GameManager()
@@ -20,6 +21,7 @@ int GameManager::Init() {
 	//Create Renderer
 	Renderer = renderer::Construct(window);
 	main_surf = SDL_GetWindowSurface(window);
+	Renderer->DrawText("Arkanoid", { 0, 0, 0 }, 200);
 	//Start gameLoop
 	GameLoop();
 	return 0;
@@ -40,6 +42,7 @@ void GameManager::GameLoop()
 		//SDL_Log("Countedframes %i", countedframes);
 		//SDL_Log("GetTime %i", fps.get_time());
 		HandleEvents();
+		platform->move_plat(scorescreen->get_x() - 150);
 		Render(Renderer);
 		++countedframes;
 		cfps.frame_limit(cfps.get_time());
@@ -58,14 +61,16 @@ void GameManager::HandleEvents()
 		{
 			gameRunning = false;
 		}
+		platform->update(event);
 	}
 }
 
 void GameManager::Render(const TSharedPtr<renderer>& nRenderer)
 {
 	nRenderer->clear(88, 154, 186, 255);
+	platform->draw_screen(nRenderer);
 	scorescreen->draw_screen(nRenderer);
-	nRenderer->DrawText("Arkanoid", { 0, 0, 0 }, (scorescreen->get_x() + 10), (scorescreen->get_y() + 30));
+	nRenderer->renderText((scorescreen->get_x() + 10), (scorescreen->get_y() + 30), 350, 100);
 	nRenderer->Present();
 }
 

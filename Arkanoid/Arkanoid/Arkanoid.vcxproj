@@ -154,11 +154,13 @@
     <ClCompile Include="Platform.cpp" />
     <ClCompile Include="Renderer.cpp" />
     <ClCompile Include="ScoreScreen.cpp" />
+    <ClCompile Include="TextTextures.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="FPSManager.h" />
     <ClInclude Include="GameConstants.h" />
     <ClInclude Include="GameManager.h" />
+    <ClInclude Include="TextTextures.h" />
     <ClInclude Include="Platform.h" />
     <ClInclude Include="Renderer.h" />
     <ClInclude Include="ScoreScreen.h" />

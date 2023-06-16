@@ -5,7 +5,7 @@ ScoreScreen::ScoreScreen()
 	this->x = (1080 / 1.5);
 	this->y = 0;
 	this->w = (1080 - this->x);
-	this->h = 720;
+	this->h = this->x;
 
 	this->r = 255;
 	this->g = 20;

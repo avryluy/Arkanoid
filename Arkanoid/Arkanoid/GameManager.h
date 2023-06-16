@@ -3,6 +3,8 @@
 #include "SDL.h"
 #include "FPSManager.h"
 #include "ScoreScreen.h"
+#include "Platform.h"
+#include "TextTextures.h"
 //#include "GameConstants.h"
 #include "Renderer.h"
 
@@ -25,5 +27,6 @@ private:
 	const char* TITLE = "Arkanoid - By Avry Luy";
 	int countedframes = 0;
 	ScoreScreen* scorescreen;
+	Platform* platform;
 };
 

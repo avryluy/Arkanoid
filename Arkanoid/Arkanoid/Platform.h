@@ -13,7 +13,7 @@ public:
 	int get_y();
 	void draw_screen(const TSharedPtr<renderer>& nRenderer);
 	void update(SDL_Event &event);
-	void move_plat();
+	void move_plat(int boundary);
 private:
 	int x;
 	int y;

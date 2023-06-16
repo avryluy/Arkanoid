@@ -59,7 +59,7 @@ void FPSManager::frame_avg(int in_frames, int main_timer)
 	{
 		avgFPS = 0;
 	}
-	SDL_Log("FPS: %f", avgFPS);
+	//SDL_Log("FPS: %f", avgFPS);
 }
 
 void FPSManager::frame_limit(Uint32 loop_frames)
