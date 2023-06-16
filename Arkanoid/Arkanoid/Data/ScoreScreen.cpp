@@ -1,4 +1,4 @@
-#include "ScoreScreen.h"
+#include "Data\ScoreScreen.h"
 
 ScoreScreen::ScoreScreen()
 {

@@ -1,12 +1,12 @@
 #pragma once
 
 #include "SDL.h"
-#include "FPSManager.h"
-#include "ScoreScreen.h"
-#include "Platform.h"
-#include "TextTextures.h"
+#include "Engine\FPSManager.h"
+#include "Data\ScoreScreen.h"
+#include "Data\Platform.h"
+#include "Engine\TextTextures.h"
 //#include "GameConstants.h"
-#include "Renderer.h"
+#include "Engine\Renderer.h"
 
 class GameManager
 {

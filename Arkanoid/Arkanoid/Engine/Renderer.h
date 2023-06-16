@@ -1,7 +1,7 @@
 #pragma once
 
 #include "SDL.h"
-#include "Templates.h"
+#include "Engine\Templates.h"
 #include <iostream>
 #include<stdio.h>
 

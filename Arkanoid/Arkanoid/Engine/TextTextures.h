@@ -1,8 +1,8 @@
 #pragma once
 #include "SDL_ttf.h"
 #include "SDL.h"
-#include "Templates.h"
-#include "Renderer.h"
+#include "Engine\Templates.h"
+#include "Engine\Renderer.h"
 
 
 class TextTextures

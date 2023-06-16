@@ -1,5 +1,5 @@
 #pragma once
-#include "GameConstants.h"
+#include "Data\GameConstants.h"
 #include "SDL.h"
 class FPSManager
 {
