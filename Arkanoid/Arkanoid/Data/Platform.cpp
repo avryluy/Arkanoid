@@ -67,10 +67,12 @@ void Platform::update(SDL_Event& event){
 		{
 		case SDLK_LEFT:
 			SDL_Log("Left key pressed");
+			SDL_Log("Platform X :%i Y:%i", get_x(), get_y());
 			mVelX -= speed;
 			break;
 		case SDLK_RIGHT:
 			SDL_Log("Right key pressed");
+			SDL_Log("Platform X :%i Y:%i", get_x(), get_y());
 			mVelX += speed;
 			break;
 		default:
@@ -83,10 +85,12 @@ void Platform::update(SDL_Event& event){
 		{
 		case SDLK_LEFT:
 			SDL_Log("Left key released");
+			SDL_Log("Platform X :%i Y:%i", get_x(), get_y());
 			mVelX += speed;
 			break;
 		case SDLK_RIGHT:
 			SDL_Log("Right key released");
+			SDL_Log("Platform X :%i Y:%i", get_x(), get_y());
 			mVelX -= speed;
 			break;
 
@@ -95,7 +99,6 @@ void Platform::update(SDL_Event& event){
 		}
 
 	}
-	SDL_Log("Platform X :%i Y:%i", get_x(), get_y());
 }
 void Platform::move_plat(int boundary){
 	mPosX += mVelX;
@@ -106,4 +109,5 @@ void Platform::move_plat(int boundary){
 		mPosX -= mVelX;
 		this->x = mPosX;
 	}
+
 }

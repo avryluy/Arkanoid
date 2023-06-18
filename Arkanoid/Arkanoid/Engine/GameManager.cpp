@@ -7,7 +7,23 @@ GameManager::GameManager()
 	platform = new Platform();
 	text = new TextTextures("Title");
 	subtext = new TextTextures("Sub-title");
-	ball = new Ball(platform->get_plat_center(), platform->get_y() - 30);
+	//TODO: These x y values for ball do nothing. remove.
+	ball = new Ball(platform->get_plat_center(), platform->get_y());
+	//block = new Block(0, 255, 100, 1);
+	
+
+	for (int i = 0; i < 5; ++i)
+	{
+		for (int j = 0; j < 10; ++j)
+		{
+			Block* blocks = new Block(0, 255, 10, 1);
+			blocks->set_x(j * (720 / 10) - 10);
+			blocks->set_w(70);
+			blocks->set_y(i * (720 / 10));
+			blocks->set_h((720 / 30)+10);
+			targets.push_back(blocks);
+		}
+	}
 }
 
 GameManager::~GameManager()
@@ -46,10 +62,7 @@ void GameManager::GameLoop()
 		//SDL_Log("Countedframes %i", countedframes);
 		//SDL_Log("GetTime %i", fps.get_time());
 		HandleEvents();
-		if (!ball->isBallLaunched())
-		{
-			ball->movewithplatform(platform->get_x(), platform->get_y(), platform->get_w(), platform->get_h());
-		}
+		ball->move(platform->get_x(), platform->get_y(), platform->get_w(), platform->get_h());
 		platform->move_plat(scorescreen->get_x() - 150);
 		Render(Renderer);
 		++countedframes;
@@ -82,6 +95,13 @@ void GameManager::Render(const TSharedPtr<renderer>& nRenderer)
 	text->renderText(nRenderer,(scorescreen->get_x() + 10), (scorescreen->get_y() + 30), 350, 90);
 	subtext->renderText(nRenderer, (scorescreen->get_x() + 30), (scorescreen->get_y() + 130), 300, 50);
 	ball->draw(nRenderer);
+	//block->draw(nRenderer);
+
+	for (auto it = targets.begin(); it != targets.end(); ++it)
+	{
+		Block* b = *it;
+		b->draw(nRenderer);
+	}
 	nRenderer->Present();
 }
 

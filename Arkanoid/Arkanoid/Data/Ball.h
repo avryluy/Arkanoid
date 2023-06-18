@@ -15,9 +15,9 @@ public:
 
 	bool isBallLaunched();
 	
-	void move();
-	void movewithplatform(int plat_x, int plat_y, int plat_w, int plat_h);
-	void update();
+	void move(int plat_x, int plat_y, int plat_w, int plat_h);
+	//void movewithplatform(int plat_x, int plat_y, int plat_w, int plat_h);
+	void update(SDL_Event& event);
 	void draw(const TSharedPtr<renderer>& nRenderer);
 	
 

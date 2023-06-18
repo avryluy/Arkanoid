@@ -1,9 +1,9 @@
 #include "Ball.h"
-
+//TODO: These x y values for ball do nothing. remove.
 Ball::Ball(int x, int y){
 	this->x = x;
 	this->y = y;
-	this->radius = 30;
+	this->radius = 20;
 	this->mPosX = this->x;
 	this->mPosY = this->y;
 	this->mVelX = 0;
@@ -38,13 +38,29 @@ void Ball::draw(const TSharedPtr<renderer>& nRenderer) {
 }
 
 
-void Ball::movewithplatform(int plat_x, int plat_y, int plat_w, int plat_h) {
+//void Ball::movewithplatform(int plat_x, int plat_y, int plat_w, int plat_h) {
+//
+//		this->x = plat_x + (plat_w / 2);
+//		this->y = plat_y - plat_h;
+//
+//}
 
+void Ball::move(int plat_x, int plat_y, int plat_w, int plat_h) {
+	if (!ballLaunched)
+	{
 		this->x = plat_x + (plat_w / 2);
-		this->y = plat_y - plat_h;
+		this->y = (plat_y - plat_h) + (get_rad()/ 3);
+
+	}
 
 }
 
-void Ball::move() {
-
+void Ball::update(SDL_Event& event) {
+	if (event.type == SDL_KEYDOWN && event.key.repeat == 1)
+	{
+		if (event.key.keysym.scancode == SDLK_SPACE)
+		{
+			this->ballLaunched = true;
+		}
+	}
 }

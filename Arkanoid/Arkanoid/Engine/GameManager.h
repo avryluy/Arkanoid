@@ -4,10 +4,14 @@
 #include "Engine\FPSManager.h"
 #include "Data\ScoreScreen.h"
 #include "Data\Platform.h"
-#include "../Ball.h"
+#include "Data\Ball.h"
+#include "Data\Block.h"
+
 #include "Engine\TextTextures.h"
 //#include "GameConstants.h"
 #include "Engine\Renderer.h"
+
+#include <list>
 
 class GameManager
 {
@@ -30,6 +34,8 @@ private:
 	ScoreScreen* scorescreen;
 	Platform* platform;
 	Ball* ball;
+	Block* block;
+	std::list<Block*> targets;
 	TextTextures* text;
 	TextTextures* subtext;
 };
