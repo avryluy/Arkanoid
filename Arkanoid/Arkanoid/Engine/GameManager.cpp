@@ -84,6 +84,7 @@ void GameManager::HandleEvents()
 		
 		}
 		platform->update(event);
+		ball->update(event);
 	}
 }
 

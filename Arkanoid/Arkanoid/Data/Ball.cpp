@@ -30,13 +30,17 @@ int Ball::get_rad() {
 
 bool Ball::isBallLaunched() {
 
-	return ballLaunched;
+	return this->ballLaunched;
 }
 
 void Ball::draw(const TSharedPtr<renderer>& nRenderer) {
 	nRenderer->DrawCircle(this->x, this->y, this->radius, 255, 20, 20, 255);
 }
 
+void Ball::setDirection(int speed_x, int speed_y) {
+	this->mVelX = speed_x;
+	this->mVelY = speed_y;
+}
 
 //void Ball::movewithplatform(int plat_x, int plat_y, int plat_w, int plat_h) {
 //
@@ -52,15 +56,35 @@ void Ball::move(int plat_x, int plat_y, int plat_w, int plat_h) {
 		this->y = (plat_y - plat_h) + (get_rad()/ 3);
 
 	}
+	
+	mPosY += mVelY;
+	this->y = mPosY;
+
+	if ((mPosY < 0))
+	{
+		//Move back
+
+		setDirection(0, (speed));
+		mPosY += mVelY;
+		this->y = mPosY;
+	}
+	else if ((mPosY + (this->radius * 2) > 720))
+	{
+		setDirection(0, (speed * -1));
+
+	}
+	SDL_Log("Ball velocity: %i", mVelY);
 
 }
 
 void Ball::update(SDL_Event& event) {
-	if (event.type == SDL_KEYDOWN && event.key.repeat == 1)
+	if (event.type == SDL_KEYDOWN && event.key.repeat == 0)
 	{
-		if (event.key.keysym.scancode == SDLK_SPACE)
+		if (event.key.keysym.sym == SDLK_SPACE)
 		{
 			this->ballLaunched = true;
+			setDirection(0, (speed * -1));
+
 		}
 	}
 }
