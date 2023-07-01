@@ -40,10 +40,18 @@ void TextTextures::DrawText(const TSharedPtr<renderer>& nRenderer, std::string t
 			else
 			{
 				SDL_FreeSurface(textSurf);
+				TTF_CloseFont(mFont);
 			}
 		}
 
 	}
+}
+
+void TextTextures::update_text(std::string input_text) {
+
+	std::string fontvalue = input_text;
+	//DrawText()
+
 }
 
 void TextTextures::freeTexture() {

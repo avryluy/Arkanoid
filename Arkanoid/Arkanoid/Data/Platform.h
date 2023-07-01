@@ -14,6 +14,7 @@ public:
 	int get_w();
 	int get_h();
 	int get_plat_center();
+	SDL_Rect get_collider();
 	void draw_screen(const TSharedPtr<renderer>& nRenderer);
 	void update(SDL_Event &event);
 	void move_plat(int boundary);
@@ -32,6 +33,7 @@ private:
 	int b;
 	int a;
 
+	SDL_Rect pCollider;
 };
 
 

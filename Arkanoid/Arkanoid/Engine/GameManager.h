@@ -8,6 +8,7 @@
 #include "Data\Block.h"
 
 #include "Engine\TextTextures.h"
+#include "Engine\Templates.h"
 //#include "GameConstants.h"
 #include "Engine\Renderer.h"
 
@@ -38,5 +39,6 @@ private:
 	std::list<Block*> targets;
 	TextTextures* text;
 	TextTextures* subtext;
+	TextTextures* life_count;
 };
 

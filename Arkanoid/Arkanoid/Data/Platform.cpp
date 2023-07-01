@@ -17,6 +17,9 @@ Platform::Platform()
 	mPosX = this->x;
 	mVelX = 0;
 
+	this->pCollider.w = w;
+	this->pCollider.h = h;
+
 }
 
 Platform::~Platform()
@@ -66,13 +69,13 @@ void Platform::update(SDL_Event& event){
 		switch (event.key.keysym.sym)
 		{
 		case SDLK_LEFT:
-			SDL_Log("Left key pressed");
-			SDL_Log("Platform X :%i Y:%i", get_x(), get_y());
+			//SDL_Log("Left key pressed");
+			//SDL_Log("Platform X :%i Y:%i", get_x(), get_y());
 			mVelX -= speed;
 			break;
 		case SDLK_RIGHT:
-			SDL_Log("Right key pressed");
-			SDL_Log("Platform X :%i Y:%i", get_x(), get_y());
+			//SDL_Log("Right key pressed");
+			//SDL_Log("Platform X :%i Y:%i", get_x(), get_y());
 			mVelX += speed;
 			break;
 		default:
@@ -84,13 +87,13 @@ void Platform::update(SDL_Event& event){
 		switch (event.key.keysym.sym)
 		{
 		case SDLK_LEFT:
-			SDL_Log("Left key released");
-			SDL_Log("Platform X :%i Y:%i", get_x(), get_y());
+			//SDL_Log("Left key released");
+			//SDL_Log("Platform X :%i Y:%i", get_x(), get_y());
 			mVelX += speed;
 			break;
 		case SDLK_RIGHT:
-			SDL_Log("Right key released");
-			SDL_Log("Platform X :%i Y:%i", get_x(), get_y());
+			//SDL_Log("Right key released");
+			//SDL_Log("Platform X :%i Y:%i", get_x(), get_y());
 			mVelX -= speed;
 			break;
 
@@ -103,6 +106,11 @@ void Platform::update(SDL_Event& event){
 void Platform::move_plat(int boundary){
 	mPosX += mVelX;
 	this->x = mPosX;
+	this->pCollider.x = mPosX;
+	this->pCollider.y = get_y() - get_h() - 15;
+	//SDL_Log("Plat Collider| X:%i | Y:%i", pCollider.x, pCollider.y);
+
+
 
 	if (mPosX < 0 || mPosX + this->h > boundary)
 	{
@@ -110,4 +118,9 @@ void Platform::move_plat(int boundary){
 		this->x = mPosX;
 	}
 
+}
+
+SDL_Rect Platform::get_collider() {
+	
+	return pCollider;
 }
