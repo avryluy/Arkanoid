@@ -3,6 +3,7 @@
 
 GameManager::GameManager()
 {
+	//Construct objects for game
 	scorescreen = new ScoreScreen();
 	platform = new Platform();
 	text = new TextTextures("Title");
@@ -30,6 +31,7 @@ GameManager::~GameManager()
 }
 
 int GameManager::Init() {
+	//Initialize Game window, renderer, and text
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{
 		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
@@ -43,22 +45,29 @@ int GameManager::Init() {
 	life_count->DrawText(Renderer, "Lives Left: " + toString(ball->get_life()), { 0, 0, 0, 0 }, 75);
 	//Start gameLoop
 	GameLoop();
+	//exit code
 	return 0;
 }
 
 void GameManager::GameLoop()
 {
+	//Load FPS manager objects
 	FPSManager fps;
 	fps.start_time();
 	FPSManager cfps;
+	//Keeps game loop running
 	gameRunning = true;
 	countedframes = 0;
+	//actual game loop
 	while (gameRunning)
 	{
 		cfps.start_time();
+		//Averages frames to 60fps
 		cfps.frame_avg(countedframes, fps.get_time());
 		//SDL_Log("Countedframes %i", countedframes);
 		//SDL_Log("GetTime %i", fps.get_time());
+		// 
+		//Handles keyboard events
 		HandleEvents();
 		ball->move(platform->get_x(), platform->get_y(), platform->get_w(), platform->get_h(), platform->get_collider());
 		platform->move_plat(scorescreen->get_x() - 150);
@@ -67,7 +76,7 @@ void GameManager::GameLoop()
 		cfps.frame_limit(cfps.get_time());
 
 	};
-	
+	//Quits game and destroys objects when game loop is exited
 	Quit();
 }
 
@@ -93,6 +102,7 @@ void GameManager::Render(const TSharedPtr<renderer>& nRenderer)
 	scorescreen->draw_screen(nRenderer);
 	text->renderText(nRenderer,(scorescreen->get_x() + 10), (scorescreen->get_y() + 30), 350, 90);
 	subtext->renderText(nRenderer, (scorescreen->get_x() + 30), (scorescreen->get_y() + 130), 300, 50);
+	//Ball Count Management
 	if (ball->lifeChanged())
 	{
 		life_count->DrawText(Renderer, "Lives Left: " + toString(ball->get_life()), { 0, 0, 0, 0 }, 75);

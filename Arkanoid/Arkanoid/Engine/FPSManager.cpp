@@ -55,6 +55,7 @@ void FPSManager::stop_time()
 void FPSManager::frame_avg(int in_frames, int main_timer)
 {
 	float avgFPS = in_frames / (main_timer / 1000.f);
+	//handles extreme frame counts
 	if (avgFPS > 10000)
 	{
 		avgFPS = 0;
@@ -66,6 +67,7 @@ void FPSManager::frame_limit(Uint32 loop_frames)
 {
 	if (loop_frames < TICKS_PER_FRAME)
 	{
+		//Delay SDL to smooth frame averaging
 		SDL_Delay(TICKS_PER_FRAME - loop_frames);
 	}
 }

@@ -63,6 +63,8 @@ int Platform::get_plat_center() {
 	return plat_center;
 
 }
+
+//Keyboard handler for platform movement
 void Platform::update(SDL_Event& event){
 	if (event.type == SDL_KEYDOWN && event.key.repeat == 0)
 	{
@@ -103,6 +105,8 @@ void Platform::update(SDL_Event& event){
 
 	}
 }
+
+
 void Platform::move_plat(int boundary){
 	mPosX += mVelX;
 	this->x = mPosX;
@@ -111,7 +115,7 @@ void Platform::move_plat(int boundary){
 	//SDL_Log("Plat Collider| X:%i | Y:%i", pCollider.x, pCollider.y);
 
 
-
+	// Limits platform movement to just game screen
 	if (mPosX < 0 || mPosX + this->h > boundary)
 	{
 		mPosX -= mVelX;
@@ -120,6 +124,7 @@ void Platform::move_plat(int boundary){
 
 }
 
+// Allows platform collider to be used with ball and other objects if needed
 SDL_Rect Platform::get_collider() {
 	
 	return pCollider;

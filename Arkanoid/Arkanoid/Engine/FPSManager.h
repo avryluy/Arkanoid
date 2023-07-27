@@ -7,8 +7,6 @@ public:
 	FPSManager();
 	~FPSManager();
 
-
-
 	void start_time();
 	void pause_time();
 	void unpause_time();

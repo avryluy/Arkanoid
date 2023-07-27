@@ -18,7 +18,8 @@ public:
 	bool lifeChanged();
 	
 	void move(int plat_x, int plat_y, int plat_w, int plat_h, SDL_Rect mCol);
-	void setDirection(int speed_x, int speed_y);
+	void set_XDirection(int speed_x);
+	void set_YDirection(int speed_y);
 	//void movewithplatform(int plat_x, int plat_y, int plat_w, int plat_h);
 	void update(SDL_Event& event);
 	bool collision(SDL_Rect a, SDL_Rect b);
@@ -35,7 +36,7 @@ private:
 	int radius;
 	int speed = 7;
 	int life = 3;
-
+	int random_number = 1 + (std::rand() % static_cast<int>(10 - 1 + 1));
 	bool ballLaunched;
 	bool life_Changed;
 

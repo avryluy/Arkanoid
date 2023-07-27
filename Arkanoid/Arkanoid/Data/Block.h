@@ -25,7 +25,7 @@ public:
 	void set_h(int h);
 
 	virtual void draw(const TSharedPtr<renderer>& nRenderer);
-	void update();
+	//void update();
 
 
 

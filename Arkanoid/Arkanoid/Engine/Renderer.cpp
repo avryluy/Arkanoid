@@ -1,6 +1,6 @@
 #include "Engine\Renderer.h"
 
-
+//Shareable version of renderer
 TSharedPtr<renderer> renderer::Construct(struct SDL_Window* window){
 	SDL_Renderer* NativeRenderer;
 	NativeRenderer = SDL_CreateRenderer(window, -1, SDL_RENDERER_ACCELERATED);
@@ -44,6 +44,7 @@ void renderer::Present()
 	SDL_RenderPresent(NativeRenderer);
 }
 
+//Render rectangles
 void renderer::DrawRect(int x, int y, int w, int h, int r, int g, int b, int a)
 {
 	SDL_Rect mRect;
@@ -57,6 +58,7 @@ void renderer::DrawRect(int x, int y, int w, int h, int r, int g, int b, int a)
 
 }
 
+//Render circles
 void renderer::DrawCircle(int x, int y, int radius, int r, int g, int b, int a) {
 	SDL_SetRenderDrawColor(NativeRenderer, r, g, b, a);
 	for (int w = 0; w < radius * 2; w++)

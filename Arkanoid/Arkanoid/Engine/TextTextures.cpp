@@ -17,6 +17,7 @@ TextTextures::~TextTextures()
 
 void TextTextures::DrawText(const TSharedPtr<renderer>& nRenderer, std::string textureText, SDL_Color textColor, int fontSize)
 {
+	//Load font
 	mFont = TTF_OpenFont("C:/Users/avryl/Documents/CODE/Arkanoid/Arkanoid/Arkanoid/Helvetica-Bold.ttf", fontSize);
 	if (mFont == NULL)
 	{
@@ -24,6 +25,7 @@ void TextTextures::DrawText(const TSharedPtr<renderer>& nRenderer, std::string t
 	}
 	else
 	{
+		//Create Texture for Text
 		freeTexture();
 		SDL_Surface* textSurf = TTF_RenderText_Solid(mFont, textureText.c_str(), textColor);
 		if (textSurf == NULL)
@@ -64,12 +66,14 @@ void TextTextures::freeTexture() {
 
 void TextTextures::renderText(const TSharedPtr<renderer>& nRenderer, int x, int y, int w, int h)
 {
+	// render to screen
 	SDL_Rect renderQuad = { x, y, w, h };
 	SDL_RenderCopyEx(nRenderer->GetNativeRenderer(), mTexture, 0, &renderQuad, 0.0, NULL, SDL_FLIP_NONE);
 
 }
 
 void TextTextures::closeText() {
+	//Destroys text
 	freeTexture();
 	SDL_DestroyTexture(mTexture);
 	TTF_Quit();

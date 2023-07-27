@@ -7,6 +7,7 @@
 template<class T> using TSharedPtr = std::shared_ptr<T>;
 
 template<typename T>
+
 std::string toString(const T& value)
 {
 	std::ostringstream s;
