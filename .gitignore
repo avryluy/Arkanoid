@@ -35,3 +35,7 @@ Arkanoid/Arkanoid/x64/
 Arkanoid/x64/
 Arkanoid/Arkanoid/Debug/
 Arkanoid/Debug/
+
+# Specific Files
+*.ttf
+Arkanoid\Arkanoid\Arkanoid\SDL_TTF.h
