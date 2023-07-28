@@ -38,4 +38,4 @@ Arkanoid/Debug/
 
 # Specific Files
 *.ttf
-Arkanoid\Arkanoid\Arkanoid\SDL_TTF.h
+Arkanoid/Arkanoid/SDL_ttf.h
