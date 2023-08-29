@@ -2,6 +2,7 @@
 #include "SDL.h"
 #include "Engine\Renderer.h"
 
+class Platform; //Forward declaration
 
 class Ball
 {
@@ -17,7 +18,7 @@ public:
 	bool isBallLaunched();
 	bool lifeChanged();
 	
-	void move(int plat_x, int plat_y, int plat_w, int plat_h, SDL_Rect mCol);
+	void move(Platform* platform, SDL_Rect mCol);
 	void set_XDirection(int speed_x);
 	void set_YDirection(int speed_y);
 	//void movewithplatform(int plat_x, int plat_y, int plat_w, int plat_h);
@@ -34,7 +35,7 @@ private:
 	int mPosX;
 	int mPosY;
 	int radius;
-	int speed = 7;
+	int speed = 5;
 	int life = 3;
 	int random_number = 1 + (std::rand() % static_cast<int>(10 - 1 + 1));
 	bool ballLaunched;

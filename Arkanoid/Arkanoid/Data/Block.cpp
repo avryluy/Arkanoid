@@ -93,3 +93,4 @@ void Block::draw(const TSharedPtr<renderer>& nRenderer) {
 	mRect.h = this->h;
 	nRenderer->DrawRect(mRect.x, mRect.y, mRect.w, mRect.h, this->r, this->g, this->b, this->a);
 }
+
