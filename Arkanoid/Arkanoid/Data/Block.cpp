@@ -1,25 +1,24 @@
 #include "Block.h"
 
-Block::Block()
-{
-
-	this->x = 0;
-	this->y = 0;
-	this->w = 0;
-	this->h = 0;
-
-	this->r = 0;
-	this->g = 0;
-	this->b = 0;
-	this->a = 0;
-
-	this->scoreValue = 0;
-	this->health = 1;
-
-	this->canDestroy = false;
-	this->ballCollision = false;
-	this->blockActive = true;
-}
+//Block::Block()
+//{
+//
+//	this->x = 0;
+//	this->y = 0;
+//	this->w = 0;
+//	this->h = 0;
+//
+//	this->r = 0;
+//	this->g = 0;
+//	this->b = 0;
+//	this->a = 0;
+//
+//	this->scoreValue = 0;
+//	this->health = 1;
+//
+//	this->ballCollision = false;
+//	this->blockActive = true;
+//}
 
 Block::Block(int r, int g, int b, int health)
 {
@@ -38,20 +37,14 @@ Block::Block(int r, int g, int b, int health)
 	this->block_id = 0;
 	this->health = 1;
 
-	this->canDestroy = false;
 	this->ballCollision = false;
 	this->blockActive = true;
-
 }
 
 Block::~Block()
 {
 	this->blockActive = false;
 
-}
-
-bool Block::getDestroy() {
-	return this->canDestroy;
 }
 
 bool Block::getCollision() {

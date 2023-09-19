@@ -9,7 +9,6 @@ public:
 	Block(int r, int g, int b, int health);
 	~Block();
 
-	bool getDestroy();
 	bool getCollision();
 	bool isActive();
 	
@@ -35,7 +34,6 @@ public:
 
 
 private:
-	bool canDestroy;
 	bool ballCollision;
 	bool blockActive;
 	

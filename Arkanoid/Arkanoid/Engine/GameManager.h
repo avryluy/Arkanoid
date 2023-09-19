@@ -24,6 +24,7 @@ public:
 	void GameLoop();
 	void HandleEvents();
 	void Render(const TSharedPtr<renderer>& nRenderer);
+	void Init_Level();
 	void Quit();
 
 private:
