@@ -10,17 +10,17 @@ GameManager::GameManager()
 	subtext = new TextTextures("Sub-title");
 	life_count = new TextTextures("Life Counter");
 	ball = new Ball(platform->get_plat_center(), platform->get_y() - 20);
-
+	//Block *blocks = new Block(0, 255, 10, 1);
 	for (int i = 0; i < 5; ++i)
 	{
 		for (int j = 0; j < 10; ++j)
 		{
-			Block* blocks = new Block(0, 255, 10, 1);
+			
 			blocks->set_x(j * (720 / 10) - 10);
 			blocks->set_w(70);
 			blocks->set_y(i * (720 / 10));
 			blocks->set_h((720 / 30)+10);
-			targets.push_back(blocks);
+			targets.push_back(*blocks);
 		}
 	}
 }
@@ -71,6 +71,20 @@ void GameManager::GameLoop()
 		HandleEvents();
 		ball->move(platform, platform->get_collider());
 		platform->move_plat(scorescreen->get_x() - 150);
+
+		for (Block& block: targets) { 
+			if (block.isActive()) {
+				if (ball->get_x() + ball->get_w() > block.get_x() && ball->get_x() < block.get_x() + block.get_w()
+					&& ball->get_y() + ball->get_h() > block.get_y() && ball->get_y() < block.get_y() + block.get_h()) {
+					//++score;
+					block.Destroy();
+					SDL_Log("Hit Target #:%p", targets.get_allocator());
+					//ball->set_XDirection(5);
+					ball->set_YDirection(5);
+				}
+			}
+		}
+
 		Render(Renderer);
 		++countedframes;
 		cfps.frame_limit(cfps.get_time());
@@ -113,12 +127,13 @@ void GameManager::Render(const TSharedPtr<renderer>& nRenderer)
 	}
 	
 	//block->draw(nRenderer);
-
-	for (auto it = targets.begin(); it != targets.end(); ++it)
+	for (Block& block: targets )
 	{
-		Block* b = *it;
-		b->draw(nRenderer);
+		if (block.isActive()) {
+			block.draw(nRenderer);
+		}
 	}
+
 	nRenderer->Present();
 }
 

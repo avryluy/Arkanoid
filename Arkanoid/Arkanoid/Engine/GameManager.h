@@ -11,7 +11,7 @@
 #include "Engine\Templates.h"
 //#include "GameConstants.h"
 #include "Engine\Renderer.h"
-
+#include <vector>
 #include <list>
 
 class GameManager
@@ -36,8 +36,9 @@ private:
 	ScoreScreen* scorescreen;
 	Platform* platform;
 	Ball* ball;
-	Block* block;
-	std::list<Block*> targets;
+	Block *blocks = new Block(0, 255, 10, 1);
+	//std::list<Block*> targets;
+	std::vector<Block> targets;
 	TextTextures* text;
 	TextTextures* subtext;
 	TextTextures* life_count;

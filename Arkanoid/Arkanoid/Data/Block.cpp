@@ -14,10 +14,11 @@ Block::Block()
 	this->a = 0;
 
 	this->scoreValue = 0;
-	this->health = 0;
+	this->health = 1;
 
 	this->canDestroy = false;
 	this->ballCollision = false;
+	this->blockActive = true;
 }
 
 Block::Block(int r, int g, int b, int health)
@@ -34,14 +35,18 @@ Block::Block(int r, int g, int b, int health)
 	this->a = 255;
 
 	this->scoreValue = 0;
-	this->health = health;
+	this->health = 1;
 
 	this->canDestroy = false;
 	this->ballCollision = false;
+	this->blockActive = true;
+
 }
 
 Block::~Block()
 {
+	this->blockActive = false;
+
 }
 
 bool Block::getDestroy() {
@@ -50,6 +55,10 @@ bool Block::getDestroy() {
 
 bool Block::getCollision() {
 	return this->ballCollision;
+}
+
+bool Block::isActive() {
+	return blockActive;
 }
 
 int Block::get_x() {
@@ -91,6 +100,13 @@ void Block::draw(const TSharedPtr<renderer>& nRenderer) {
 	mRect.y = this->y;
 	mRect.w = this->w;
 	mRect.h = this->h;
-	nRenderer->DrawRect(mRect.x, mRect.y, mRect.w, mRect.h, this->r, this->g, this->b, this->a);
+	if (this->health >= 1) {
+		nRenderer->DrawRect(mRect.x, mRect.y, mRect.w, mRect.h, this->r, this->g, this->b, this->a);
+	}
+	
+}
+
+void Block::Destroy() {
+	this->blockActive = false;
 }
 

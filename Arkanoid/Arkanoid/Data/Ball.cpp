@@ -29,6 +29,14 @@ int Ball::get_y() {
 	return this->y;
 }
 
+int Ball::get_w() {
+	return get_rad() * 2;
+}
+
+int Ball::get_h() {
+	return get_rad() * 2;
+}
+
 int Ball::get_rad() {
 	return this->radius;
 }

@@ -11,6 +11,7 @@ public:
 
 	bool getDestroy();
 	bool getCollision();
+	bool isActive();
 	
 	int get_x();
 	void set_x(int x);
@@ -26,12 +27,14 @@ public:
 
 	virtual void draw(const TSharedPtr<renderer>& nRenderer);
 	//void update();
+	void Destroy();
 
 
 
 private:
 	bool canDestroy;
 	bool ballCollision;
+	bool blockActive;
 	
 	int x;
 	int y;

@@ -12,6 +12,8 @@ public:
 
 	int get_x();
 	int get_y();
+	int get_w();
+	int get_h();
 	int get_rad();
 	int get_life();
 
