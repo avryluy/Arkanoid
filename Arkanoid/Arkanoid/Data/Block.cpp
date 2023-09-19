@@ -35,6 +35,7 @@ Block::Block(int r, int g, int b, int health)
 	this->a = 255;
 
 	this->scoreValue = 0;
+	this->block_id = 0;
 	this->health = 1;
 
 	this->canDestroy = false;
@@ -75,6 +76,13 @@ int Block::get_w() {
 
 int Block::get_h() {
 	return this->h;
+}
+
+int Block::get_block_id() {
+	return this->block_id;
+}
+void Block::set_block_id(int id) {
+	this->block_id = id;
 }
 
 void Block::set_y(int y) {

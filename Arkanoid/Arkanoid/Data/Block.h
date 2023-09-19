@@ -25,6 +25,9 @@ public:
 	int get_h();
 	void set_h(int h);
 
+	int get_block_id();
+	void set_block_id(int id);
+
 	virtual void draw(const TSharedPtr<renderer>& nRenderer);
 	//void update();
 	void Destroy();
@@ -40,6 +43,7 @@ private:
 	int y;
 	int w;
 	int h;
+	int block_id;
 
 	int padding = 10;
 

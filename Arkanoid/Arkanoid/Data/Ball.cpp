@@ -99,12 +99,15 @@ void Ball::move(Platform* platform, SDL_Rect mCol) {
 		set_XDirection(speed);
 		SDL_Log("Hit Left side of screen");
 	}
-	else if (ballRight > 720 || collision(bCol, mCol)) {
+	else if (ballRight > 720 ) {
 		//Ball hitting right wall or platform
 		set_XDirection(-speed);
-		set_YDirection(-(random_number));
+		//set_YDirection(-(random_number));
 		SDL_Log("Hit Right side of screen");
 	}
+
+	//SDL_Log("Ball X Speed: %i", mVelX);
+	//SDL_Log("Ball Y Speed: %i", mVelY);
 
 	//Update Collider Position
 	bCol.x = mPosX;
@@ -127,14 +130,14 @@ void Ball::move(Platform* platform, SDL_Rect mCol) {
 			}
 			else if (mPosX >= platTopLeft && mPosX < platTopMiddle) {
 				//Ball hits center of platform
-				set_XDirection(0);
+				set_XDirection(0 + random_number);
 				set_YDirection(-speed);
 				SDL_Log("Hit Center of Platform");
 			}
 			else {
 				//Ball hits right side of platform
 				set_XDirection(speed);
-				set_YDirection(speed);
+				set_YDirection(-speed);
 				SDL_Log("Hit Right Side of Platform");
 			}
 		}
