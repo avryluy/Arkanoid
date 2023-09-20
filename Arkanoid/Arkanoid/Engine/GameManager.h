@@ -37,7 +37,7 @@ private:
 	ScoreScreen* scorescreen;
 	Platform* platform;
 	Ball* ball;
-	Block *blocks = new Block(0, 255, 10, 1);
+	Block *blocks;
 	//std::list<Block*> targets;
 	std::vector<Block> targets;
 	TextTextures* text;

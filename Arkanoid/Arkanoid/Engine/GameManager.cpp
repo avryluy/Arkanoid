@@ -42,20 +42,52 @@ int GameManager::Init() {
 void GameManager::Init_Level() {
 	ball = new Ball(platform->get_plat_center(), platform->get_y() - 20);
 	int nextblockid = 0;
-	Block* blocks = new Block(0, 255, 10, 1);
+	int currentblocktype = 0;
+	//Block* blocks = new Block(blockColor[currentblocktype], blockHealth[currentblocktype]);
 	
 
-	for (int i = 0; i < 5; ++i)
+	for (int row = 0; row < 5; ++row)
 	{
-		for (int j = 0; j < 10; ++j)
+		for (int col = 0; col < 10; ++col)
 		{
-			blocks->set_block_id(nextblockid);
-			blocks->set_x(j * (720 / 10) - 10);
-			blocks->set_w(70);
-			blocks->set_y(i * (720 / 10));
-			blocks->set_h((720 / 30) + 10);
-			targets.push_back(*blocks);
-			++nextblockid;
+			switch (row)
+			{
+			case 0:
+				currentblocktype = 0;
+				break;
+			case 1:
+				currentblocktype = 0;
+				break;
+
+			case 2:
+				currentblocktype = 1;
+				break;
+
+			case 3:
+				currentblocktype = 1;
+				break;
+
+			case 4:
+				currentblocktype = 2;
+				break;
+
+			case 5:
+				currentblocktype = 3;
+				break;
+
+			default:
+				break;
+			}
+			int x = col * (720 / 10) - 10;
+			int y = row * (720 / 10);
+			//blocks->set_block_id(nextblockid);
+			//blocks->set_x(j * (720 / 10) - 10);
+			//blocks->set_w(70);
+			//blocks->set_y(i * (720 / 10));
+			//blocks->set_h((720 / 30) + 10);
+			targets.push_back(Block(x, y, blockColor[currentblocktype], blockHealth[currentblocktype], nextblockid));
+			nextblockid++;
+			currentblocktype = (currentblocktype + 1) % NUMBLOCKTYPES;
 		}
 	}
 }
@@ -88,8 +120,14 @@ void GameManager::GameLoop()
 				if (ball->get_x() + ball->get_w() > block.get_x() && ball->get_x() < block.get_x() + block.get_w()
 					&& ball->get_y() + ball->get_h() > block.get_y() && ball->get_y() < block.get_y() + block.get_h()) {
 					//++score;
-					SDL_Log("Hit Target #:%i", block.get_block_id());
-					block.Destroy();
+					SDL_Log("Hit Target :%i", block.get_block_id());
+					SDL_Log("Block Health :%i", block.getHealth());
+					
+					block.damage(1);
+					if (block.getHealth() < 1) {
+						block.Destroy();
+					}
+					
 					//ball->set_XDirection(5);
 					ball->set_YDirection(5);
 				}
