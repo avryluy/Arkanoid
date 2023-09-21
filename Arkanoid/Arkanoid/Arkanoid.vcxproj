@@ -82,8 +82,8 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\portaudio\include;C:\Users\avryl\Documents\CODE\Arkanoid\Arkanoid\Arkanoid;C:\SDL2_ttf\include;C:\SDL2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\portaudio\lib;C:\SDL2_ttf\lib\x64;C:\SDL2\lib\x64;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\libsndfile-1.2.2-win64\include;C:\portaudio\include;C:\Users\avryl\Documents\CODE\Arkanoid\Arkanoid\Arkanoid;C:\SDL2_ttf\include;C:\SDL2\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\libsndfile-1.2.2-win64\lib;C:\portaudio\lib;C:\SDL2_ttf\lib\x64;C:\SDL2\lib\x64;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
@@ -128,7 +128,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>SDL2.lib;SDL2_ttf.lib;SDL2main.lib;portaudio_x64.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>SDL2.lib;SDL2_ttf.lib;SDL2main.lib;portaudio_x64.lib;sndfile.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -148,6 +148,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="Data\AudioManager.cpp" />
     <ClCompile Include="Data\Ball.cpp" />
     <ClCompile Include="Data\Block.cpp" />
     <ClCompile Include="Data\Platform.cpp" />
@@ -159,6 +160,7 @@
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Data\AudioManager.h" />
     <ClInclude Include="Data\Ball.h" />
     <ClInclude Include="Data\Block.h" />
     <ClInclude Include="Data\GameConstants.h" />

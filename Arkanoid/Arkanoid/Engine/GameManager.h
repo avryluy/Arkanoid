@@ -1,19 +1,19 @@
 #pragma once
 
-#include "SDL.h"
-#include "portaudio.h"
-#include "Engine\FPSManager.h"
+#include <SDL.h>
+#include <vector>
+#include <list>
+#include "Data\AudioManager.h"
 #include "Data\ScoreScreen.h"
 #include "Data\Platform.h"
 #include "Data\Ball.h"
 #include "Data\Block.h"
-
 #include "Engine\TextTextures.h"
 #include "Engine\Templates.h"
+#include "Engine\FPSManager.h"
 //#include "GameConstants.h"
 #include "Engine\Renderer.h"
-#include <vector>
-#include <list>
+
 
 class GameManager
 {
@@ -39,6 +39,7 @@ private:
 	Platform* platform;
 	Ball* ball;
 	Block *blocks;
+	AudioManager* audioman;
 	//std::list<Block*> targets;
 	std::vector<Block> targets;
 	TextTextures* text;
