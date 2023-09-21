@@ -1,6 +1,7 @@
 #pragma once
 
 #include "SDL.h"
+#include "portaudio.h"
 #include "Engine\FPSManager.h"
 #include "Data\ScoreScreen.h"
 #include "Data\Platform.h"

@@ -12,6 +12,13 @@ GameManager::GameManager()
 	//ball = new Ball(platform->get_plat_center(), platform->get_y() - 20);
 	//Block *blocks = new Block(0, 255, 10, 1);
 	Init_Level();
+	PaError err;
+	err = Pa_Initialize();
+	if (err != paNoError)
+	{
+		printf("Port Audio Failed to Initialize");
+		exit(EXIT_FAILURE);
+	}
 	
 }
 
