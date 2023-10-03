@@ -35,9 +35,9 @@ AudioManager::~AudioManager() {
 	checkerr(err);
 }
 
-void AudioManager::openStream() {
-	err = Pa_OpenStream(&audioStream,NULL,)
-}
+//void AudioManager::openStream() {
+//	err = Pa_OpenStream(&audioStream,NULL,)
+//}
 
 void AudioManager::checkerr(PaError err) {
 	if (err != paNoError)

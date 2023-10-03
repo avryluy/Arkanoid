@@ -1,4 +1,4 @@
-#include "Engine\TextTextures.h"
+#include <Engine\TextTextures.h>
 
 
 TextTextures::TextTextures(std::string name)
@@ -18,7 +18,7 @@ TextTextures::~TextTextures()
 void TextTextures::DrawText(const TSharedPtr<renderer>& nRenderer, std::string textureText, SDL_Color textColor, int fontSize)
 {
 	//Load font
-	mFont = TTF_OpenFont("C:/Users/avryl/Documents/CODE/Arkanoid/Arkanoid/Arkanoid/Helvetica-Bold.ttf", fontSize);
+	mFont = TTF_OpenFont("Helvetica-Bold.ttf", fontSize);
 	if (mFont == NULL)
 	{
 		SDL_Log("Font failed to load. SDL_ttf error: %s\n", TTF_GetError());
