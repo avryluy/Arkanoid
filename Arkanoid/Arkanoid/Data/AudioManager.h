@@ -13,25 +13,29 @@ class AudioManager {
 
 public:
 
-	AudioManager();
+	AudioManager(const char* audioFilePath);
 	~AudioManager();
 
-	static int PA_Callback(const void* input,void* output,unsigned long frameCount,
-		const PaStreamCallbackTimeInfo* timeInfo,PaStreamCallbackFlags statusFlags,void* userData);
 	static void checkerr(PaError err);
 	void openStream();
 	void closeStream();
-	SNDFILE* loadFile(const char* fname);
+
+	static int PA_Callback(const void* inputBuffer, void* outputBuffer, unsigned long framesPerBuffer,
+		const PaStreamCallbackTimeInfo* timeInfo, PaStreamCallbackFlags statusFlags, void* userData);
+
+	//SNDFILE* loadFile(const char* fname);
+	const char* testfile = "C:\\Users\\avryl\\Documents\\CODE\\Arkanoid\\Arkanoid\\Arkanoid\\Audio\\bow_shot_02.wav";
+	
 
 private:
 	PaError err;
 	int numDevices;
 	int device;
 	const PaDeviceInfo* deviceInfo;
-	SNDFILE* sndfile = nullptr;
+	SNDFILE* sndfile;
 	SF_INFO sfinfo;
-	PaStream* audioStream = nullptr;
-	const char* testfile = "C:\\Users\\avryl\\Documents\\CODE\\Arkanoid\\Arkanoid\\Arkanoid\\Audio\\bow_shot_02.wav";
+	PaStream* audioStream;
+	
 
 	
 

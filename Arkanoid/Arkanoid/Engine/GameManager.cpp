@@ -12,7 +12,7 @@ GameManager::GameManager()
 	//ball = new Ball(platform->get_plat_center(), platform->get_y() - 20);
 	//Block *blocks = new Block(0, 255, 10, 1);
 	Init_Level();
-	audioman = new AudioManager();
+	audioman = new AudioManager("C:\\Users\\avryl\\Documents\\CODE\\Arkanoid\\Arkanoid\\Arkanoid\\Audio\\bow_shot_02.wav");
 	//audioman->loadFile(testfile);
 }
 
