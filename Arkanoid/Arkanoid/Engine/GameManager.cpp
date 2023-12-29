@@ -12,7 +12,7 @@ GameManager::GameManager()
 	//ball = new Ball(platform->get_plat_center(), platform->get_y() - 20);
 	//Block *blocks = new Block(0, 255, 10, 1);
 	Init_Level();
-	audioman = new AudioManager("C:\\Users\\avryl\\Documents\\CODE\\Arkanoid\\Arkanoid\\Arkanoid\\Audio\\bow_shot_02.wav");
+	audioman = new AudioManager("D:\\GameDevelopment\\Arkanoid\\Arkanoid\\Arkanoid\\Wilhelm_tk1.wav");
 	//audioman->loadFile(testfile);
 }
 
@@ -125,8 +125,10 @@ void GameManager::GameLoop()
 					SDL_Log("Block Health :%i", block.getHealth());
 					
 					block.damage(1);
+			
 					if (block.getHealth() < 1) {
 						block.Destroy();
+						audioman->playaudio();
 					}
 					
 					//ball->set_XDirection(5);
