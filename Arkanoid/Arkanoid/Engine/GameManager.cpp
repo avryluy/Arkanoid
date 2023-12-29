@@ -12,7 +12,8 @@ GameManager::GameManager()
 	//ball = new Ball(platform->get_plat_center(), platform->get_y() - 20);
 	//Block *blocks = new Block(0, 255, 10, 1);
 	Init_Level();
-	audioman = new AudioManager("D:\\GameDevelopment\\Arkanoid\\Arkanoid\\Arkanoid\\Wilhelm_tk1.wav");
+	//audioman = new AudioManager("D:\\GameDevelopment\\Arkanoid\\Arkanoid\\Arkanoid\\Wilhelm_tk1.wav");
+	audioman = new AudioManager();
 	//audioman->loadFile(testfile);
 }
 
@@ -121,14 +122,14 @@ void GameManager::GameLoop()
 				if (ball->get_x() + ball->get_w() > block.get_x() && ball->get_x() < block.get_x() + block.get_w()
 					&& ball->get_y() + ball->get_h() > block.get_y() && ball->get_y() < block.get_y() + block.get_h()) {
 					//++score;
-					SDL_Log("Hit Target :%i", block.get_block_id());
-					SDL_Log("Block Health :%i", block.getHealth());
+					//SDL_Log("Hit Target :%i", block.get_block_id());
+					//SDL_Log("Block Health :%i", block.getHealth());
 					
 					block.damage(1);
 			
 					if (block.getHealth() < 1) {
 						block.Destroy();
-						audioman->playaudio();
+						//audioman->playaudio();
 					}
 					
 					//ball->set_XDirection(5);
@@ -155,6 +156,10 @@ void GameManager::HandleEvents()
 		{
 			gameRunning = false;
 		
+		}
+		else if (event.key.keysym.sym == SDLK_j)
+		{
+			audioman->play_audio("D:\\GameDevelopment\\Arkanoid\\Arkanoid\\Arkanoid\\Wilhelm_tk1.wav");
 		}
 		else if (event.key.keysym.sym == SDLK_r)
 		{
