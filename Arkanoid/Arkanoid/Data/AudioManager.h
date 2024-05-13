@@ -9,13 +9,15 @@
 #define BIT_DEPTH (24)
 #define CHANNEL_COUNT (2)
 
-typedef struct
+typedef struct callback_data_s
 {
 	SNDFILE* sndfile;
 	SF_INFO sndinfo;
 	float* buffer;
+	int buffer_size = 512;
 	size_t framesRead;
-} callback_data_s;
+	sf_count_t count = 1;
+};
 
 class AudioManager {
 

@@ -1,5 +1,6 @@
 #include "AudioManager.h"
-#define FRAMES_PER_BUFFER 256
+#include "SDL.h"
+#define FRAMES_PER_BUFFER 512
 #define SAMPLE_RATE 48000
 
 AudioManager::AudioManager():sndfile(nullptr), audioStream(nullptr) {
@@ -47,6 +48,7 @@ AudioManager::~AudioManager() {
 
 void AudioManager::play_audio(const char* audio_file_path) {
 	//Load Sound File
+	::memset(&data.sndinfo, 0, sizeof(data.sndinfo));
 	data.sndfile = sf_open(audio_file_path, SFM_READ, &data.sndinfo);
 	// Check for sndfile errors
 	if (sf_error(data.sndfile) != SF_ERR_NO_ERROR) {
@@ -59,7 +61,7 @@ void AudioManager::play_audio(const char* audio_file_path) {
 	}
 
 	//Allocate buffer for audio data
-	data.buffer = (float*)malloc(FRAMES_PER_BUFFER * data.sndinfo.channels * sizeof(float));
+	//data.buffer = (float*)malloc(FRAMES_PER_BUFFER * data.sndinfo.channels * sizeof(float));
 	//Load Default Audio Stream
 	PaStreamParameters streamParameters;
 	streamParameters.device = 0;
@@ -94,27 +96,40 @@ void AudioManager::play_audio(const char* audio_file_path) {
 	if (err != paNoError)
 	{
 		printf("Error Starting Audio Stream\n");
+		printf(Pa_GetErrorText(err));
 	}
 	else
 	{
 		printf("Stream Started.\n");
 	}
 	// Let callback process stream
-	while (Pa_IsStreamActive(audioStream))
-	{
-		if (data.framesRead == data.sndinfo.frames) {
-			paComplete;
-		}
-	}
+	//while (data.count > 0) {}
 
+	//while (Pa_IsStreamActive(audioStream))
+	//{
+
+	//	Pa_Sleep(1);
+	//	if (data.framesRead == data.sndinfo.frames) {
+	//		paComplete;
+	//		break;
+	//		
+	//	}
+	//}
+	//if (Pa_IsStreamStopped)
+	//{
+	//	sf_close(data.sndfile);
+	//err = Pa_StopStream(audioStream);
+	//if (err != paNoError)
+	//	std::cerr << "PAError: " << Pa_GetErrorText(err) << std::endl;
+	//// Close Audio Stream
+	//err = Pa_CloseStream(audioStream);
+	//if (err != paNoError) {
+	//	printf("Problem Closing Stream\n");
+	//}
+//	}
 	// Close Sound File
-	sf_close(data.sndfile);
-	// Close Audio Stream
-	err = Pa_CloseStream(audioStream);
-	if (err != paNoError) {
-		printf("Problem Closing Stream\n");
-	}
-	free(data.buffer);
+	
+	//free(data.buffer);
 }	
 //AudioManager::AudioManager(const char* audioFilePath): sndfile(nullptr), audioStream(nullptr) {
 //	err = Pa_Initialize();
@@ -229,22 +244,50 @@ AudioManager::PA_Callback
 	/*p_data = (callback_data_s*)userData;*/
 
 
-	//If the frames read plus the buffer is greater than the frames in the sound file
-	if (p_data->framesRead + FRAMES_PER_BUFFER > p_data->sndinfo.frames)
+	auto data = std::make_unique<float[]>(frameCount * p_data->sndinfo.channels);
+	p_data->count = sf_read_float(p_data->sndfile, data.get(), framesToRead * p_data->sndinfo.channels);
+
+	for (int i = 0; i < frameCount * p_data->sndinfo.channels; i++)
 	{
-		//Update framesToRead to the file total frames minus what's already read
-		framesToRead = p_data->sndinfo.frames - p_data->framesRead;
+		*out++ = data[i];
 	}
 
-	sf_readf_float(p_data->sndfile, out, framesToRead);
-	p_data->framesRead += framesToRead;
+	p_data->framesRead += p_data->buffer_size;
+	printf("Count: %llu  | Framecount: %llu\n", p_data->framesRead, p_data->sndinfo.frames);
 
-	if (p_data->framesRead >= p_data->sndinfo.frames)
+	if (p_data->framesRead == p_data->sndinfo.frames || p_data->framesRead >= p_data->sndinfo.frames)
 	{
 		sf_seek(p_data->sndfile, 0, SEEK_SET);
 		p_data->framesRead = 0;
-	}
+		printf("Complete");
+		return paComplete;
 
+	}
+	else return paContinue;
+
+
+	////If the frames read plus the buffer is greater than the frames in the sound file
+	//if (p_data->framesRead + FRAMES_PER_BUFFER > p_data->sndinfo.frames)
+	//{
+	//	//Update framesToRead to the file total frames minus what's already read
+	//	framesToRead = p_data->sndinfo.frames - p_data->framesRead;
+	//}
+
+	//sf_readf_float(p_data->sndfile, out, framesToRead);
+	//p_data->framesRead += framesToRead;
+	//SDL_Log("Read: %i | Length: %i", p_data->framesRead, p_data->sndinfo.frames);
+
+	//if (p_data->framesRead == p_data->sndinfo.frames)
+	//{
+	//	sf_seek(p_data->sndfile, 0, SEEK_SET);
+	//	p_data->framesRead = 0;
+	//	return paComplete;
+	//	printf("Stopping");
+	//}
+	//else
+	//{
+	//	return paContinue;
+	//}
 
 	///* clear output buffer */
 	//memset(out, 0, sizeof(float) * frameCount * p_data->sndinfo.channels);
@@ -253,12 +296,9 @@ AudioManager::PA_Callback
 	//num_read = sf_read_float(p_data->sndfile, out, frameCount * p_data->sndinfo.channels);
 
 	///*  If we couldn't read a full frameCount of samples we've reached EOF */
-	/*if (num_read < frameCount)
-	{
-		return paComplete;
-	}*/
 
-	return paContinue;
+
+	
 }
 //
 //int AudioManager::PA_Callback(const void* inputBuffer, void* outputBuffer, unsigned long framesPerBuffer,

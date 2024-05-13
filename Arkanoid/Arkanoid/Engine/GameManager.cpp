@@ -152,14 +152,16 @@ void GameManager::HandleEvents()
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
 	{
+		platform->update(event);
+		ball->update(event);
 		if (event.type == SDL_QUIT || (event.key.keysym.sym == SDLK_ESCAPE))
 		{
 			gameRunning = false;
 		
 		}
-		else if (event.key.keysym.sym == SDLK_j)
+		else if (event.key.keysym.sym == SDLK_j && event.key.type == SDL_KEYDOWN)
 		{
-			audioman->play_audio("D:\\GameDevelopment\\Arkanoid\\Arkanoid\\Arkanoid\\Wilhelm_tk1.wav");
+			audioman->play_audio("C:\\Users\\avryl\\Documents\\CODE\\Arkanoid\\Arkanoid\\Arkanoid\\Wilhelm_tk1.wav");
 		}
 		else if (event.key.keysym.sym == SDLK_r)
 		{
@@ -170,8 +172,6 @@ void GameManager::HandleEvents()
 			Init_Level();
 			//ball = new Ball(platform->get_plat_center(), platform->get_y() - 20);
 		}
-		platform->update(event);
-		ball->update(event);
 	}
 }
 
