@@ -37,15 +37,52 @@ AudioManager::AudioManager():sndfile(nullptr), audioStream(nullptr), deviceInfo(
 		printf("There was an error getting device count");
 		exit(EXIT_FAILURE);
 	}
-
+	std::vector<const char*> my_list = prep_files();
+	if (!my_list.empty()) // Check file path exists
+	{
+		data.sndfile = sf_open(my_list[0], SFM_READ, &data.sndinfo);
+	}
+	else
+	{
+		printf("Error with file path");
+		//return nullptr;
+	}
+	// Check for sndfile errors
+	if (sf_error(data.sndfile) != SF_ERR_NO_ERROR) {
+		printf("Error Opening Sound file.");
+		//return nullptr;
+	}
+	else
+	{
+		printf("sound file %s | frames %I64i", my_list[0], data.sndinfo.frames);
+	}
 
 }
 
 AudioManager::~AudioManager() {
-	err = Pa_Terminate();
-	if (err == paNoError) {
-		exit(EXIT_SUCCESS);
+	close_stream(&audioStream);
+
+	for (auto& file : loaded_files)
+	{
+		sf_close(file.sndfile);
 	}
+
+
+	//if (data.sndfile) {
+	//	sf_close(data.sndfile);
+	//}
+	err = Pa_Terminate();
+	checkerr(err);
+}
+
+int AudioManager::init()
+{
+	if (err)
+	{
+		return -1;
+	}
+
+	return 0;
 }
 
 PaStreamParameters AudioManager::stream_param_init(int device, int channels, int samplerate)
@@ -86,17 +123,17 @@ void AudioManager::load_file(const char* file_path, callback_data_s& data)
 	//return data.sndfile;
 }
 
-void AudioManager::open_stream(PaStreamParameters streamParameters, callback_data_s data)
+void AudioManager::open_stream(PaStream* stream, PaStreamParameters* streamParameters, callback_data_s data)
 {
-	err = Pa_OpenStream(&audioStream
+	err = Pa_OpenStream(&stream
 		, 0
-		, &streamParameters
+		, streamParameters
 		, data.sndinfo.samplerate
 		, FRAMES_PER_BUFFER
 		, paClipOff
 		, PA_Callback
 		, &data);
-	PaError s_err = Pa_IsFormatSupported(nullptr, &streamParameters, SAMPLE_RATE);
+	PaError s_err = Pa_IsFormatSupported(nullptr, streamParameters, SAMPLE_RATE);
 	if (s_err == paFormatIsSupported)
 	{
 		printf("Device can support sample rate of %i KHz\n", SAMPLE_RATE);
@@ -107,28 +144,28 @@ void AudioManager::open_stream(PaStreamParameters streamParameters, callback_dat
 		printf("Problem opening Stream: %d\n", PaError(err));
 	}
 	else {
-		printf("Stream opened with device: %s\n", Pa_GetDeviceInfo(streamParameters.device)->name);
-		printf("Device Host API: %i\n", Pa_GetDeviceInfo(streamParameters.device)->hostApi);
+		printf("Stream opened with device: %s\n", Pa_GetDeviceInfo(streamParameters->device)->name);
+		printf("Device Host API: %i\n", Pa_GetDeviceInfo(streamParameters->device)->hostApi);
 	}
 
 }
 
-void AudioManager::play_brick_break(int index, PaStream* stream)
+void AudioManager::play_sound(int index, PaStream* stream)
 {
 	// Check index against vector size
 	if (index >= 0 && index <= loaded_files.size())
 	{
 		callback_data_s& audio_clip = loaded_files[index];
 		PaStreamParameters streamParameters = stream_param_init(0, data.sndinfo.channels, paFloat32);
-		if (!audioStream)
+		if (!stream)
 		{
-			open_stream(streamParameters, audio_clip);
+			open_stream(stream, &streamParameters, audio_clip);
 		}
 		else
 		{
-			close_stream(&audioStream);
+			close_stream(stream);
 		}
-		err = Pa_StartStream(audioStream);
+		err = Pa_StartStream(stream);
 		if (err != paNoError)
 		{
 			printf("Error Starting Audio Stream\n");
@@ -157,23 +194,6 @@ void AudioManager::close_stream(PaStream* stream)
 	}
 }
 
-
-AudioManager::~AudioManager() {
-	close_stream(&audioStream);
-
-	for (auto& file : loaded_files)
-	{
-		sf_close(file.sndfile);
-	}
-
-
-	//if (data.sndfile) {
-	//	sf_close(data.sndfile);
-	//}
-	err = Pa_Terminate();
-	checkerr(err);
-}
-
 void AudioManager::checkerr(PaError err) {
 	if (err != paNoError)
 	{
@@ -183,17 +203,12 @@ void AudioManager::checkerr(PaError err) {
 
 }
 
-
-
-int
-AudioManager::PA_Callback
-(const void* input
+int AudioManager::PA_Callback(const void* input
 	, void* output
 	, unsigned long                   frameCount
 	, const PaStreamCallbackTimeInfo* timeInfo
 	, PaStreamCallbackFlags           statusFlags
-	, void* userData
-)
+	, void* userData)
 {
 	float* out;
 	callback_data_s* p_data = (callback_data_s*)userData;
@@ -223,4 +238,11 @@ AudioManager::PA_Callback
 
 	}
 	else return paContinue;
+}
+
+std::vector<const char*> AudioManager::prep_files()
+{
+	std::vector<const char*> file_list = {};
+	file_list.push_back("Audio\\bow_shot_02.wav");
+	return file_list;
 }

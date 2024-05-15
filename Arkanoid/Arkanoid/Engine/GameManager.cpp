@@ -161,7 +161,7 @@ void GameManager::HandleEvents()
 		}
 		else if (event.key.keysym.sym == SDLK_j && event.key.type == SDL_KEYDOWN)
 		{
-			audioman->play_audio("C:\\Users\\avryl\\Documents\\CODE\\Arkanoid\\Arkanoid\\Arkanoid\\Wilhelm_tk1.wav");
+			//audioman->play_audio("C:\\Users\\avryl\\Documents\\CODE\\Arkanoid\\Arkanoid\\Arkanoid\\Wilhelm_tk1.wav");
 		}
 		else if (event.key.keysym.sym == SDLK_r)
 		{

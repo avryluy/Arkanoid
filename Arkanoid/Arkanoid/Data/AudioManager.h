@@ -5,6 +5,7 @@
 #include <iostream>
 #include <vector>
 
+
 struct callback_data_s
 {
 	SNDFILE* sndfile;
@@ -37,33 +38,30 @@ public:
 	int numDevices{};
 	SNDFILE* sndfile{};
 	PaStream* audioStream{};
+	//std::vector<PaStream> audiostreams{};
 	callback_data_s data;
 	std::vector<callback_data_s> loaded_files;
 
 	AudioManager();
 	//AudioManager(const char* audioFilePath);
 	~AudioManager();
-
-	static void checkerr(PaError err);
-	void load_file(const char* file_path, callback_data_s& data);
-	PaStreamParameters stream_param_init(int device, int channels, int samplerate);
-	void open_stream(PaStreamParameters streamParameters, callback_data_s data);
-	void close_stream(PaStream* stream);
-	void play_brick_break(int index, PaStream* stream);
-
-	
-
-	//replace this one
-	//void play_audio(const char* audio_file_path);
-
+	int init();
 	static int PA_Callback(const void* inputBuffer, void* outputBuffer, unsigned long framesPerBuffer,
 		const PaStreamCallbackTimeInfo* timeInfo, PaStreamCallbackFlags statusFlags, void* userData);
-
+	PaStreamParameters stream_param_init(int device, int channels, int samplerate);
+	void load_file(const char* file_path, callback_data_s& data);
+	void open_stream(PaStream* stream, PaStreamParameters* streamParameters, callback_data_s data);
+	void close_stream(PaStream* stream);
+	void play_sound(int index, PaStream* stream);
+	static void checkerr(PaError err);
+		
 
 private:
 	PaError err;
 	const PaDeviceInfo* deviceInfo;
-	
+	const std::vector<const char*> file_paths;
+
+	std::vector<const char*> prep_files();
 	
 	
 
