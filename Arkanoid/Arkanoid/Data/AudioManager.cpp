@@ -1,11 +1,12 @@
 #include "AudioManager.h"
 #include "SDL.h"
-#define FRAMES_PER_BUFFER 512
-#define SAMPLE_RATE 48000
+
+const int AudioManager::FRAMES_PER_BUFFER;
+
+
 
 AudioManager::AudioManager():sndfile(nullptr), audioStream(nullptr) {
 	err = Pa_Initialize();
-
 	
 
 	if (err != paNoError) {
@@ -22,6 +23,7 @@ AudioManager::AudioManager():sndfile(nullptr), audioStream(nullptr) {
 	{
 		printf("Number of devices: %i \n", numDevices);
 		for (int i = 0; i < numDevices; i++) {
+			deviceInfo = new PaDeviceInfo;
 			deviceInfo = Pa_GetDeviceInfo(i);
 			printf("Device Index %i\n", PaDeviceIndex(i));
 			printf("Device name: %s\n", deviceInfo->name);
@@ -45,6 +47,17 @@ AudioManager::~AudioManager() {
 	}
 }
 
+PaStreamParameters AudioManager::stream_param_init(int device, int channels, int samplerate)
+{
+	PaStreamParameters m_param;
+	m_param.device = device;
+	m_param.channelCount = channels;
+	m_param.sampleFormat = samplerate;
+	m_param.suggestedLatency = Pa_GetDeviceInfo(m_param.device)->defaultLowOutputLatency;
+	m_param.hostApiSpecificStreamInfo = NULL;
+	return m_param;
+
+}
 
 void AudioManager::play_audio(const char* audio_file_path) {
 	//Load Sound File
@@ -63,12 +76,9 @@ void AudioManager::play_audio(const char* audio_file_path) {
 	//Allocate buffer for audio data
 	//data.buffer = (float*)malloc(FRAMES_PER_BUFFER * data.sndinfo.channels * sizeof(float));
 	//Load Default Audio Stream
-	PaStreamParameters streamParameters;
-	streamParameters.device = 0;
-	streamParameters.channelCount = data.sndinfo.channels;
-	streamParameters.sampleFormat = paFloat32;
-	streamParameters.suggestedLatency = Pa_GetDeviceInfo(streamParameters.device)->defaultLowOutputLatency;
-	streamParameters.hostApiSpecificStreamInfo = NULL;
+
+	PaStreamParameters streamParameters = stream_param_init(0, data.sndinfo.channels, paFloat32);
+
 	err = Pa_OpenStream(&audioStream
 		, 0
 		, &streamParameters
@@ -77,10 +87,10 @@ void AudioManager::play_audio(const char* audio_file_path) {
 		, paClipOff
 		, PA_Callback
 		, &data);
-	PaError s_err = Pa_IsFormatSupported(nullptr, &streamParameters, 48000);
+	PaError s_err = Pa_IsFormatSupported(nullptr, &streamParameters, SAMPLE_RATE);
 	if (s_err == paFormatIsSupported)
 	{
-		printf("Device can support sample rate of 48KHz\n");
+		printf("Device can support sample rate of {} KHz\n", SAMPLE_RATE);
 	}
 	// Check for stream errors
 	if (err != paNoError)
@@ -131,47 +141,6 @@ void AudioManager::play_audio(const char* audio_file_path) {
 	
 	//free(data.buffer);
 }	
-//AudioManager::AudioManager(const char* audioFilePath): sndfile(nullptr), audioStream(nullptr) {
-//	err = Pa_Initialize();
-//	checkerr(err);
-//	numDevices = Pa_GetDeviceCount();
-//	printf("Number of Devices : % i\n", numDevices);
-//	//sndfile = loadFile(audioFilePath);
-//	FRAMES_PER_BUFFER = paFramesPerBufferUnspecified;
-//	//printf("Stream Info - Samples %i \n", stream_info.sampleRate);
-//	data.sndfile = sf_open(audioFilePath, SFM_READ, &data.sndinfo);
-//	if (!data.sndfile) {
-//		printf("Error opening file: %s", audioFilePath);
-//	}
-//	else { printf("File opened successfully\n"); }
-//	openStream();
-//	printf("File SampleRate %d\n", data.sndinfo.samplerate);
-//	printf("File Channel Count %d\n", data.sndinfo.channels);
-//	printf("File format %i \n", data.sndinfo.format);
-//
-//	if (numDevices < 0) {
-//		printf("Error getting device count \n");
-//		exit(EXIT_FAILURE);
-//	}
-//	else if (numDevices == 0) {
-//		printf("There are no available devices. Check your OS' device manager. \n");
-//		exit(EXIT_SUCCESS);
-//	}
-//
-//	for (int i = 0; i < numDevices; i++)
-//	{
-//		// Device 1: Steinberg output 2 channels
-//		// Device 15: Steinberg input 2 channels
-//		deviceInfo = Pa_GetDeviceInfo(i);
-//		printf("Device #%i\n", i);
-//		printf("Device name: %s\n", deviceInfo->name);
-//		printf("Max Input Channels: %i\n", deviceInfo->maxInputChannels);
-//		printf("Max Outut Channels: %i\n", deviceInfo->maxOutputChannels);
-//		printf("Default Sample Rate: %f\n", deviceInfo->defaultSampleRate);
-//		
-//		
-//	}
-//}
 
 //AudioManager::~AudioManager() {
 //	closeStream();
@@ -180,30 +149,6 @@ void AudioManager::play_audio(const char* audio_file_path) {
 //	}
 //	err = Pa_Terminate();
 //	checkerr(err);
-//}
-
-//void AudioManager::openStream() {
-//	PaError err = Pa_OpenDefaultStream(&audioStream, 0, data.sndinfo.channels, paInt24, data.sndinfo.samplerate, FRAMES_PER_BUFFER, PA_Callback, &data);
-//	if (err != paNoError) {
-//		fprintf(stderr, "Error opening audio stream: %s\n", Pa_GetErrorText(err));
-//	}
-//	else {
-//		printf("Audio stream opened successfully.\n");
-//		
-//	}
-//	stream_info = Pa_GetStreamInfo(audioStream);
-//	printf("Stream SampleRate %f\n", stream_info->sampleRate);
-//	/*err = Pa_StartStream(audioStream);
-//	if (err != paNoError){
-//		fprintf(stderr, "Error opening audio stream: %s\n", Pa_GetErrorText(err));
-//	}*/
-//}
-
-//void AudioManager::closeStream() {
-//	if (audioStream) {
-//		Pa_CloseStream(audioStream);
-//		//audioStream = nullptr;
-//	}
 //}
 
 void AudioManager::checkerr(PaError err) {
@@ -238,7 +183,7 @@ AudioManager::PA_Callback
 {
 	float* out;
 	callback_data_s* p_data = (callback_data_s*)userData;
-	sf_count_t       num_read;
+	/*sf_count_t       num_read;*/
 	out = (float*)output;
 	size_t framesToRead = FRAMES_PER_BUFFER;
 	/*p_data = (callback_data_s*)userData;*/
@@ -247,7 +192,7 @@ AudioManager::PA_Callback
 	auto data = std::make_unique<float[]>(frameCount * p_data->sndinfo.channels);
 	p_data->count = sf_read_float(p_data->sndfile, data.get(), framesToRead * p_data->sndinfo.channels);
 
-	for (int i = 0; i < frameCount * p_data->sndinfo.channels; i++)
+	for (unsigned long i = 0; i < frameCount * p_data->sndinfo.channels; i++)
 	{
 		*out++ = data[i];
 	}
