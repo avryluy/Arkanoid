@@ -51,7 +51,7 @@ public:
 	void load_file(const char* file_path, callback_data_s* data);
 	void open_stream(PaStream* stream, PaStreamParameters streamParameters, callback_data_s data);
 	void close_stream(PaStream* stream);
-	void play_sound(int index, PaStream* stream);
+	void play_sound(int index, std::vector<PaStream*> &streams);
 	static void checkerr(PaError err);
 		
 
