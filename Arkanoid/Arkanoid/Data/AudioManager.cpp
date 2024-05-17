@@ -66,12 +66,13 @@ int AudioManager::init()
 	{
 		callback_data_s data;
 		load_file(file, &data);
-		
+		PaStream* stream = nullptr;
 		PaStreamParameters stream_param = stream_param_init(0, 2, SAMPLE_RATE);
-		open_stream(&audioStream, stream_param, loaded_files[count]);
-		//audio_streams.push_back(audioStream);
-		//SDL_Log("Stream created with file: %I64i\n", data.sndinfo.frames);
-		//count++;
+		open_stream(&stream, stream_param, loaded_files[count]);
+		audio_streams.push_back(audioStream);
+		printf(Pa_GetErrorText(Pa_IsStreamActive(audioStream)));
+		SDL_Log("Stream created with file: %I64i\n", data.sndinfo.frames);
+		count++;
 	}
 
 	if (err)
@@ -152,23 +153,26 @@ void AudioManager::open_stream(PaStream* stream, PaStreamParameters streamParame
 
 }
 
-void AudioManager::play_sound(int index, std::vector<PaStream*> &streams)
+void AudioManager::play_sound(int index, const std::vector<PaStream*> streams)
 {
 	// Check index against vector size
 	if (index >= 0 && index <= loaded_files.size())
 	{
 		
+		printf("Loading file at index %i", index);
 		PaStream* stream = streams[index];
-		err = Pa_StartStream(stream);
-		if (err != paNoError)
-		{
-			printf("Error Starting Audio Stream\n");
-			printf(Pa_GetErrorText(err));
-		}
-		else
-		{
-			printf("Stream Started.\n");
-		}
+		printf(Pa_GetErrorText(Pa_IsStreamActive(stream)));
+		//PaStream* stream = streams[index];
+	//	err = Pa_StartStream(stream);
+	//	if (err != paNoError)
+	//	{
+	//		printf("Error Starting Audio Stream\n");
+	//		printf(Pa_GetErrorText(err));
+	//	}
+	//	else
+	//	{
+	//		printf("Stream Started.\n Playing file%i\n", index+1);
+	//	}
 
 	}
 	else
@@ -178,6 +182,10 @@ void AudioManager::play_sound(int index, std::vector<PaStream*> &streams)
 
 }
 
+std::vector<PaStream*> AudioManager::get_streams()
+{
+	return audio_streams;
+};
 void AudioManager::close_stream(PaStream* stream)
 {
 	if (stream)
