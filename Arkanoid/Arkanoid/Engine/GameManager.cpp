@@ -126,10 +126,12 @@ void GameManager::GameLoop()
 					//SDL_Log("Block Health :%i", block.getHealth());
 					
 					block.damage(1);
+					audioman->play_sound(2);
 			
 					if (block.getHealth() < 1) {
 						block.Destroy();
 						//audioman->playaudio();
+						audioman->play_sound(1);
 					}
 					
 					//ball->set_XDirection(5);
@@ -163,7 +165,8 @@ void GameManager::HandleEvents()
 		{
 			printf("J pressed \n");
 			//audioman->play_audio("C:\\Users\\avryl\\Documents\\CODE\\Arkanoid\\Arkanoid\\Arkanoid\\Wilhelm_tk1.wav");
-			audioman->play_sound(0, audioman->get_streams());
+			//audioman->play_sound(0, audioman->get_streams());
+			audioman->play_sound(0);
 		}
 		else if (event.key.keysym.sym == SDLK_r)
 		{

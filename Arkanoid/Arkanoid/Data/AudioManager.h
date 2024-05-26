@@ -8,6 +8,7 @@
 
 struct callback_data_s
 {
+	const char* filename{};
 	SNDFILE* sndfile;
 	SF_INFO sndinfo{};
 	float* buffer ;
@@ -18,7 +19,8 @@ struct callback_data_s
 	callback_data_s(): sndfile(nullptr), buffer(nullptr), buffer_size(512), framesRead(0), count(1)
 	{
 		// Initialize SF_INFO
-		sndinfo.format = 0; // Initialize format to 0 (you can set this appropriately)
+		
+		sndinfo.format = paFloat32; // Initialize format to 0 (you can set this appropriately)
 		sndinfo.frames = 0; // Initialize frames to 0 (or set as needed)
 		sndinfo.samplerate = 48000; // Example: Set sample rate to 44100 Hz
 		sndinfo.channels = 2; // Example: Set number of channels to stereo (2 channels)
@@ -48,11 +50,12 @@ public:
 	static int PA_Callback(const void* inputBuffer, void* outputBuffer, unsigned long framesPerBuffer,
 		const PaStreamCallbackTimeInfo* timeInfo, PaStreamCallbackFlags statusFlags, void* userData);
 	PaStreamParameters stream_param_init(int device, int channels, int samplerate);
-	std::vector<PaStream*> get_streams();
+	std::vector<PaStream*>& get_streams();
 	void load_file(const char* file_path, callback_data_s* data);
-	void open_stream(PaStream* stream, PaStreamParameters streamParameters, callback_data_s data);
+	void open_stream(PaStream*& stream, PaStreamParameters streamParameters, callback_data_s* data);
 	void close_stream(PaStream* stream);
-	void play_sound(int index, const std::vector<PaStream*> streams);
+	/*void play_sound(int index, const std::vector<PaStream*>& streams) const;*/
+	void play_sound(int index);
 	static void checkerr(PaError err);
 		
 
