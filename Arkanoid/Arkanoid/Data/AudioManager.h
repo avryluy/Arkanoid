@@ -3,38 +3,60 @@
 #include <portaudio.h>
 #include <sndfile.h>
 #include <iostream>
+#include <vector>
 
-#define SAMPLE_RATE = 44100;
-#define BIT_DEPTH = 24;
-#define CHANNEL_COUNT = 2;
-#define FRAMES_PER_BUFFER = 512;
+struct soundData {
+	const char* filename;
+	float* data;
+	sf_count_t frames;
+	int samplerate;
+	int channels;
+
+	soundData() : data(nullptr), frames(0), samplerate(0), channels(0) {}
+	~soundData() { delete[] data; }
+};
+
+struct PlaybackInstance {
+
+	const soundData* sound;
+	sf_count_t position;
+	bool active;
+
+	PlaybackInstance(const soundData* soundData) : sound(soundData), position(0), active(true){}
+};
+
 
 class AudioManager {
 
 public:
 
-	AudioManager(const char* audioFilePath);
+	static const int SAMPLE_RATE = 48000;
+	static const int BIT_DEPTH = 24;
+	static const int CHANNEL_COUNT = 2;
+	static const int FRAMES_PER_BUFFER = 512;
+	int numDevices{};
+	SNDFILE* sndfile{};
+	PaStream* audioStream = nullptr;
+
+
+	AudioManager();
 	~AudioManager();
 
-	static void checkerr(PaError err);
-	void openStream();
-	void closeStream();
+	bool load_sound(const char* file_path, soundData& soundData);
+	void play_sound(const soundData* soundData);
 
 	static int PA_Callback(const void* inputBuffer, void* outputBuffer, unsigned long framesPerBuffer,
 		const PaStreamCallbackTimeInfo* timeInfo, PaStreamCallbackFlags statusFlags, void* userData);
-
-	//SNDFILE* loadFile(const char* fname);
-	const char* testfile = "C:\\Users\\avryl\\Documents\\CODE\\Arkanoid\\Arkanoid\\Arkanoid\\Audio\\bow_shot_02.wav";
-	
+	static void checkerr(PaError err);
+		
 
 private:
 	PaError err;
-	int numDevices;
-	int device;
 	const PaDeviceInfo* deviceInfo;
-	SNDFILE* sndfile;
-	SF_INFO sfinfo;
-	PaStream* audioStream;
+	PaStream* stream;
+	std::vector<PlaybackInstance> instances;
+
+	
 	
 
 	

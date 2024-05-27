@@ -12,8 +12,6 @@ GameManager::GameManager()
 	//ball = new Ball(platform->get_plat_center(), platform->get_y() - 20);
 	//Block *blocks = new Block(0, 255, 10, 1);
 	Init_Level();
-	audioman = new AudioManager("C:\\Users\\avryl\\Documents\\CODE\\Arkanoid\\Arkanoid\\Arkanoid\\Audio\\bow_shot_02.wav");
-	//audioman->loadFile(testfile);
 }
 
 GameManager::~GameManager()
@@ -34,6 +32,28 @@ int GameManager::Init() {
 	text->DrawText(Renderer,"Arkanoid", { 0, 0, 0 }, 200);
 	subtext->DrawText(Renderer, "Programmed by Avry Luy", { 0, 0, 0 }, 100);
 	life_count->DrawText(Renderer, "Lives Left: " + toString(ball->get_life()), { 0, 0, 0, 0 }, 75);
+	if (!audiomanager.load_sound("..\\Arkanoid\\Audio\\file01.wav", sound1))
+	{
+		printf("Failed to load sound\n");
+		return -1;
+	}
+	printf("Audio file: %s\n", sound1.filename);
+	printf("	SampleRate: %d\n", sound1.samplerate);
+	printf("	Channels: %d\n", sound1.channels);
+	printf("	Frames: %d\n", sound1.frames);
+
+	if (!audiomanager.load_sound("..\\Arkanoid\\Audio\\file02.wav", sound2))
+	{
+		printf("Failed to load sound\n");
+		return -1;
+	}
+	if (!audiomanager.load_sound("..\\Arkanoid\\Audio\\file03.wav", sound3))
+	{
+		printf("Failed to load sound\n");
+		return -1;
+	}
+
+
 	//Start gameLoop
 	GameLoop();
 	//exit code
@@ -87,6 +107,7 @@ void GameManager::Init_Level() {
 			//blocks->set_y(i * (720 / 10));
 			//blocks->set_h((720 / 30) + 10);
 			targets.push_back(Block(x, y, blockColor[currentblocktype], blockHealth[currentblocktype], nextblockid));
+			//printf("Col %i, Row %i: Health = %i\n", col, row, blockHealth[currentblocktype]);
 			nextblockid++;
 			currentblocktype = (currentblocktype + 1) % NUMBLOCKTYPES;
 		}
@@ -121,12 +142,15 @@ void GameManager::GameLoop()
 				if (ball->get_x() + ball->get_w() > block.get_x() && ball->get_x() < block.get_x() + block.get_w()
 					&& ball->get_y() + ball->get_h() > block.get_y() && ball->get_y() < block.get_y() + block.get_h()) {
 					//++score;
-					SDL_Log("Hit Target :%i", block.get_block_id());
-					SDL_Log("Block Health :%i", block.getHealth());
+					//SDL_Log("Hit Target :%i", block.get_block_id());
+					//SDL_Log("Block Health :%i", block.getHealth());
 					
 					block.damage(1);
+					audiomanager.play_sound(&sound2);
+			
 					if (block.getHealth() < 1) {
 						block.Destroy();
+						audiomanager.play_sound(&sound3);
 					}
 					
 					//ball->set_XDirection(5);
@@ -149,22 +173,28 @@ void GameManager::HandleEvents()
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
 	{
+		platform->update(event);
+		ball->update(event);
 		if (event.type == SDL_QUIT || (event.key.keysym.sym == SDLK_ESCAPE))
 		{
 			gameRunning = false;
 		
 		}
+		else if (event.key.keysym.sym == SDLK_j && event.key.type == SDL_KEYDOWN)
+		{
+			printf("J pressed \n");
+			audiomanager.play_sound(&sound1);
+		}
 		else if (event.key.keysym.sym == SDLK_r)
 		{
 			//Reset Game
 			//ball->reset();
+			audiomanager.play_sound(&sound1);
 			ball->~Ball();
 			targets.clear();
 			Init_Level();
 			//ball = new Ball(platform->get_plat_center(), platform->get_y() - 20);
 		}
-		platform->update(event);
-		ball->update(event);
 	}
 }
 
