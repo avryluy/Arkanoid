@@ -39,7 +39,10 @@ private:
 	Platform* platform;
 	Ball* ball;
 	Block *blocks;
-	AudioManager* audioman;
+	AudioManager audiomanager;
+	soundData sound1;
+	soundData sound2;
+	soundData sound3;
 	//std::list<Block*> targets;
 	std::vector<Block> targets;
 	TextTextures* text;
