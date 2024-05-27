@@ -42,3 +42,6 @@ Arkanoid/Arkanoid/SDL_ttf.h
 Arkanoid/Arkanoid/portaudio.h
 Arkanoid/Arkanoid/SDL.h
 Arkanoid/Arkanoid/sndfile.h
+.vs/
+*.pdb
+*.idb
