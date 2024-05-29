@@ -6,7 +6,7 @@ class Block
 {
 public:
 	Block();
-	Block(int x, int y, SDL_Color blockColor, int health, int blockID);
+	Block(int x, int y, SDL_Color blockColor, int health, int blockID, int blockScore);
 	~Block();
 
 	bool getCollision();
@@ -28,6 +28,8 @@ public:
 
 	int get_block_id();
 	void set_block_id(int id);
+
+	int get_block_score();
 
 	virtual void draw(const TSharedPtr<renderer>& nRenderer);
 	void damage(int points);

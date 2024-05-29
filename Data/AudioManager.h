@@ -1,7 +1,7 @@
 #pragma once
 
-#include <portaudio.h>
-#include <sndfile.h>
+#include <lib\x64\portaudio.h>
+#include <lib\x64\sndfile.h>
 #include <iostream>
 #include <vector>
 
@@ -55,6 +55,8 @@ private:
 	const PaDeviceInfo* deviceInfo;
 	PaStream* stream;
 	std::vector<PlaybackInstance> instances;
+	PaStreamParameters defaultParam;
+
 
 	
 	

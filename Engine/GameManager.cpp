@@ -9,6 +9,7 @@ GameManager::GameManager()
 	text = new TextTextures("Title");
 	subtext = new TextTextures("Sub-title");
 	life_count = new TextTextures("Life Counter");
+	score_count = new TextTextures("Score");
 	//ball = new Ball(platform->get_plat_center(), platform->get_y() - 20);
 	//Block *blocks = new Block(0, 255, 10, 1);
 	Init_Level();
@@ -31,7 +32,8 @@ int GameManager::Init() {
 	main_surf = SDL_GetWindowSurface(window);
 	text->DrawText(Renderer,"Arkanoid", { 0, 0, 0 }, 200);
 	subtext->DrawText(Renderer, "Programmed by Avry Luy", { 0, 0, 0 }, 100);
-	life_count->DrawText(Renderer, "Lives Left: " + toString(ball->get_life()), { 0, 0, 0, 0 }, 75);
+	//life_count->DrawText(Renderer, "Lives Left: " + toString(ball->get_life()), { 0, 0, 0, 0 }, 75);
+	//score_count->DrawText(Renderer, "Score: " + toString(gameScore), { 0, 0, 0, 0 }, 70);
 	if (!audiomanager.load_sound("..\\Arkanoid\\Audio\\file01.wav", sound1))
 	{
 		printf("Failed to load sound\n");
@@ -40,7 +42,7 @@ int GameManager::Init() {
 	printf("Audio file: %s\n", sound1.filename);
 	printf("	SampleRate: %d\n", sound1.samplerate);
 	printf("	Channels: %d\n", sound1.channels);
-	printf("	Frames: %d\n", sound1.frames);
+	printf("	Frames: %I64i\n", sound1.frames);
 
 	if (!audiomanager.load_sound("..\\Arkanoid\\Audio\\file02.wav", sound2))
 	{
@@ -64,6 +66,7 @@ void GameManager::Init_Level() {
 	ball = new Ball(platform->get_plat_center(), platform->get_y() - 20);
 	int nextblockid = 0;
 	int currentblocktype = 0;
+	gameScore = 0;
 	//Block* blocks = new Block(blockColor[currentblocktype], blockHealth[currentblocktype]);
 	
 
@@ -106,7 +109,7 @@ void GameManager::Init_Level() {
 			//blocks->set_w(70);
 			//blocks->set_y(i * (720 / 10));
 			//blocks->set_h((720 / 30) + 10);
-			targets.push_back(Block(x, y, blockColor[currentblocktype], blockHealth[currentblocktype], nextblockid));
+			targets.push_back(Block(x, y, blockColor[currentblocktype], blockHealth[currentblocktype], nextblockid, blockScores[currentblocktype]));
 			//printf("Col %i, Row %i: Health = %i\n", col, row, blockHealth[currentblocktype]);
 			nextblockid++;
 			currentblocktype = (currentblocktype + 1) % NUMBLOCKTYPES;
@@ -149,6 +152,7 @@ void GameManager::GameLoop()
 					audiomanager.play_sound(&sound2);
 			
 					if (block.getHealth() < 1) {
+						gameScore += block.get_block_score();
 						block.Destroy();
 						audiomanager.play_sound(&sound3);
 					}
@@ -208,9 +212,11 @@ void GameManager::Render(const TSharedPtr<renderer>& nRenderer)
 	//Ball Count Management
 
 	life_count->DrawText(Renderer, "Lives Left: " + toString(ball->get_life()), { 0, 0, 0, 0 }, 75);
+	score_count->DrawText(Renderer, "Score: " + toString(gameScore), { 0, 0, 0, 0 }, 70);
 
 
 	life_count->renderText(nRenderer, (scorescreen->get_x() + 30), (scorescreen->get_y() + 170), 175, 50);
+	score_count->renderText(nRenderer, (scorescreen->get_x() + 30), (scorescreen->get_y() + 245), 175, 50);
 	if (ball) {
 		ball->draw(nRenderer);
 	}

@@ -1,6 +1,6 @@
 #pragma once
-#include "SDL_ttf.h"
-#include "SDL.h"
+#include "lib\x64\SDL_ttf.h"
+#include "lib\x64\SDL.h"
 #include "Engine\Templates.h"
 #include "Engine\Renderer.h"
 

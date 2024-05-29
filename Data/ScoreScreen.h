@@ -1,5 +1,5 @@
 #pragma once
-#include "SDL.h"
+#include "lib\x64\SDL.h"
 #include "Engine\Renderer.h"
 
 class ScoreScreen

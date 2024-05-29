@@ -1,5 +1,5 @@
 #include "AudioManager.h"
-#include "SDL.h"
+#include "lib\x64\SDL.h"
 #include <cstring>
 
 const int AudioManager::FRAMES_PER_BUFFER;
@@ -40,7 +40,22 @@ AudioManager::AudioManager():sndfile(nullptr), audioStream(nullptr), deviceInfo(
 		exit(EXIT_FAILURE);
 	}
 
-	Pa_OpenDefaultStream(&stream, 0, 2, paFloat32, SAMPLE_RATE, FRAMES_PER_BUFFER, PA_Callback, this);
+	printf("/***************/\n");
+	int defaultdev = Pa_GetDefaultOutputDevice();
+	deviceInfo = Pa_GetDeviceInfo(defaultdev);
+	printf("Default Device Index %i\n", PaDeviceIndex(defaultdev));
+	printf("Default Device name: %s\n", deviceInfo->name);
+	printf("Default Max Input Channels: %i\n", deviceInfo->maxInputChannels);
+	printf("Default Max Outut Channels: %i\n", deviceInfo->maxOutputChannels);
+	printf("Default Sample Rate: %f\n", deviceInfo->defaultSampleRate);
+	defaultParam.device = defaultdev;
+	defaultParam.channelCount = 2;
+	defaultParam.sampleFormat = paFloat32;
+	defaultParam.suggestedLatency = deviceInfo->defaultLowOutputLatency;
+
+	//Pa_OpenDefaultStream(&stream, 0, 2, paFloat32, SAMPLE_RATE, FRAMES_PER_BUFFER, PA_Callback, this);
+	Pa_OpenStream(&stream, NULL, &defaultParam, SAMPLE_RATE, FRAMES_PER_BUFFER, NULL, PA_Callback, this);
+
 	Pa_StartStream(stream);
 }
 

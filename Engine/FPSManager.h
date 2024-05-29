@@ -1,6 +1,6 @@
 #pragma once
 #include "Data\GameConstants.h"
-#include "SDL.h"
+#include "lib\x64\SDL.h"
 class FPSManager
 {
 public:

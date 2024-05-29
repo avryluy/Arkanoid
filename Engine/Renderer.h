@@ -1,6 +1,6 @@
 #pragma once
 
-#include "SDL.h"
+#include "lib\x64\SDL.h"
 #include "Engine\Templates.h"
 #include <iostream>
 #include<stdio.h>

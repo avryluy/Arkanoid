@@ -1,5 +1,5 @@
 #pragma once
-#include <SDL.h>
+#include <lib\x64\SDL.h>
 const int SCREEN_WIDTH = 1080;
 const int SCREEN_HEIGHT = 720;
 const int FPS = 60;
@@ -13,6 +13,8 @@ const SDL_Color blockColor[NUMBLOCKTYPES] = {
 };
 
 const int blockHealth[NUMBLOCKTYPES] = { 1, 3, 4 };
+
+const int blockScores[NUMBLOCKTYPES] = { 700, 325, 175};
 
 
 

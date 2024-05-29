@@ -1,6 +1,6 @@
 #pragma once
 
-#include <SDL.h>
+#include <lib\x64\SDL.h>
 #include <vector>
 #include <list>
 #include "Data\AudioManager.h"
@@ -35,6 +35,7 @@ private:
 	SDL_Surface* main_surf = nullptr;
 	const char* TITLE = "Arkanoid - By Avry Luy";
 	int countedframes = 0;
+	int gameScore = 0;
 	ScoreScreen* scorescreen;
 	Platform* platform;
 	Ball* ball;
@@ -48,5 +49,6 @@ private:
 	TextTextures* text;
 	TextTextures* subtext;
 	TextTextures* life_count;
+	TextTextures* score_count;
 };
 

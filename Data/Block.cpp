@@ -20,7 +20,7 @@ Block::Block()
 	this->blockActive = true;
 }
 
-Block::Block(int x, int y, SDL_Color blockColor, int health, int blockID)
+Block::Block(int x, int y, SDL_Color blockColor, int health, int blockID, int blockScore)
 {
 	this->x = x;
 	this->y = y;
@@ -34,7 +34,7 @@ Block::Block(int x, int y, SDL_Color blockColor, int health, int blockID)
 	this->b = b;
 	this->a = 255;
 
-	this->scoreValue = 0;
+	this->scoreValue = blockScore;
 	this->block_id = blockID;
 	this->health = health;
 
@@ -79,9 +79,15 @@ int Block::getHealth() {
 int Block::get_block_id() {
 	return this->block_id;
 }
+
 void Block::set_block_id(int id) {
 	this->block_id = id;
 }
+
+int Block::get_block_score() {
+	return this->scoreValue;
+}
+
 
 void Block::set_y(int y) {
 	this->y = y;
