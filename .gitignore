@@ -47,3 +47,4 @@ Arkanoid/Arkanoid/sndfile.h
 /lib
 *.pdb
 *.idb
+*.kra

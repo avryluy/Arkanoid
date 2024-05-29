@@ -10,8 +10,7 @@ GameManager::GameManager()
 	subtext = new TextTextures("Sub-title");
 	life_count = new TextTextures("Life Counter");
 	score_count = new TextTextures("Score");
-	//ball = new Ball(platform->get_plat_center(), platform->get_y() - 20);
-	//Block *blocks = new Block(0, 255, 10, 1);
+	paddle_ball = new LTexture();
 	Init_Level();
 }
 
@@ -55,6 +54,23 @@ int GameManager::Init() {
 		return -1;
 	}
 
+	if (!paddle_ball->loadImage(Renderer, "..\\Arkanoid\\Assets\\paddles_and_balls.png"))
+	{
+		printf("Couldn't load image into Texture\n");
+		exit(EXIT_FAILURE);
+	}
+
+	//ball
+	pballarray[0].x = 176;
+	pballarray[0].y = 0;
+	pballarray[0].w = 16;
+	pballarray[0].h = 16;
+
+	//paddle
+	pballarray[1].x = 64;
+	pballarray[1].y = 7;
+	pballarray[1].w = 32;
+	pballarray[1].h = 9;
 
 	//Start gameLoop
 	GameLoop();
@@ -218,7 +234,8 @@ void GameManager::Render(const TSharedPtr<renderer>& nRenderer)
 	life_count->renderText(nRenderer, (scorescreen->get_x() + 30), (scorescreen->get_y() + 170), 175, 50);
 	score_count->renderText(nRenderer, (scorescreen->get_x() + 30), (scorescreen->get_y() + 245), 175, 50);
 	if (ball) {
-		ball->draw(nRenderer);
+		//ball->draw(nRenderer);
+		ball->renderBall(nRenderer, ball->get_x(), ball->get_y(), pballarray[0].w, pballarray[0].h, paddle_ball->getTexture(), &pballarray[0]);
 	}
 	
 	//block->draw(nRenderer);

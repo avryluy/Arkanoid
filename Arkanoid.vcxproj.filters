@@ -51,6 +51,9 @@
     <ClCompile Include="Data\AudioManager.cpp">
       <Filter>Source Files\Data</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\LTexture.cpp">
+      <Filter>Source Files\Engine</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Data\GameConstants.h">
@@ -85,6 +88,9 @@
     </ClInclude>
     <ClInclude Include="Data\AudioManager.h">
       <Filter>Source Files\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\LTexture.h">
+      <Filter>Source Files\Engine</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

@@ -8,6 +8,7 @@
 #include "Data\Platform.h"
 #include "Data\Ball.h"
 #include "Data\Block.h"
+#include "Engine/LTexture.h"
 #include "Engine\TextTextures.h"
 #include "Engine\Templates.h"
 #include "Engine\FPSManager.h"
@@ -50,5 +51,7 @@ private:
 	TextTextures* subtext;
 	TextTextures* life_count;
 	TextTextures* score_count;
+	LTexture* paddle_ball;
+	SDL_Rect pballarray[2];
 };
 

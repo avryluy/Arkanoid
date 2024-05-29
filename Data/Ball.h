@@ -1,5 +1,6 @@
 #pragma once
 #include "lib\x64\SDL.h"
+#include "Engine\LTexture.h"
 #include "Engine\Renderer.h"
 
 class Platform; //Forward declaration
@@ -27,6 +28,7 @@ public:
 	void update(SDL_Event& event);
 	bool collision(SDL_Rect a, SDL_Rect b);
 	void draw(const TSharedPtr<renderer>& nRenderer);
+	void renderBall(const TSharedPtr<renderer>& nRenderer, int x, int y, int ballWidth, int ballHeight, SDL_Texture* mTexture, SDL_Rect* clip);
 	
 
 private:
@@ -42,6 +44,6 @@ private:
 	int random_number = 1 + (std::rand() % static_cast<int>(10 - 1 + 1));
 	bool ballLaunched;
 	bool life_Changed;
-
+	LTexture* ballTexture = NULL;
 	SDL_Rect bCol = {get_x(), get_y(), 40, 40};
 };

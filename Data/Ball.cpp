@@ -61,6 +61,21 @@ void Ball::draw(const TSharedPtr<renderer>& nRenderer) {
 	}
 }
 
+void Ball::renderBall(const TSharedPtr<renderer>& nRenderer, int x, int y, int ballWidth, int ballHeight, SDL_Texture* mTexture, SDL_Rect* clip)
+{
+		SDL_Rect renderquad = { x, y, ballWidth, ballHeight };
+
+	if (clip != NULL) {
+
+		clip->w = renderquad.w;
+		clip->h = renderquad.h;
+	}
+
+	SDL_RenderCopy(nRenderer->GetNativeRenderer(), mTexture, clip, &renderquad);
+
+}
+
+
 void Ball::set_XDirection(int speed_x) {
 	this->mVelX = speed_x;
 }
@@ -159,106 +174,6 @@ void Ball::move(Platform* platform, SDL_Rect mCol) {
 	mPosX += mVelX;
 	mPosY += mVelY;
 }
-
-//void Ball::move(int plat_x, int plat_y, int plat_w, int plat_h, SDL_Rect mCol) {
-//	int widthThirds = mCol.w / 3;
-//	int topLeftThird = (mCol.x + (mCol.x + widthThirds));
-//	int topMiddleThird = (mCol.x + (mCol.x + (widthThirds * 2)));
-//	int topRightThird = (mCol.x + (mCol.x + mCol.w));
-//	int bCollPoint = bCol.y + bCol.h;
-//	
-//	//Moves ball with platform if not launched
-//	if (!ballLaunched)
-//	{
-//		mPosX = plat_x + (plat_w / 2);
-//		mPosY = (plat_y - plat_h) + (get_rad() / 3);
-//	}
-//
-//	mPosX += mVelX;
-//	this->x = mPosX;
-//
-//	//When ball hits left side of screen
-//	if (mPosX < 0)
-//	{
-//		set_XDirection(speed);
-//		mPosX += mVelX;
-//		bCol.x = mPosX;
-//		SDL_Log("Hit Left wall");
-//	}
-//	//When ball collides or hits right side of screen
-//	else if (mPosX + get_rad() > 720 || collision(bCol, mCol))
-//	{
-//		set_XDirection(-speed);
-//		mPosX += mVelX;
-//		bCol.x = mPosX;
-//		SDL_Log("Hit Right Wall OR Side of Platform");
-//	}
-//
-//	bCol.x = mPosX;
-//	bCol.y = mPosY;
-//
-//	//SDL_Log("Ball Collider| X:%i | Y:%i", bCol.x, bCol.y);
-//
-//	mPosY += mVelY;
-//	this->y = mPosY;
-//
-//	//When ball hits top of screen
-//	if (mPosY < 0)
-//	{
-//		//Move back
-//		SDL_Log("Hit Top of Screen");
-//		set_YDirection(speed);
-//		mPosY += mVelY;
-//		bCol.y = mPosY;
-//	}
-//	//When ball collides
-//	else if (collision(bCol, mCol))
-//	{
-//		SDL_Log("Hit Platform");
-//		//set_YDirection(-speed);
-//		
-//		//When ball hits left side of platform
-//		if ((bCollPoint >= mCol.x) & (bCollPoint < topLeftThird))
-//		{
-//			set_XDirection(-4);
-//			set_YDirection(-5);
-//			SDL_Log("Left Side Hit");
-//		}
-//		//When ball hits center of platform
-//		else if ((bCollPoint >= topLeftThird) & (bCollPoint < topMiddleThird))
-//		{
-//			set_XDirection(0);
-//			set_YDirection(-5);
-//			SDL_Log("Center Hit");
-//		}
-//		//When ball hits right side of platform
-//		// TODO: Not consistently registering Right side.
-//		else if ((bCollPoint >= topMiddleThird) & (bCollPoint <= topRightThird))
-//		{
-//			set_XDirection(4);
-//			set_YDirection(-5);
-//			SDL_Log("Right Side Hit");
-//		}
-//		mPosY += mVelY;
-//		bCol.y = mPosY;
-//	}
-//	//When ball hits bottom of screen
-//	else if ((mPosY + (this->radius) > 720))
-//	{
-//		// handles ball "death" and resetting
-//		SDL_Log("Hit Bottom of Screen");
-//		life_Changed = true;
-//		ballLaunched = false;
-//		mVelX = 0;
-//		mVelY = 0;
-//		this->life -= 1;
-//		SDL_Log("Lives left: %i", this->life);
-//		SDL_Log("Life Changed: %s", this->life_Changed ? "true" : "false");
-//	}
-//
-//	//SDL_Log("Ball velocity: %i", mVelY);
-//
-//}
 
 void Ball::update(SDL_Event& event) {
 	// Hitting Space launches ball
