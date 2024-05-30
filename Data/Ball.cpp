@@ -1,25 +1,45 @@
 #include "Ball.h"
 #include "Platform.h"
 //TODO: These x y values for ball do nothing. remove.
-Ball::Ball(int x, int y){
-	this->x = x;
-	this->y = y;
-	this->radius = 20;
+Ball::Ball(int w, int h, float scale) {
+	this->x = 0;
+	this->y = 0;
+
+	this->bCol.w = scale_size(w, scale);
+	this->bCol.h = scale_size(h, scale);
+
+	this->radius = static_cast<int>(scale_size(w, scale) * .5);
 	this->mPosX = this->x;
 	this->mPosY = this->y;
 	this->mVelX = 0;
 	this->mVelY = 0;
 
-	this->bCol.w = (40);
-	this->bCol.h = (100);
 	this->ballLaunched = false;
 	this->life_Changed = false;
+	this->ball_bool = true;
 	SDL_Log("Ball()\n");
 }
 
 Ball::~Ball(){
 	SDL_Log("~Ball()\n");
 }
+
+int Ball::scale_size(int dim, float scale)
+{
+	if (scale > 0)
+	{
+		int scaled = static_cast<int>(std::ceil(dim * scale));
+		printf("Prev: %i | Cur: %i\n", dim, scaled);
+		return scaled;
+	}
+	else
+	{
+		printf("Scale value was 0 or less.\n");
+		return dim;
+	}
+
+}
+
 
 int Ball::get_x() {
 	return this->x;
@@ -61,14 +81,40 @@ void Ball::draw(const TSharedPtr<renderer>& nRenderer) {
 	}
 }
 
-void Ball::renderBall(const TSharedPtr<renderer>& nRenderer, int x, int y, int ballWidth, int ballHeight, SDL_Texture* mTexture, SDL_Rect* clip)
+void Ball::renderBall(const TSharedPtr<renderer>& nRenderer, int x, int y, int ballWidth, int ballHeight, SDL_Texture* mTexture, SDL_Rect* clip, float scale)
 {
-		SDL_Rect renderquad = { x, y, ballWidth, ballHeight };
+	SDL_Rect renderquad = { x, y, ballWidth, ballHeight };
 
 	if (clip != NULL) {
 
 		clip->w = renderquad.w;
 		clip->h = renderquad.h;
+	}
+
+	//if (scale != 0.0)
+	//{
+	//	renderquad.w = renderquad.w * scale;
+	//	renderquad.h = renderquad.h * scale;
+	//}
+
+	if (this->bCol.w != renderquad.w || this->bCol.h != renderquad.h)
+	{
+		renderquad.w = this->bCol.w;
+		renderquad.h = this->bCol.h;
+		//this->radius = std::ceil((renderquad.x + renderquad.w) * 0.5f);
+	}
+	if(ball_bool)
+	{
+		printf("Ball radius: %i\n", this->radius);
+		printf("Ball X: %i\n", this->x);
+		printf("Ball Y: %i\n", this->y);
+		printf("Ball W: %i\n", this->get_w());
+		printf("Ball H: %i\n", this->get_h());
+		printf("Ball col X: %i\n", this->bCol.x);
+		printf("Ball col Y: %i\n", this->bCol.y);
+		printf("Ball col W: %i\n", this->bCol.w);
+		printf("Ball col H: %i\n", this->bCol.h);
+		ball_bool = false;
 	}
 
 	SDL_RenderCopy(nRenderer->GetNativeRenderer(), mTexture, clip, &renderquad);
@@ -99,8 +145,8 @@ void Ball::move(Platform* platform, SDL_Rect mCol) {
 	//if ball isnt launched
 	if (!ballLaunched)
 	{
-		mPosX = plat_x + (plat_w * .5);
-		mPosY = (plat_y - plat_h) + (get_rad() * .3);
+		mPosX = plat_x + (plat_w * .38);
+		mPosY = (plat_y - plat_h) - 2;
 	}
 
 	//Ball Movement
@@ -136,7 +182,7 @@ void Ball::move(Platform* platform, SDL_Rect mCol) {
 	}
 	else if (collision(bCol, mCol)) {
 		//Ball hitting platform
-		if (ballBottom >= plat_y && ballBottom <= plat_y + plat_h) {
+		if (ballBottom >= (plat_y - (plat_h/2) ) && ballBottom <= (plat_y + (plat_h/2) ) ) {
 			if (mPosX < platTopLeft) {
 				//Ball hits left side of platform
 				set_XDirection(-speed);
@@ -184,7 +230,7 @@ void Ball::update(SDL_Event& event) {
 		
 			this->ballLaunched = true;
 			set_XDirection(random_number);
-			set_YDirection(speed);
+			set_YDirection(-speed);
 			life_Changed = false;
 		}
 	}
