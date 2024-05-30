@@ -42,7 +42,7 @@ bool LTexture::loadImage(const TSharedPtr<renderer>& nRenderer, std::string path
 			printf("Settings w/h vals\n");
 			mWidth = mSurface->w;
 			mHeight = mSurface->h;
-			printf("LTexture values --- w: %i | h: %i\n", mWidth, mHeight);
+			//printf("LTexture values --- w: %i | h: %i\n", mWidth, mHeight);
 
 		}
 		SDL_FreeSurface(mSurface);

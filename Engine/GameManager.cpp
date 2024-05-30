@@ -5,7 +5,6 @@ GameManager::GameManager()
 {
 	//Construct objects for game
 	scorescreen = new ScoreScreen();
-	platform = new Platform();
 	text = new TextTextures("Title");
 	subtext = new TextTextures("Sub-title");
 	life_count = new TextTextures("Life Counter");
@@ -20,6 +19,7 @@ GameManager::~GameManager()
 }
 
 int GameManager::Init() {
+	printf("Running GameManager::Init()\n");
 	//Initialize Game window, renderer, and text
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{
@@ -72,6 +72,10 @@ int GameManager::Init() {
 	pballarray[1].w = 32;
 	pballarray[1].h = 9;
 
+	platform = new Platform(pballarray[1].w, pballarray[1].h, 3.6f);
+	ball = new Ball(pballarray[0].w, pballarray[0].h, 2.1f);
+
+
 	//Start gameLoop
 	GameLoop();
 	//exit code
@@ -79,7 +83,7 @@ int GameManager::Init() {
 }
 
 void GameManager::Init_Level() {
-	ball = new Ball(platform->get_plat_center(), platform->get_y() - 20);
+	printf("Running GameManager::Init_Level()\n");
 	int nextblockid = 0;
 	int currentblocktype = 0;
 	gameScore = 0;
@@ -154,7 +158,7 @@ void GameManager::GameLoop()
 		//Handles keyboard events
 		HandleEvents();
 		ball->move(platform, platform->get_collider());
-		platform->move_plat(scorescreen->get_x() - 150);
+		platform->move_plat(scorescreen->get_x());
 
 		for (Block& block: targets) { 
 			if (block.isActive()) {
@@ -221,21 +225,32 @@ void GameManager::HandleEvents()
 void GameManager::Render(const TSharedPtr<renderer>& nRenderer)
 {
 	nRenderer->clear(88, 154, 186, 255);
-	platform->draw_screen(nRenderer);
+	platform->renderPlat(nRenderer, platform->get_x(), platform->get_y(),
+		pballarray[1].w, pballarray[1].h, paddle_ball->getTexture(),
+		&pballarray[1], 3.6f);
+	//platform->draw_screen(nRenderer);
 	scorescreen->draw_screen(nRenderer);
-	text->renderText(nRenderer,(scorescreen->get_x() + 10), (scorescreen->get_y() + 30), 350, 90);
-	subtext->renderText(nRenderer, (scorescreen->get_x() + 30), (scorescreen->get_y() + 130), 300, 50);
+	text->renderText(nRenderer,(scorescreen->get_x() + 10), (scorescreen->get_y() + 30),
+		350, 90);
+	subtext->renderText(nRenderer, (scorescreen->get_x() + 30), (scorescreen->get_y() + 130),
+		300, 50);
 	//Ball Count Management
 
-	life_count->DrawText(Renderer, "Lives Left: " + toString(ball->get_life()), { 0, 0, 0, 0 }, 75);
-	score_count->DrawText(Renderer, "Score: " + toString(gameScore), { 0, 0, 0, 0 }, 70);
+	life_count->DrawText(Renderer, "Lives Left: " + toString(ball->get_life()),
+		{ 0, 0, 0, 0 }, 75);
+	score_count->DrawText(Renderer, "Score: " + toString(gameScore),
+		{ 0, 0, 0, 0 }, 70);
 
 
-	life_count->renderText(nRenderer, (scorescreen->get_x() + 30), (scorescreen->get_y() + 170), 175, 50);
-	score_count->renderText(nRenderer, (scorescreen->get_x() + 30), (scorescreen->get_y() + 245), 175, 50);
+	life_count->renderText(nRenderer, (scorescreen->get_x() + 30),
+		(scorescreen->get_y() + 170), 175, 50);
+	score_count->renderText(nRenderer, (scorescreen->get_x() + 30),
+		(scorescreen->get_y() + 245), 175, 50);
 	if (ball) {
 		//ball->draw(nRenderer);
-		ball->renderBall(nRenderer, ball->get_x(), ball->get_y(), pballarray[0].w, pballarray[0].h, paddle_ball->getTexture(), &pballarray[0]);
+		ball->renderBall(nRenderer, ball->get_x(), ball->get_y(),
+			pballarray[0].w, pballarray[0].h, paddle_ball->getTexture(),
+			&pballarray[0], 1.5f);
 	}
 	
 	//block->draw(nRenderer);
