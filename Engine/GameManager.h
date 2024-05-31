@@ -53,5 +53,7 @@ private:
 	TextTextures* score_count;
 	LTexture* paddle_ball;
 	SDL_Rect pballarray[2];
+	LTexture* block_texture;
+	SDL_Rect Tblock[12];
 };
 

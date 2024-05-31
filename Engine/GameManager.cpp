@@ -10,6 +10,7 @@ GameManager::GameManager()
 	life_count = new TextTextures("Life Counter");
 	score_count = new TextTextures("Score");
 	paddle_ball = new LTexture();
+	block_texture = new LTexture();
 	Init_Level();
 }
 
@@ -72,23 +73,95 @@ int GameManager::Init() {
 	pballarray[1].w = 32;
 	pballarray[1].h = 9;
 
+
+	if (!block_texture->loadImage(Renderer, "..\\Arkanoid\\Assets\\bricks.png"))
+	{
+		printf("Couldn't load image into Texture\n");
+		exit(EXIT_FAILURE);
+	}
+
+	// Whole Blue Block
+	Tblock[0].x = 112;
+	Tblock[0].y = 0;
+	Tblock[0].w = 32;
+	Tblock[0].h = 16;
+
+	//Slightly Damaged Blue Block
+	Tblock[1].x = 144;
+	Tblock[1].y = 0;
+	Tblock[1].w = 32;
+	Tblock[1].h = 16;
+
+	//Heavily Damaged Blue Block
+	Tblock[2].x = 176;
+	Tblock[2].y = 0;
+	Tblock[2].w = 32;
+	Tblock[2].h = 16;
+
+	// Whole Green Block
+	Tblock[3].x = 111;
+	Tblock[3].y = 16;
+	Tblock[3].w = 32;
+	Tblock[3].h = 16;
+
+	//Slightly Damaged Green Block
+	Tblock[4].x = 144;
+	Tblock[4].y = 16;
+	Tblock[4].w = 64;
+	Tblock[4].h = 32;
+
+	//Heavily Damaged Green Block
+	Tblock[5].x = 176;
+	Tblock[5].y = 16;
+	Tblock[5].w = 64;
+	Tblock[5].h = 32;
+
+	// Whole Yellow Block
+	Tblock[6].x = 111;
+	Tblock[6].y = 32;
+	Tblock[6].w = 32;
+	Tblock[6].h = 16;
+
+	//Slightly Damaged Yellow Block
+	Tblock[7].x = 144;
+	Tblock[7].y = 32;
+	Tblock[7].w = 32;
+	Tblock[7].h = 32;
+
+	//Heavily Damaged Yellow Block
+	Tblock[8].x = 176;
+	Tblock[8].y = 32;
+	Tblock[8].w = 32;
+	Tblock[8].h = 16;
+
+	// Whole Orange Block
+	Tblock[9].x = 111;
+	Tblock[9].y = 48;
+	Tblock[9].w = 32;
+	Tblock[9].h = 16;
+
+	//Slightly Damaged Orange Block
+	Tblock[10].x = 144;
+	Tblock[10].y = 48;
+	Tblock[10].w = 32;
+	Tblock[10].h = 16;
+
+	//Heavily Damaged Orange Block
+	Tblock[11].x = 176;
+	Tblock[11].y = 48;
+	Tblock[11].w = 32;
+	Tblock[11].h = 16;
+
 	platform = new Platform(pballarray[1].w, pballarray[1].h, 3.6f);
 	ball = new Ball(pballarray[0].w, pballarray[0].h, 2.1f);
 
 
-	//Start gameLoop
-	GameLoop();
-	//exit code
-	return 0;
-}
-
-void GameManager::Init_Level() {
-	printf("Running GameManager::Init_Level()\n");
 	int nextblockid = 0;
 	int currentblocktype = 0;
+	int wholeTexture = 0;
 	gameScore = 0;
 	//Block* blocks = new Block(blockColor[currentblocktype], blockHealth[currentblocktype]);
-	
+
 
 	for (int row = 0; row < 5; ++row)
 	{
@@ -98,43 +171,60 @@ void GameManager::Init_Level() {
 			{
 			case 0:
 				currentblocktype = 0;
+				wholeTexture = 0;
 				break;
 			case 1:
 				currentblocktype = 0;
+				wholeTexture = 0;
+
 				break;
 
 			case 2:
 				currentblocktype = 1;
+				wholeTexture = 3;
+
 				break;
 
 			case 3:
 				currentblocktype = 1;
+				wholeTexture = 3;
+
 				break;
 
 			case 4:
 				currentblocktype = 2;
+				wholeTexture = 6;
+
 				break;
 
 			case 5:
 				currentblocktype = 3;
+				wholeTexture = 9;
+
 				break;
 
 			default:
 				break;
 			}
-			int x = col * (720 / 10) - 10;
-			int y = row * (720 / 10);
-			//blocks->set_block_id(nextblockid);
-			//blocks->set_x(j * (720 / 10) - 10);
-			//blocks->set_w(70);
-			//blocks->set_y(i * (720 / 10));
-			//blocks->set_h((720 / 30) + 10);
-			targets.push_back(Block(x, y, blockColor[currentblocktype], blockHealth[currentblocktype], nextblockid, blockScores[currentblocktype]));
-			//printf("Col %i, Row %i: Health = %i\n", col, row, blockHealth[currentblocktype]);
+			int x = col * (Tblock[wholeTexture].w + 40);
+			int y = row * (Tblock[wholeTexture].h + 40);
+			//targets.push_back(Block(x, y, blockColor[currentblocktype], blockHealth[currentblocktype], nextblockid, blockScores[currentblocktype]));
+			targets.push_back(Block(x, y, Tblock[wholeTexture].w, Tblock[wholeTexture].h, blockHealth[currentblocktype], nextblockid, blockScores[currentblocktype], wholeTexture, 2.0f));
+
+			printf("Col %i, Row %i: BlockID = %i\n", x, y, targets[nextblockid].get_block_id());
 			nextblockid++;
 			currentblocktype = (currentblocktype + 1) % NUMBLOCKTYPES;
 		}
 	}
+
+	//Start gameLoop
+	GameLoop();
+	//exit code
+	return 0;
+}
+
+void GameManager::Init_Level() {
+	printf("Running GameManager::Init_Level()\n");
 }
 
 void GameManager::GameLoop()
@@ -257,7 +347,23 @@ void GameManager::Render(const TSharedPtr<renderer>& nRenderer)
 	for (Block& block: targets )
 	{
 		if (block.isActive()) {
-			block.draw(nRenderer);
+			//If block hit once
+			if (block.getHealth() == (block.getStartHealth() - 1))
+			{
+				block.render(nRenderer, block.get_x(), block.get_y(), block.get_w(), block.get_h(), block_texture->getTexture(), &Tblock[block.get_texture_id()+1]);
+
+			}
+			//If block hit twice
+			else if (block.getHealth() == (block.getStartHealth() - 2))
+			{
+				block.render(nRenderer, block.get_x(), block.get_y(), block.get_w(), block.get_h(), block_texture->getTexture(), &Tblock[block.get_texture_id()+2]);
+
+			}
+			else
+			{
+				block.render(nRenderer, block.get_x(), block.get_y(), block.get_w(), block.get_h(), block_texture->getTexture(), &Tblock[block.get_texture_id()]);
+			}
+			
 		}
 	}
 
