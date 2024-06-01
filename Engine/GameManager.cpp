@@ -11,7 +11,7 @@ GameManager::GameManager()
 	score_count = new TextTextures("Score");
 	paddle_ball = new LTexture();
 	block_texture = new LTexture();
-	Init_Level();
+	scoreScreenTexture = new LTexture();
 }
 
 GameManager::~GameManager()
@@ -30,36 +30,147 @@ int GameManager::Init() {
 	//Create Renderer
 	Renderer = renderer::Construct(window);
 	main_surf = SDL_GetWindowSurface(window);
-	text->DrawText(Renderer,"Arkanoid", { 0, 0, 0 }, 200);
-	subtext->DrawText(Renderer, "Programmed by Avry Luy", { 0, 0, 0 }, 100);
-	//life_count->DrawText(Renderer, "Lives Left: " + toString(ball->get_life()), { 0, 0, 0, 0 }, 75);
-	//score_count->DrawText(Renderer, "Score: " + toString(gameScore), { 0, 0, 0, 0 }, 70);
-	if (!audiomanager.load_sound("..\\Arkanoid\\Audio\\file01.wav", sound1))
-	{
-		printf("Failed to load sound\n");
-		return -1;
-	}
-	printf("Audio file: %s\n", sound1.filename);
-	printf("	SampleRate: %d\n", sound1.samplerate);
-	printf("	Channels: %d\n", sound1.channels);
-	printf("	Frames: %I64i\n", sound1.frames);
+	text->DrawText(Renderer,"Arkanoid", { 229, 178, 245 }, 200);
+	subtext->DrawText(Renderer, "Programmed by Avry Luy", { 229, 178, 245 }, 100);
 
-	if (!audiomanager.load_sound("..\\Arkanoid\\Audio\\file02.wav", sound2))
+	loadAssets();
+	Init_Level();
+	//Start gameLoop
+	GameLoop();
+	//exit code
+	return 0;
+}
+
+void GameManager::Init_Level() {
+	printf("Running GameManager::Init_Level()\n");
+
+	platform = new Platform(pballarray[1].w, pballarray[1].h, 3.6f);
+	ball = new Ball(pballarray[0].w, pballarray[0].h, 2.1f);
+
+
+	int nextblockid = 0;
+	int currentblocktype = 0;
+	int wholeTexture = 0;
+	gameScore = 0;
+	//Block* blocks = new Block(blockColor[currentblocktype], blockHealth[currentblocktype]);
+
+
+	for (int row = 0; row < 5; ++row)
 	{
-		printf("Failed to load sound\n");
+		for (int col = 0; col < 10; ++col)
+		{
+			switch (row)
+			{
+			case 0:
+				currentblocktype = 0;
+				wholeTexture = 0;
+				break;
+			case 1:
+				currentblocktype = 0;
+				wholeTexture = 0;
+
+				break;
+
+			case 2:
+				currentblocktype = 1;
+				wholeTexture = 3;
+
+				break;
+
+			case 3:
+				currentblocktype = 1;
+				wholeTexture = 3;
+
+				break;
+
+			case 4:
+				currentblocktype = 2;
+				wholeTexture = 6;
+
+				break;
+
+			case 5:
+				currentblocktype = 3;
+				wholeTexture = 9;
+
+				break;
+
+			default:
+				break;
+			}
+			int x = col * (Tblock[wholeTexture].w + 40);
+			int y = row * (Tblock[wholeTexture].h + 40);
+			//targets.push_back(Block(x, y, blockColor[currentblocktype], blockHealth[currentblocktype], nextblockid, blockScores[currentblocktype]));
+			targets.push_back(Block(x, y, Tblock[wholeTexture].w, Tblock[wholeTexture].h, blockHealth[currentblocktype], nextblockid, blockScores[currentblocktype], wholeTexture, 2.0f));
+
+			//printf("Col %i, Row %i: BlockID = %i\n", x, y, targets[nextblockid].get_block_id());
+			nextblockid++;
+			currentblocktype = (currentblocktype + 1) % NUMBLOCKTYPES;
+		}
+	}
+
+}
+
+int GameManager::loadAssets() {
+	bool success = false;
+
+	//Set Audio File Paths
+	audiofile[0] = "..\\Arkanoid\\Audio\\file01.wav";
+	audiofile[1] = "..\\Arkanoid\\Audio\\file02.wav";
+	audiofile[2] = "..\\Arkanoid\\Audio\\file03.wav";
+
+	//Set Art Asset Paths
+	paddleBallFile = "..\\Arkanoid\\Assets\\paddles_and_balls.png";
+	bricksFile = "..\\Arkanoid\\Assets\\bricks.png";
+	backgroundFile = "..\\Arkanoid\\Assets\\Backround_Tiles.png";
+
+	//Load Audio Files
+	if (!audiomanager.load_sound(audiofile[0], sound1))
+	{
+		printf("Failed to load sound: %s\n", audiofile[0]);
 		return -1;
 	}
-	if (!audiomanager.load_sound("..\\Arkanoid\\Audio\\file03.wav", sound3))
+	//printf("Audio file: %s\n", sound1.filename);
+	//printf("	SampleRate: %d\n", sound1.samplerate);
+	//printf("	Channels: %d\n", sound1.channels);
+	//printf("	Frames: %I64i\n", sound1.frames);
+	if (!audiomanager.load_sound(audiofile[1], colHitSnd))
 	{
-		printf("Failed to load sound\n");
+		printf("Failed to load sound: %s\n", audiofile[1]);
+		return -1;
+	}
+	if (!audiomanager.load_sound(audiofile[2], blockDestroySnd))
+	{
+		printf("Failed to load sound: %s\n", audiofile[2]);
 		return -1;
 	}
 
-	if (!paddle_ball->loadImage(Renderer, "..\\Arkanoid\\Assets\\paddles_and_balls.png"))
+
+	// Load Art Files
+	if (!paddle_ball->loadImage(Renderer, paddleBallFile))
 	{
-		printf("Couldn't load image into Texture\n");
+		printf("Couldn't load image into Texture: %s\n", paddleBallFile);
 		exit(EXIT_FAILURE);
 	}
+
+	if (!block_texture->loadImage(Renderer, bricksFile))
+	{
+		printf("Couldn't load image into Texture: %s\n", bricksFile);
+		exit(EXIT_FAILURE);
+	}
+
+	if (!scoreScreenTexture->loadImage(Renderer, backgroundFile))
+	{
+		printf("Couldn't load image into Texture: %s\n", backgroundFile);
+		exit(EXIT_FAILURE);
+	}
+	// Focus asset coordinates for each object
+		
+	//ScoreScreen
+	ScreenRects[1].x = 128;
+	ScreenRects[1].y = 0;
+	ScreenRects[1].w = 32;
+	ScreenRects[1].h = 96;
 
 	//ball
 	pballarray[0].x = 176;
@@ -72,13 +183,6 @@ int GameManager::Init() {
 	pballarray[1].y = 7;
 	pballarray[1].w = 32;
 	pballarray[1].h = 9;
-
-
-	if (!block_texture->loadImage(Renderer, "..\\Arkanoid\\Assets\\bricks.png"))
-	{
-		printf("Couldn't load image into Texture\n");
-		exit(EXIT_FAILURE);
-	}
 
 	// Whole Blue Block
 	Tblock[0].x = 112;
@@ -152,79 +256,20 @@ int GameManager::Init() {
 	Tblock[11].w = 32;
 	Tblock[11].h = 16;
 
-	platform = new Platform(pballarray[1].w, pballarray[1].h, 3.6f);
-	ball = new Ball(pballarray[0].w, pballarray[0].h, 2.1f);
-
-
-	int nextblockid = 0;
-	int currentblocktype = 0;
-	int wholeTexture = 0;
-	gameScore = 0;
-	//Block* blocks = new Block(blockColor[currentblocktype], blockHealth[currentblocktype]);
-
-
-	for (int row = 0; row < 5; ++row)
+	if (block_texture && &colHitSnd && &blockDestroySnd
+		&& &sound1 && paddle_ball && scoreScreenTexture)
 	{
-		for (int col = 0; col < 10; ++col)
-		{
-			switch (row)
-			{
-			case 0:
-				currentblocktype = 0;
-				wholeTexture = 0;
-				break;
-			case 1:
-				currentblocktype = 0;
-				wholeTexture = 0;
-
-				break;
-
-			case 2:
-				currentblocktype = 1;
-				wholeTexture = 3;
-
-				break;
-
-			case 3:
-				currentblocktype = 1;
-				wholeTexture = 3;
-
-				break;
-
-			case 4:
-				currentblocktype = 2;
-				wholeTexture = 6;
-
-				break;
-
-			case 5:
-				currentblocktype = 3;
-				wholeTexture = 9;
-
-				break;
-
-			default:
-				break;
-			}
-			int x = col * (Tblock[wholeTexture].w + 40);
-			int y = row * (Tblock[wholeTexture].h + 40);
-			//targets.push_back(Block(x, y, blockColor[currentblocktype], blockHealth[currentblocktype], nextblockid, blockScores[currentblocktype]));
-			targets.push_back(Block(x, y, Tblock[wholeTexture].w, Tblock[wholeTexture].h, blockHealth[currentblocktype], nextblockid, blockScores[currentblocktype], wholeTexture, 2.0f));
-
-			printf("Col %i, Row %i: BlockID = %i\n", x, y, targets[nextblockid].get_block_id());
-			nextblockid++;
-			currentblocktype = (currentblocktype + 1) % NUMBLOCKTYPES;
-		}
+		success = true;
 	}
 
-	//Start gameLoop
-	GameLoop();
-	//exit code
-	return 0;
-}
+	if (success)
+	{
+		return 0;
+	}
+	else {
+		return -1;
+	}
 
-void GameManager::Init_Level() {
-	printf("Running GameManager::Init_Level()\n");
 }
 
 void GameManager::GameLoop()
@@ -259,12 +304,12 @@ void GameManager::GameLoop()
 					//SDL_Log("Block Health :%i", block.getHealth());
 					
 					block.damage(1);
-					audiomanager.play_sound(&sound2);
+					audiomanager.play_sound(&colHitSnd);
 			
 					if (block.getHealth() < 1) {
 						gameScore += block.get_block_score();
 						block.Destroy();
-						audiomanager.play_sound(&sound3);
+						audiomanager.play_sound(&blockDestroySnd);
 					}
 					
 					//ball->set_XDirection(5);
@@ -319,7 +364,9 @@ void GameManager::Render(const TSharedPtr<renderer>& nRenderer)
 		pballarray[1].w, pballarray[1].h, paddle_ball->getTexture(),
 		&pballarray[1], 3.6f);
 	//platform->draw_screen(nRenderer);
-	scorescreen->draw_screen(nRenderer);
+	//scorescreen->draw_screen(nRenderer);
+	scorescreen->render(nRenderer, scorescreen->get_x(), scorescreen->get_y(),
+		scorescreen->get_w(), scorescreen->get_h(), scoreScreenTexture->getTexture(), &ScreenRects[1]);
 	text->renderText(nRenderer,(scorescreen->get_x() + 10), (scorescreen->get_y() + 30),
 		350, 90);
 	subtext->renderText(nRenderer, (scorescreen->get_x() + 30), (scorescreen->get_y() + 130),
@@ -327,9 +374,9 @@ void GameManager::Render(const TSharedPtr<renderer>& nRenderer)
 	//Ball Count Management
 
 	life_count->DrawText(Renderer, "Lives Left: " + toString(ball->get_life()),
-		{ 0, 0, 0, 0 }, 75);
+		{ 229, 178, 245, 0 }, 75);
 	score_count->DrawText(Renderer, "Score: " + toString(gameScore),
-		{ 0, 0, 0, 0 }, 70);
+		{ 229, 178, 245, 0 }, 70);
 
 
 	life_count->renderText(nRenderer, (scorescreen->get_x() + 30),

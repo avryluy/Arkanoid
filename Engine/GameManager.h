@@ -23,6 +23,7 @@ public:
 	~GameManager();
 
 	int Init();
+	int loadAssets();
 	void GameLoop();
 	void HandleEvents();
 	void Render(const TSharedPtr<renderer>& nRenderer);
@@ -41,19 +42,32 @@ private:
 	Platform* platform;
 	Ball* ball;
 	Block *blocks;
+
 	AudioManager audiomanager;
+	const char* audiofile[6]; //music intro, collision hit, brick destroy, ball death, life equal zero, level completed
+	soundData musIntro;
+	soundData colHitSnd;
+	soundData blockDestroySnd;
+	soundData ballDeathSnd;
+	soundData gameOverSnd;
+	soundData gameCompleteSnd;
 	soundData sound1;
 	soundData sound2;
 	soundData sound3;
-	//std::list<Block*> targets;
+	
 	std::vector<Block> targets;
 	TextTextures* text;
 	TextTextures* subtext;
 	TextTextures* life_count;
 	TextTextures* score_count;
+	const char* paddleBallFile;
+	const char* bricksFile;
 	LTexture* paddle_ball;
 	SDL_Rect pballarray[2];
 	LTexture* block_texture;
 	SDL_Rect Tblock[12];
+	LTexture* scoreScreenTexture;
+	SDL_Rect ScreenRects[2]; //Main window and score screen
+	const char* backgroundFile;
 };
 

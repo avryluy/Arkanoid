@@ -30,6 +30,22 @@ void ScoreScreen::draw_screen(const TSharedPtr<renderer>& nRenderer)
 
 }
 
+void ScoreScreen::render(const TSharedPtr<renderer>& nRenderer, int x, int y, int txtrWidth, int txtrHeight, SDL_Texture* mTexture, SDL_Rect* clip)
+{
+	SDL_Rect renderquad = { this->x, this->y, txtrWidth, txtrHeight };
+
+	//if (clip != NULL)
+	//{
+	//	clip->w = txtrWidth;
+	//	clip->h = txtrHeight;
+	//}
+
+	renderquad.w = this->w;
+	renderquad.h = this->h;
+
+	SDL_RenderCopy(nRenderer->GetNativeRenderer(), mTexture, clip, &renderquad);
+}
+
 int ScoreScreen::get_x()
 {
 	return this->x;
@@ -38,4 +54,14 @@ int ScoreScreen::get_x()
 int ScoreScreen::get_y()
 {
 	return this->y;
+}
+
+int ScoreScreen::get_w()
+{
+	return this->w;
+}
+
+int ScoreScreen::get_h()
+{
+	return this->h;
 }

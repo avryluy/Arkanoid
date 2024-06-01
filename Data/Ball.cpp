@@ -29,7 +29,7 @@ int Ball::scale_size(int dim, float scale)
 	if (scale > 0)
 	{
 		int scaled = static_cast<int>(std::ceil(dim * scale));
-		printf("Prev: %i | Cur: %i\n", dim, scaled);
+		//printf("Prev: %i | Cur: %i\n", dim, scaled);
 		return scaled;
 	}
 	else
@@ -105,15 +105,15 @@ void Ball::renderBall(const TSharedPtr<renderer>& nRenderer, int x, int y, int b
 	}
 	if(ball_bool)
 	{
-		printf("Ball radius: %i\n", this->radius);
-		printf("Ball X: %i\n", this->x);
-		printf("Ball Y: %i\n", this->y);
-		printf("Ball W: %i\n", this->get_w());
-		printf("Ball H: %i\n", this->get_h());
-		printf("Ball col X: %i\n", this->bCol.x);
-		printf("Ball col Y: %i\n", this->bCol.y);
-		printf("Ball col W: %i\n", this->bCol.w);
-		printf("Ball col H: %i\n", this->bCol.h);
+		//printf("Ball radius: %i\n", this->radius);
+		//printf("Ball X: %i\n", this->x);
+		//printf("Ball Y: %i\n", this->y);
+		//printf("Ball W: %i\n", this->get_w());
+		//printf("Ball H: %i\n", this->get_h());
+		//printf("Ball col X: %i\n", this->bCol.x);
+		//printf("Ball col Y: %i\n", this->bCol.y);
+		//printf("Ball col W: %i\n", this->bCol.w);
+		//printf("Ball col H: %i\n", this->bCol.h);
 		ball_bool = false;
 	}
 

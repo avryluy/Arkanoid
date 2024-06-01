@@ -72,12 +72,12 @@ int Block::scale_size(int dim, float scale)
 	if (scale > 0)
 	{
 		int scaled = static_cast<int>(std::ceil(dim * scale));
-		printf("Prev: %i | Cur: %i\n", dim, scaled);
+		//printf("Prev: %i | Cur: %i\n", dim, scaled);
 		return scaled;
 	}
 	else
 	{
-		printf("Scale value was 0 or less.\n");
+		//printf("Scale value was 0 or less.\n");
 		return dim;
 	}
 

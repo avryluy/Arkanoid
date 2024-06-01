@@ -21,24 +21,24 @@ AudioManager::AudioManager():sndfile(nullptr), audioStream(nullptr), deviceInfo(
 		printf("No Audio Devices Found");
 		Pa_Terminate();
 	}
-	else if (numDevices > 0)
-	{
-		printf("Number of devices: %i \n", numDevices);
-		for (int i = 0; i < numDevices; i++) {
-			deviceInfo = Pa_GetDeviceInfo(i);
-			printf("Device Index %i\n", PaDeviceIndex(i));
-			printf("Device name: %s\n", deviceInfo->name);
-			printf("Max Input Channels: %i\n", deviceInfo->maxInputChannels);
-			printf("Max Outut Channels: %i\n", deviceInfo->maxOutputChannels);
-			printf("Default Sample Rate: %f\n", deviceInfo->defaultSampleRate);
-			
-		}
-	}
-	else
-	{
-		printf("There was an error getting device count\n");
-		exit(EXIT_FAILURE);
-	}
+	//else if (numDevices > 0)
+	//{
+	//	printf("Number of devices: %i \n", numDevices);
+	//	for (int i = 0; i < numDevices; i++) {
+	//		deviceInfo = Pa_GetDeviceInfo(i);
+	//		printf("Device Index %i\n", PaDeviceIndex(i));
+	//		printf("Device name: %s\n", deviceInfo->name);
+	//		printf("Max Input Channels: %i\n", deviceInfo->maxInputChannels);
+	//		printf("Max Outut Channels: %i\n", deviceInfo->maxOutputChannels);
+	//		printf("Default Sample Rate: %f\n", deviceInfo->defaultSampleRate);
+	//		
+	//	}
+	//}
+	//else
+	//{
+	//	printf("There was an error getting device count\n");
+	//	exit(EXIT_FAILURE);
+	//}
 
 	printf("/***************/\n");
 	int defaultdev = Pa_GetDefaultOutputDevice();
@@ -181,11 +181,14 @@ int AudioManager::PA_Callback(const void* input
 			out[i] = -1.0f;
 		}
 	}
-	
-	audiomanager->instances.erase(
+	if (!audiomanager->instances.empty())
+	{
+		audiomanager->instances.erase(
 		std::remove_if(audiomanager->instances.begin(), audiomanager->instances.end(),
 			[](const PlaybackInstance& InactiveInstances) {return !InactiveInstances.active; }),
 		audiomanager->instances.end());
+
+	}
 
 	return paContinue;
 }

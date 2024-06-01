@@ -10,7 +10,10 @@ public:
 
 	int get_x();
 	int get_y();
+	int get_w();
+	int get_h();
 	void draw_screen(const TSharedPtr<renderer>& nRenderer);
+	void render(const TSharedPtr<renderer>& nRenderer, int x, int y, int txtrWidth, int txtrHeight, SDL_Texture* mTexture, SDL_Rect* clip);
 
 private:
 	int x;

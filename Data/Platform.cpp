@@ -69,14 +69,14 @@ void Platform::renderPlat(const TSharedPtr<renderer>& nRenderer, int x, int y, i
 	}
 	if (plat_bool)
 	{
-		printf("plat X: %i\n", this->x);
-		printf("plat Y: %i\n", this->y);
-		printf("plat W: %i\n", this->get_w());
-		printf("plat H: %i\n", this->get_h());
-		printf("plat col X: %i\n", this->pCollider.x);
-		printf("plat col Y: %i\n", this->pCollider.y);
-		printf("plat col W: %i\n", this->pCollider.w);
-		printf("plat col H: %i\n", this->pCollider.h);
+		//printf("plat X: %i\n", this->x);
+		//printf("plat Y: %i\n", this->y);
+		//printf("plat W: %i\n", this->get_w());
+		//printf("plat H: %i\n", this->get_h());
+		//printf("plat col X: %i\n", this->pCollider.x);
+		//printf("plat col Y: %i\n", this->pCollider.y);
+		//printf("plat col W: %i\n", this->pCollider.w);
+		//printf("plat col H: %i\n", this->pCollider.h);
 		plat_bool = false;
 	}
 
@@ -115,9 +115,9 @@ int Platform::get_h() {
 int Platform::get_plat_center() {
 	int plat_center;
 	plat_center = (this->x + (this->w /2));
-	printf("Plat X: %i\n", this->x);
-	printf("Plat W/2: %i\n", (this->w/2));
-	printf("Plat Center: %i\n", plat_center);
+	//printf("Plat X: %i\n", this->x);
+	//printf("Plat W/2: %i\n", (this->w/2));
+	//printf("Plat Center: %i\n", plat_center);
 	return plat_center;
 
 }
