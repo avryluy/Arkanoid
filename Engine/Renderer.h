@@ -21,7 +21,7 @@ public:
 	void DrawRect(int x, int y, int w, int h, int r, int g, int b, int a);
 	//void FillRect(int r, int g, int b, int a, struct SDL_Rect& rect);
 
-
+	void renderBackground(SDL_Texture* bTexture, SDL_Rect* clip, int screenWidth, int screenHieght);
 
 	void DrawCircle(int x, int y, int radius, int r, int g, int b, int a);
 	//void FillCirle(int r, int g, int b, int a);

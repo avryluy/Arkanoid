@@ -12,6 +12,8 @@ GameManager::GameManager()
 	paddle_ball = new LTexture();
 	block_texture = new LTexture();
 	scoreScreenTexture = new LTexture();
+	mainScreenTexture = new LTexture();
+
 }
 
 GameManager::~GameManager()
@@ -122,7 +124,7 @@ int GameManager::loadAssets() {
 	//Set Art Asset Paths
 	paddleBallFile = "..\\Arkanoid\\Assets\\paddles_and_balls.png";
 	bricksFile = "..\\Arkanoid\\Assets\\bricks.png";
-	backgroundFile = "..\\Arkanoid\\Assets\\Backround_Tiles.png";
+	backgroundFile = "..\\Arkanoid\\Assets\\Background_Tiles.png";
 
 	//Load Audio Files
 	if (!audiomanager.load_sound(audiofile[0], sound1))
@@ -164,10 +166,24 @@ int GameManager::loadAssets() {
 		printf("Couldn't load image into Texture: %s\n", backgroundFile);
 		exit(EXIT_FAILURE);
 	}
+
+	if (!mainScreenTexture->loadImage(Renderer, backgroundFile))
+	{
+		printf("Couldn't load image into Texture: %s\n", "..\\Arkanoid\\Assets\\mainbackground.png");
+		exit(EXIT_FAILURE);
+	}
+
 	// Focus asset coordinates for each object
 		
+	//Main Screen
+	ScreenRects[0].x = 160;
+	ScreenRects[0].y = 0;
+	ScreenRects[0].w = 32;
+	ScreenRects[0].h = 96;
+
+
 	//ScoreScreen
-	ScreenRects[1].x = 128;
+	ScreenRects[1].x = 192;
 	ScreenRects[1].y = 0;
 	ScreenRects[1].w = 32;
 	ScreenRects[1].h = 96;
@@ -359,14 +375,16 @@ void GameManager::HandleEvents()
 
 void GameManager::Render(const TSharedPtr<renderer>& nRenderer)
 {
-	nRenderer->clear(88, 154, 186, 255);
+	nRenderer->clear(255, 255, 255, 255);
+	nRenderer->renderBackground(mainScreenTexture->getTexture(), &ScreenRects[0],
+		SCREEN_WIDTH - (scorescreen->get_w()), SCREEN_HEIGHT);
 	platform->renderPlat(nRenderer, platform->get_x(), platform->get_y(),
 		pballarray[1].w, pballarray[1].h, paddle_ball->getTexture(),
 		&pballarray[1], 3.6f);
 	//platform->draw_screen(nRenderer);
 	//scorescreen->draw_screen(nRenderer);
 	scorescreen->render(nRenderer, scorescreen->get_x(), scorescreen->get_y(),
-		scorescreen->get_w(), scorescreen->get_h(), scoreScreenTexture->getTexture(), &ScreenRects[1]);
+		scorescreen->get_w(), scorescreen->get_y(), scoreScreenTexture->getTexture(), &ScreenRects[1]);
 	text->renderText(nRenderer,(scorescreen->get_x() + 10), (scorescreen->get_y() + 30),
 		350, 90);
 	subtext->renderText(nRenderer, (scorescreen->get_x() + 30), (scorescreen->get_y() + 130),

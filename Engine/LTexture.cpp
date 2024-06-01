@@ -24,7 +24,7 @@ bool LTexture::loadImage(const TSharedPtr<renderer>& nRenderer, std::string path
 	SDL_Surface* mSurface = IMG_Load(path.c_str());
 	if (mSurface == NULL)
 	{
-		printf("Cannot load image\n");
+		printf("Cannot load image: %s\n", path.c_str());
 		exit(EXIT_FAILURE);
 	}
 	else {

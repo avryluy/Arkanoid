@@ -67,6 +67,8 @@ private:
 	LTexture* block_texture;
 	SDL_Rect Tblock[12];
 	LTexture* scoreScreenTexture;
+	LTexture* mainScreenTexture;
+	SDL_Rect mainScreenRect;
 	SDL_Rect ScreenRects[2]; //Main window and score screen
 	const char* backgroundFile;
 };

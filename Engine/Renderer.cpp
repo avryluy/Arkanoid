@@ -35,13 +35,33 @@ renderer::~renderer()
 
 void renderer::clear(int r, int g, int b, int a)
 {
-	SDL_SetRenderDrawColor(NativeRenderer, r, g, b, a);
+	//SDL_SetRenderDrawColor(NativeRenderer, r, g, b, a);
 	SDL_RenderClear(NativeRenderer);
 }
 
 void renderer::Present()
 {
 	SDL_RenderPresent(NativeRenderer);
+}
+
+void renderer::renderBackground(SDL_Texture* bTexture, SDL_Rect* clip, int screenWidth, int screenHieght)
+{
+	int tileWidth = clip->w * 7.5;
+	int tileHeight = clip->h * 7.5;
+	int horizontalTiles = (screenWidth + tileWidth - 1) / tileWidth;
+	int verticalTiles = (screenHieght + tileHeight - 1) / tileHeight;
+
+	for (int i = 0; i < horizontalTiles; ++i)
+	{
+		for (int j = 0; j < verticalTiles; ++j)
+		{
+			SDL_Rect renderquad = { i * tileWidth, j * tileHeight, tileWidth, tileHeight };
+			SDL_RenderCopy(NativeRenderer, bTexture, clip, &renderquad);
+		}
+	}
+
+	/*SDL_Rect renderquad = { 0, 0, screenWidth, screenHieght};
+	SDL_RenderCopy(NativeRenderer, bTexture, clip, &renderquad);*/
 }
 
 //Render rectangles
@@ -57,6 +77,7 @@ void renderer::DrawRect(int x, int y, int w, int h, int r, int g, int b, int a)
 	SDL_RenderDrawRect(NativeRenderer, &mRect);
 
 }
+
 
 //Render circles
 void renderer::DrawCircle(int x, int y, int radius, int r, int g, int b, int a) {
