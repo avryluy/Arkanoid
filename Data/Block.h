@@ -11,6 +11,7 @@ public:
 	~Block();
 
 	bool getCollision();
+	void setCollision(bool col);
 	bool isActive();
 	
 	int scale_size(int dim, float scale);
@@ -48,6 +49,7 @@ public:
 private:
 	bool ballCollision;
 	bool blockActive;
+	bool blockBool;
 	
 	int x;
 	int y;

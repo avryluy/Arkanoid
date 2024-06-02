@@ -308,32 +308,57 @@ void GameManager::GameLoop()
 		// 
 		//Handles keyboard events
 		HandleEvents();
-		ball->move(platform, platform->get_collider());
-		platform->move_plat(scorescreen->get_x());
+		if (ball->get_life() > 0)
+		{
+			ball->move(platform, platform->get_collider());
+			platform->move_plat(scorescreen->get_x());
 
-		for (Block& block: targets) { 
-			if (block.isActive()) {
-				if (ball->get_x() + ball->get_w() > block.get_x() && ball->get_x() < block.get_x() + block.get_w()
-					&& ball->get_y() + ball->get_h() > block.get_y() && ball->get_y() < block.get_y() + block.get_h()) {
-					//++score;
-					//SDL_Log("Hit Target :%i", block.get_block_id());
-					//SDL_Log("Block Health :%i", block.getHealth());
-					
-					block.damage(1);
-					audiomanager.play_sound(&colHitSnd);
-			
-					if (block.getHealth() < 1) {
-						gameScore += block.get_block_score();
-						block.Destroy();
-						audiomanager.play_sound(&blockDestroySnd);
+			for (Block& block : targets) {
+				if (block.isActive() && !block.getCollision()) {
+					if (ball->get_x() + ball->get_w() > block.get_x() && ball->get_x() < block.get_x() + block.get_w()
+						&& ball->get_y() + ball->get_h() > block.get_y() && ball->get_y() < block.get_y() + block.get_h()) {
+
+						// Mark the block as hit for this frame
+						block.setCollision(true);
+
+						// Apply damage and play sound
+						block.damage(1);
+						audiomanager.play_sound(&colHitSnd);
+
+						if (block.getHealth() < 1) {
+							gameScore += block.get_block_score();
+							block.Destroy();
+							audiomanager.play_sound(&blockDestroySnd);
+						}
+
+						// Move the ball out of collision to avoid subsequent hits
+						if (ball->get_y() + ball->get_h() > block.get_y() && ball->get_y() < block.get_y()) {
+							ball->set_YDirection(-5);
+							ball->set_y(block.get_y() - ball->get_h() - 1);
+						}
+						else {
+							ball->set_YDirection(5);
+							ball->set_y(block.get_y() + block.get_h() + 1);
+						}
+
+						// Log debug info
+						SDL_Log("Hit Target :%i", block.get_block_id());
+						SDL_Log("Block Health :%i", block.getHealth());
 					}
-					
-					//ball->set_XDirection(5);
-					ball->set_YDirection(5);
 				}
+			}
+
+			// After checking all blocks, reset their hit status
+			for (Block& block : targets) {
+				block.setCollision(false);
 			}
 		}
 
+		else
+
+		{
+			// Add lose condition
+		}
 		Render(Renderer);
 		++countedframes;
 		cfps.frame_limit(cfps.get_time());
@@ -418,8 +443,8 @@ void GameManager::Render(const TSharedPtr<renderer>& nRenderer)
 				block.render(nRenderer, block.get_x(), block.get_y(), block.get_w(), block.get_h(), block_texture->getTexture(), &Tblock[block.get_texture_id()+1]);
 
 			}
-			//If block hit twice
-			else if (block.getHealth() == (block.getStartHealth() - 2))
+			//If block hit more than once
+			else if (block.getHealth() > 0 && block.getHealth() < block.getStartHealth() - 1)
 			{
 				block.render(nRenderer, block.get_x(), block.get_y(), block.get_w(), block.get_h(), block_texture->getTexture(), &Tblock[block.get_texture_id()+2]);
 

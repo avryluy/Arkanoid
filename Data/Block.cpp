@@ -35,6 +35,7 @@ Block::Block(int x, int y, int w, int h, int health, int blockID, int blockScore
 	this->health = health;
 
 	this->ballCollision = false;
+	this->blockBool = false;
 	this->blockActive = true;
 
 }
@@ -87,6 +88,11 @@ int Block::scale_size(int dim, float scale)
 
 bool Block::getCollision() {
 	return this->ballCollision;
+}
+
+void Block::setCollision(bool col)
+{
+	this->ballCollision = col;
 }
 
 bool Block::isActive() {
@@ -171,6 +177,7 @@ void Block::render(const TSharedPtr<renderer>& nRenderer, int x, int y, int bloc
 	//	renderquad.w = this->w;
 	//	renderquad.h = this->h;
 	//}
+
 
 	if (this->health  > 0)
 	{

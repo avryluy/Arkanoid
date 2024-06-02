@@ -14,6 +14,7 @@ public:
 	int scale_size(int dim, float scale);
 	int get_x();
 	int get_y();
+	void set_y(int y);
 	int get_w();
 	int get_h();
 	int get_rad();
@@ -40,7 +41,7 @@ private:
 	int mPosX;
 	int mPosY;
 	int radius;
-	int speed = 5;
+	int speed = 8;
 	int life = 3;
 	int random_number = 1 + (std::rand() % static_cast<int>(10 - 1 + 1));
 	bool ballLaunched;
