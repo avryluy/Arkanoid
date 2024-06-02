@@ -15,6 +15,9 @@ This project was developed for Windows, and will likely not be developed for oth
 ## Credits
 
 Art/sprites  - [schwarnhild](https://schwarnhild.itch.io/brick-breaker-asset-pack)
+
 Font - [Pixel Digivolve by Pixel Sagas](https://www.dafont.com/pixel-digivolve.font)
+
 Programming - Avry Luy
+
 Sound Design - Avry Luy
