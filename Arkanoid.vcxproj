@@ -177,6 +177,13 @@
     <ClInclude Include="Engine\Renderer.h" />
     <ClInclude Include="Engine\Templates.h" />
     <ClInclude Include="Engine\TextTextures.h" />
+    <ClInclude Include="resource.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Arkanoid.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Assets\Arkanoid.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
