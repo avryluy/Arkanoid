@@ -136,6 +136,7 @@ int AudioManager::PA_Callback(const void* input
 		if (!instance.active) continue;
 
 		const soundData* sound = instance.sound;
+		printf("Playing Sound: %s\n", instance.sound->filename);
 
 		std::vector<PlaybackInstance*> InactiveInstances;
 		//printf("Callback receiving channels: %d", instance.sound->channels);
@@ -152,7 +153,7 @@ int AudioManager::PA_Callback(const void* input
 				out[i * 2] += sample; // left channel;
 				out[i * 2 + 1] += sample; // right channel
 			}
-			else if (sound->channels >= 2)
+			else if (sound->channels >= 2 && instance.sound)
 			{
 				for (int ch = 0; ch < sound->channels && ch < 2; ++ch)
 				{

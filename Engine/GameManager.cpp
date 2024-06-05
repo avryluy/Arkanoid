@@ -9,6 +9,7 @@ GameManager::GameManager()
 	subtext = new TextTextures("Sub-title");
 	life_count = new TextTextures("Life Counter");
 	score_count = new TextTextures("Score");
+	game_over = new TextTextures("GameOver");
 	paddle_ball = new LTexture();
 	block_texture = new LTexture();
 	scoreScreenTexture = new LTexture();
@@ -34,7 +35,7 @@ int GameManager::Init() {
 	main_surf = SDL_GetWindowSurface(window);
 	text->DrawText(Renderer,"Arkanoid", { 229, 178, 245 }, 200);
 	subtext->DrawText(Renderer, "Programmed by Avry Luy", { 229, 178, 245 }, 100);
-
+	game_over->DrawText(Renderer, "Game Over :(", { 229, 178, 245 }, 300);
 	loadAssets();
 	Init_Level();
 	//Start gameLoop
@@ -117,9 +118,12 @@ int GameManager::loadAssets() {
 	bool success = false;
 
 	//Set Audio File Paths
-	audiofile[0] = "..\\Arkanoid\\Audio\\file01.wav";
-	audiofile[1] = "..\\Arkanoid\\Audio\\file02.wav";
-	audiofile[2] = "..\\Arkanoid\\Audio\\file03.wav";
+	audiofile[0] = "..\\Arkanoid\\Audio\\music_intro.wav";
+	audiofile[1] = "..\\Arkanoid\\Audio\\block_hit.wav";
+	audiofile[2] = "..\\Arkanoid\\Audio\\block_destroy.wav";
+	audiofile[3] = "..\\Arkanoid\\Audio\\ball_death.wav";
+	audiofile[4] = "..\\Arkanoid\\Audio\\game_over.wav";
+	audiofile[5] = "..\\Arkanoid\\Audio\\game_win.wav";
 
 	//Set Art Asset Paths
 	paddleBallFile = "..\\Arkanoid\\Assets\\paddles_and_balls.png";
@@ -127,15 +131,11 @@ int GameManager::loadAssets() {
 	backgroundFile = "..\\Arkanoid\\Assets\\Background_Tiles.png";
 
 	//Load Audio Files
-	if (!audiomanager.load_sound(audiofile[0], sound1))
+	if (!audiomanager.load_sound(audiofile[0], musIntro))
 	{
 		printf("Failed to load sound: %s\n", audiofile[0]);
 		return -1;
 	}
-	//printf("Audio file: %s\n", sound1.filename);
-	//printf("	SampleRate: %d\n", sound1.samplerate);
-	//printf("	Channels: %d\n", sound1.channels);
-	//printf("	Frames: %I64i\n", sound1.frames);
 	if (!audiomanager.load_sound(audiofile[1], colHitSnd))
 	{
 		printf("Failed to load sound: %s\n", audiofile[1]);
@@ -146,6 +146,22 @@ int GameManager::loadAssets() {
 		printf("Failed to load sound: %s\n", audiofile[2]);
 		return -1;
 	}
+	if (!audiomanager.load_sound(audiofile[3], ballDeathSnd))
+	{
+		printf("Failed to load sound: %s\n", audiofile[3]);
+		return -1;
+	}
+	if (!audiomanager.load_sound(audiofile[4], gameOverSnd))
+	{
+		printf("Failed to load sound: %s\n", audiofile[4]);
+		return -1;
+	}
+	if (!audiomanager.load_sound(audiofile[5], gameCompleteSnd))
+	{
+		printf("Failed to load sound: %s\n", audiofile[5]);
+		return -1;
+	}
+
 
 
 	// Load Art Files
@@ -297,6 +313,8 @@ void GameManager::GameLoop()
 	//Keeps game loop running
 	gameRunning = true;
 	countedframes = 0;
+	bool gameOver = false;
+
 	//actual game loop
 	while (gameRunning)
 	{
@@ -307,6 +325,7 @@ void GameManager::GameLoop()
 		//SDL_Log("GetTime %i", fps.get_time());
 		// 
 		//Handles keyboard events
+		bool ballExist = true;
 		HandleEvents();
 		if (ball->get_life() > 0)
 		{
@@ -352,11 +371,22 @@ void GameManager::GameLoop()
 			for (Block& block : targets) {
 				block.setCollision(false);
 			}
+			if (ball->lifeChanged() == true && ballExist == true)
+			{
+
+				printf("lifeChanged: %s | BlockExist: %s\n", ball->lifeChanged() ? "true":"false", ballExist ? "true":"false");
+				ballExist = false;
+
+				audiomanager.play_sound(&ballDeathSnd);
+				
+			}
 		}
 
-		else
+		else if (ball->get_life() == 0 && !gameOver)
 
 		{
+			audiomanager.play_sound(&gameOverSnd);
+			gameOver = true;
 			// Add lose condition
 		}
 		Render(Renderer);
@@ -389,7 +419,6 @@ void GameManager::HandleEvents()
 		{
 			//Reset Game
 			//ball->reset();
-			audiomanager.play_sound(&sound1);
 			ball->~Ball();
 			targets.clear();
 			Init_Level();
@@ -457,6 +486,10 @@ void GameManager::Render(const TSharedPtr<renderer>& nRenderer)
 		}
 	}
 
+	if (ball->get_life() == 0)
+	{
+		game_over->renderText(nRenderer, (SCREEN_WIDTH * .5) - 400, SCREEN_HEIGHT * .5, 400, 100);
+	}
 	nRenderer->Present();
 }
 
