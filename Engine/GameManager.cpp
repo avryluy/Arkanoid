@@ -10,6 +10,7 @@ GameManager::GameManager()
 	life_count = new TextTextures("Life Counter");
 	score_count = new TextTextures("Score");
 	game_over = new TextTextures("GameOver");
+	game_win = new TextTextures("GameWin");
 	paddle_ball = new LTexture();
 	block_texture = new LTexture();
 	scoreScreenTexture = new LTexture();
@@ -36,6 +37,7 @@ int GameManager::Init() {
 	text->DrawText(Renderer,"Arkanoid", { 229, 178, 245 }, 200);
 	subtext->DrawText(Renderer, "Programmed by Avry Luy", { 229, 178, 245 }, 100);
 	game_over->DrawText(Renderer, "Game Over :(", { 229, 178, 245 }, 300);
+	game_win->DrawText(Renderer, "Congrats, you won! Score:" + toString(gameScore), {229, 178, 245}, 300);
 	loadAssets();
 	Init_Level();
 	//Start gameLoop
@@ -58,9 +60,9 @@ void GameManager::Init_Level() {
 	//Block* blocks = new Block(blockColor[currentblocktype], blockHealth[currentblocktype]);
 
 
-	for (int row = 0; row < 5; ++row)
+	for (int row = 0; row < 1; ++row)
 	{
-		for (int col = 0; col < 10; ++col)
+		for (int col = 0; col < 2; ++col)
 		{
 			switch (row)
 			{
@@ -111,7 +113,7 @@ void GameManager::Init_Level() {
 			currentblocktype = (currentblocktype + 1) % NUMBLOCKTYPES;
 		}
 	}
-
+	printf("Targets size: %I64i\n", targets.size());
 }
 
 int GameManager::loadAssets() {
@@ -347,7 +349,9 @@ void GameManager::GameLoop()
 						if (block.getHealth() < 1) {
 							gameScore += block.get_block_score();
 							block.Destroy();
+							targets.erase(targets.begin() + block.get_block_id());
 							audiomanager.play_sound(&blockDestroySnd);
+							printf("Targets size: %I64i\n", targets.size());
 						}
 
 						// Move the ball out of collision to avoid subsequent hits
@@ -388,6 +392,12 @@ void GameManager::GameLoop()
 			audiomanager.play_sound(&gameOverSnd);
 			gameOver = true;
 			// Add lose condition
+		}
+		else if (targets.empty() && ball->get_life() > 0)
+		{
+			// Win condition
+			audiomanager.play_sound(&gameCompleteSnd);
+			gameOver = true;
 		}
 		Render(Renderer);
 		++countedframes;
@@ -461,7 +471,7 @@ void GameManager::Render(const TSharedPtr<renderer>& nRenderer)
 			pballarray[0].w, pballarray[0].h, paddle_ball->getTexture(),
 			&pballarray[0], 1.5f);
 	}
-	
+	//game_win->DrawText(nRenderer, game_win->get_text().c_str(), { 229, 178, 245 }, 400);
 	//block->draw(nRenderer);
 	for (Block& block: targets )
 	{
@@ -488,7 +498,33 @@ void GameManager::Render(const TSharedPtr<renderer>& nRenderer)
 
 	if (ball->get_life() == 0)
 	{
+		nRenderer->clear(255, 255, 255, 255);
+		nRenderer->renderBackground(mainScreenTexture->getTexture(), &ScreenRects[0],
+			SCREEN_WIDTH - (scorescreen->get_w()), SCREEN_HEIGHT);
+		scorescreen->render(nRenderer, scorescreen->get_x(), scorescreen->get_y(),
+			scorescreen->get_w(), scorescreen->get_y(), scoreScreenTexture->getTexture(), &ScreenRects[1]);
+		text->renderText(nRenderer, (scorescreen->get_x() + 10), (scorescreen->get_y() + 30),
+			350, 90);
+		subtext->renderText(nRenderer, (scorescreen->get_x() + 30), (scorescreen->get_y() + 130),
+			300, 50);
+		//Ball Count Management
+
+		life_count->DrawText(Renderer, "Lives Left: " + toString(ball->get_life()),
+			{ 229, 178, 245, 0 }, 75);
+		score_count->DrawText(Renderer, "Score: " + toString(gameScore),
+			{ 229, 178, 245, 0 }, 70);
+		life_count->renderText(nRenderer, (scorescreen->get_x() + 30),
+			(scorescreen->get_y() + 170), 175, 50);
+		score_count->renderText(nRenderer, (scorescreen->get_x() + 30),
+			(scorescreen->get_y() + 245), 175, 50);
+
 		game_over->renderText(nRenderer, (SCREEN_WIDTH * .5) - 400, SCREEN_HEIGHT * .5, 400, 100);
+	}
+	else if (targets.empty())
+	{
+		// Win con
+		game_win->update_text("Congrats, you won! Score:" + toString(gameScore));
+		game_win->renderText(nRenderer, (SCREEN_WIDTH * .5) - 400, SCREEN_HEIGHT * .5, 400, 100);
 	}
 	nRenderer->Present();
 }

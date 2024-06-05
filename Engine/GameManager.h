@@ -61,6 +61,7 @@ private:
 	TextTextures* life_count;
 	TextTextures* score_count;
 	TextTextures* game_over;
+	TextTextures* game_win;
 	const char* paddleBallFile;
 	const char* bricksFile;
 	LTexture* paddle_ball;

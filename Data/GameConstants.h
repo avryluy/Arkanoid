@@ -12,7 +12,7 @@ const SDL_Color blockColor[NUMBLOCKTYPES] = {
 	{0,0,255,255}
 };
 
-const int blockHealth[NUMBLOCKTYPES] = { 2, 3, 4 };
+const int blockHealth[NUMBLOCKTYPES] = { 1, 2, 3 };
 
 const int blockScores[NUMBLOCKTYPES] = { 700, 325, 175};
 

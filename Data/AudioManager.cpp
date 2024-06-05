@@ -136,7 +136,7 @@ int AudioManager::PA_Callback(const void* input
 		if (!instance.active) continue;
 
 		const soundData* sound = instance.sound;
-		printf("Playing Sound: %s\n", instance.sound->filename);
+		//printf("Playing Sound: %s\n", instance.sound->filename);
 
 		std::vector<PlaybackInstance*> InactiveInstances;
 		//printf("Callback receiving channels: %d", instance.sound->channels);
