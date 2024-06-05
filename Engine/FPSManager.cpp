@@ -68,7 +68,7 @@ void FPSManager::frame_limit(Uint32 loop_frames)
 	if (loop_frames < TICKS_PER_FRAME)
 	{
 		//Delay SDL to smooth frame averaging
-		SDL_Delay(TICKS_PER_FRAME - loop_frames);
+		SDL_Delay((Uint32)(TICKS_PER_FRAME - loop_frames));
 	}
 }
 

@@ -148,8 +148,9 @@ void Ball::move(Platform* platform, SDL_Rect mCol) {
 
 	// If ball isn't launched
 	if (!ballLaunched) {
-		mPosX = plat_x + (plat_w * .38);
-		mPosY = (plat_y - plat_h) - 2;
+		this->life_Changed = false;
+		mPosX = (int)(plat_x + (plat_w * .38));
+		mPosY = (int)((plat_y - plat_h) - 2);
 	}
 
 	// Ball Movement

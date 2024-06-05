@@ -46,8 +46,8 @@ void renderer::Present()
 
 void renderer::renderBackground(SDL_Texture* bTexture, SDL_Rect* clip, int screenWidth, int screenHieght)
 {
-	int tileWidth = clip->w * 7.5;
-	int tileHeight = clip->h * 7.5;
+	int tileWidth = (int)(clip->w * 7.5);
+	int tileHeight = (int)(clip->h * 7.5);
 	int horizontalTiles = (screenWidth + tileWidth - 1) / tileWidth;
 	int verticalTiles = (screenHieght + tileHeight - 1) / tileHeight;
 
