@@ -7,7 +7,7 @@ const int AudioManager::FRAMES_PER_BUFFER;
 
 
 
-AudioManager::AudioManager():sndfile(nullptr), audioStream(nullptr), deviceInfo(nullptr) {
+AudioManager::AudioManager():sndfile(nullptr), stream(nullptr), deviceInfo(nullptr) {
 	err = Pa_Initialize();
 	
 
@@ -21,24 +21,6 @@ AudioManager::AudioManager():sndfile(nullptr), audioStream(nullptr), deviceInfo(
 		printf("No Audio Devices Found");
 		Pa_Terminate();
 	}
-	//else if (numDevices > 0)
-	//{
-	//	printf("Number of devices: %i \n", numDevices);
-	//	for (int i = 0; i < numDevices; i++) {
-	//		deviceInfo = Pa_GetDeviceInfo(i);
-	//		printf("Device Index %i\n", PaDeviceIndex(i));
-	//		printf("Device name: %s\n", deviceInfo->name);
-	//		printf("Max Input Channels: %i\n", deviceInfo->maxInputChannels);
-	//		printf("Max Outut Channels: %i\n", deviceInfo->maxOutputChannels);
-	//		printf("Default Sample Rate: %f\n", deviceInfo->defaultSampleRate);
-	//		
-	//	}
-	//}
-	//else
-	//{
-	//	printf("There was an error getting device count\n");
-	//	exit(EXIT_FAILURE);
-	//}
 
 	printf("/***************/\n");
 	int defaultdev = Pa_GetDefaultOutputDevice();
@@ -60,13 +42,11 @@ AudioManager::AudioManager():sndfile(nullptr), audioStream(nullptr), deviceInfo(
 }
 
 AudioManager::~AudioManager() {
-	//if (data.sndfile) {
-	//	sf_close(data.sndfile);
-	//}
 	Pa_StopStream(stream);
 	Pa_CloseStream(stream);
-	err = Pa_Terminate();
-	checkerr(err);
+	deviceInfo = nullptr;
+	stream = nullptr;
+	sndfile = nullptr;
 }
 
 void AudioManager::checkerr(PaError err) {

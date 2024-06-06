@@ -30,13 +30,7 @@ class AudioManager {
 
 public:
 
-	static const int SAMPLE_RATE = 48000;
-	static const int BIT_DEPTH = 24;
-	static const int CHANNEL_COUNT = 2;
-	static const int FRAMES_PER_BUFFER = 512;
 	int numDevices{};
-	SNDFILE* sndfile{};
-	PaStream* audioStream = nullptr;
 
 
 	AudioManager();
@@ -56,12 +50,10 @@ private:
 	PaStream* stream;
 	std::vector<PlaybackInstance> instances;
 	PaStreamParameters defaultParam;
-
-
-	
-	
-
-	
-
+	SNDFILE* sndfile{};
+	static const int SAMPLE_RATE = 48000;
+	static const int BIT_DEPTH = 24;
+	static const int CHANNEL_COUNT = 2;
+	static const int FRAMES_PER_BUFFER = 512;
 
 };

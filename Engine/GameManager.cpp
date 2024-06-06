@@ -454,10 +454,8 @@ void GameManager::HandleEvents()
 		{
 			//Reset Game
 			//ball->reset();
-			ball->~Ball();
 			targets.clear();
 			Init_Level();
-			//ball = new Ball(platform->get_plat_center(), platform->get_y() - 20);
 		}
 	}
 }
@@ -558,19 +556,52 @@ void GameManager::Render(const TSharedPtr<renderer>& nRenderer)
 void GameManager::Quit()
 {
 	Renderer->~renderer();
-	delete scorescreen;
-	scorescreen = NULL;
+	Renderer = NULL;
+	audiomanager.~AudioManager();
+	//gameObjects
 	delete platform;
 	platform = NULL;
-	delete text;
-	text = NULL;
-	delete subtext;
-	subtext = NULL;
 	delete ball;
 	ball = NULL;
 	delete blocks;
 	blocks = NULL;
+	remainingBlocks.clear();
+	delete scorescreen;
+	scorescreen = NULL;
+	delete text;
+	text = NULL;
+	delete subtext;
+	subtext = NULL;
+	delete life_count;
+	life_count = NULL;
+	delete score_count;
+	score_count = NULL;
+	delete game_over;
+	game_over = NULL;
+	delete game_win;
+	game_win = NULL;
+
+	//Textures
+	main_surf = nullptr;
+	mainScreenTexture->~LTexture();
+	mainScreenTexture = nullptr;
+	scoreScreenTexture->~LTexture();
+	scoreScreenTexture = nullptr;
+	paddle_ball->~LTexture();
+	paddle_ball = nullptr;
+	block_texture->~LTexture();
+	block_texture = nullptr;
+
+
+
 	SDL_DestroyWindow(window);
 	window = NULL;
+	
+	PaError err = Pa_Terminate();
+	if (err != paNoError)
+	{
+		exit(EXIT_FAILURE);
+	}
+
 	SDL_Quit();
 }

@@ -25,6 +25,8 @@ renderer::~renderer()
 	if (NativeRenderer)
 	{
 		SDL_DestroyRenderer(NativeRenderer);
+		SDL_DestroyTexture(mTexture);
+		mTexture = NULL;
 		NativeRenderer = NULL;
 		SDL_Log("~renderer()\n");
 	}

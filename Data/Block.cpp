@@ -40,28 +40,6 @@ Block::Block(int x, int y, int w, int h, int health, int blockID, int blockScore
 
 }
 
-//Block::Block(int x, int y, SDL_Color blockColor, int health, int blockID, int blockScore)
-//{
-//	this->x = x;
-//	this->y = y;
-//	this->w = 70;
-//	this->h = 30;
-//	
-//	this->blockColor = blockColor;
-//
-//	this->r = r;
-//	this->g = g;
-//	this->b = b;
-//	this->a = 255;
-//
-//	this->scoreValue = blockScore;
-//	this->block_id = blockID;
-//	this->health = health;
-//
-//	this->ballCollision = false;
-//	this->blockActive = true;
-//}
-//
 Block::~Block()
 {
 	this->blockActive = false;
