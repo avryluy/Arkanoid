@@ -96,23 +96,23 @@ void Platform::draw_screen(const TSharedPtr<renderer>& nRenderer)
 
 }
 
-int Platform::get_x(){
+int Platform::get_x() const{
 	return this->x;
 }
 
-int Platform::get_y() {
+int Platform::get_y() const {
 	return  this->y;
 }
 
-int Platform::get_w() {
+int Platform::get_w() const {
 	return  this->w;
 }
 
-int Platform::get_h() {
+int Platform::get_h() const {
 	return  this->h;
 }
 
-int Platform::get_plat_center() {
+int Platform::get_plat_center() const {
 	int plat_center;
 	plat_center = (this->x + (this->w /2));
 	//printf("Plat X: %i\n", this->x);

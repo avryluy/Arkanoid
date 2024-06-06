@@ -12,7 +12,7 @@ struct soundData {
 	int samplerate;
 	int channels;
 
-	soundData() : data(nullptr), frames(0), samplerate(0), channels(0) {}
+	soundData() : filename(""), data(nullptr), frames(0), samplerate(0), channels(0) {}
 	~soundData() { delete[] data; }
 };
 

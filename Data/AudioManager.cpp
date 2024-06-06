@@ -96,7 +96,7 @@ bool AudioManager::load_sound(const char* file_path, soundData& soundData)
 
 void AudioManager::play_sound(const soundData* soundData)
 {
-	for (const auto instance: instances)
+	for (const auto& instance: instances)
 	{
 		if (instance.active && instance.sound == soundData)
 		{

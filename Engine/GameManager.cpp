@@ -15,7 +15,38 @@ GameManager::GameManager()
 	block_texture = new LTexture();
 	scoreScreenTexture = new LTexture();
 	mainScreenTexture = new LTexture();
+	ball = nullptr;
+	blocks = nullptr;
+	platform = nullptr;
+	bricksFile = "";
+	paddleBallFile = "";
+	backgroundFile = "";
+	
 	gameState = true;
+
+	mainScreenRect = { 0, 0, 0, 0 };
+
+	for (int i = 0; i < 2; i++)
+	{
+		ScreenRects[i] = { 0, 0, 0, 0 };
+	}
+
+	for (int i = 0; i < 12; i++)
+	{
+		Tblock[i] = { 0, 0, 0, 0 };
+	}
+
+	for (int i = 0; i < 2; i++)
+	{
+		pballarray[i] = { 0, 0, 0, 0 };
+	}
+	
+	for (int i = 0; i < 6; i++)
+	{
+		audiofile[i] = "";
+	}
+
+
 }
 
 GameManager::~GameManager()

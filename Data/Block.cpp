@@ -15,8 +15,13 @@ Block::Block()
 
 	this->scoreValue = 0;
 	this->health = 1;
+	this->block_id = 0;
+	this->startHealth = 1;
+	this->texture_id = 0;
+
 
 	this->ballCollision = false;
+	this->blockBool = false;
 	this->blockActive = true;
 }
 
@@ -64,7 +69,7 @@ int Block::scale_size(int dim, float scale)
 
 
 
-bool Block::getCollision() {
+bool Block::getCollision() const {
 	return this->ballCollision;
 }
 
@@ -73,42 +78,42 @@ void Block::setCollision(bool col)
 	this->ballCollision = col;
 }
 
-bool Block::isActive() {
+bool Block::isActive() const {
 	return blockActive;
 }
 
-int Block::get_x() {
+int Block::get_x()  const{
 	return this->x;
 }
 
-int Block::get_texture_id()
+int Block::get_texture_id() const
 {
 	return this->texture_id;
 }
 
-int Block::get_y() {
+int Block::get_y() const {
 	return this->y;
 }
 
-int Block::get_w() {
+int Block::get_w() const {
 	return this->w;
 }
 
-int Block::get_h() {
+int Block::get_h() const {
 	return this->h;
 }
 
-int Block::getHealth() {
+int Block::getHealth() const {
 	return this->health;
 }
 
-int Block::getStartHealth() {
+int Block::getStartHealth() const {
 	return this->startHealth;
 
 }
 
 
-int Block::get_block_id() {
+int Block::get_block_id() const {
 	return this->block_id;
 }
 
@@ -116,7 +121,7 @@ void Block::set_block_id(int id) {
 	this->block_id = id;
 }
 
-int Block::get_block_score() {
+int Block::get_block_score() const {
 	return this->scoreValue;
 }
 
@@ -142,7 +147,7 @@ void Block::damage(int points) {
 	this->health = this->health - points;
 }
 
-void Block::render(const TSharedPtr<renderer>& nRenderer, int x, int y, int blocWidth, int blocHeight, SDL_Texture* mTexture, SDL_Rect* clip) {
+void Block::render(const TSharedPtr<renderer>& nRenderer, int x, int y, int blocWidth, int blocHeight, SDL_Texture* mTexture, SDL_Rect* clip) const {
 	SDL_Rect renderquad = { this->x, this->y, blocWidth, blocHeight };
 
 	if (clip != NULL)
@@ -165,11 +170,12 @@ void Block::render(const TSharedPtr<renderer>& nRenderer, int x, int y, int bloc
 
 
 void Block::draw(const TSharedPtr<renderer>& nRenderer) {
-	SDL_Rect mRect;
-	mRect.x = this->x;
-	mRect.y = this->y;
-	mRect.w = this->w;
-	mRect.h = this->h;
+	SDL_Rect mRect = {this->x, this->y,
+		this->w, this->h};
+	//mRect.x = this->x;
+	//mRect.y = this->y;
+	//mRect.w = this->w;
+	//mRect.h = this->h;
 	if (this->health > 0 ) {
 		nRenderer->DrawRect(mRect.x, mRect.y, mRect.w, mRect.h, this->blockColor.r, this->blockColor.g, this->blockColor.b, this->blockColor.a);
 	}

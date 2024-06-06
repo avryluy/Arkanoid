@@ -11,11 +11,11 @@ public:
 	Platform(int w, int h, float scale);
 	~Platform();
 
-	int get_x();
-	int get_y();
-	int get_w();
-	int get_h();
-	int get_plat_center();
+	int get_x() const;
+	int get_y() const;
+	int get_w() const;
+	int get_h() const;
+	int get_plat_center() const;
 	SDL_Rect get_collider();
 	void draw_screen(const TSharedPtr<renderer>& nRenderer);
 	void renderPlat(const TSharedPtr<renderer>& nRenderer, int x, int y, int platWidth, int platHeight, SDL_Texture* mTexture, SDL_Rect* clip, float scale);
