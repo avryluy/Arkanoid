@@ -7,6 +7,8 @@ GameManager::GameManager()
 	scorescreen = new ScoreScreen();
 	text = new TextTextures("Title");
 	subtext = new TextTextures("Sub-title");
+	instructions = new TextTextures("Instructions");
+	instructions2 = new TextTextures("Instructions2");
 	life_count = new TextTextures("Life Counter");
 	score_count = new TextTextures("Score");
 	game_over = new TextTextures("GameOver");
@@ -67,6 +69,9 @@ int GameManager::Init() {
 	main_surf = SDL_GetWindowSurface(window);
 	text->DrawText(Renderer,"Arkanoid", { 229, 178, 245 }, 200);
 	subtext->DrawText(Renderer, "Programmed by Avry Luy", { 229, 178, 245 }, 100);
+	instructions->DrawText(Renderer, instructionsText, { 229, 178, 245 }, 85);
+	instructions2->DrawText(Renderer, instructions2Text, { 229, 178, 245 }, 75);
+
 	game_over->DrawText(Renderer, "Game Over :(", { 229, 178, 245 }, 300);
 	game_win->DrawText(Renderer, "Congrats, you won! Score:" + toString(gameScore), {229, 178, 245}, 300);
 	loadAssets();
@@ -151,17 +156,18 @@ int GameManager::loadAssets() {
 	bool success = false;
 
 	//Set Audio File Paths
-	audiofile[0] = "..\\Arkanoid\\Audio\\music_intro.wav";
-	audiofile[1] = "..\\Arkanoid\\Audio\\block_hit.wav";
-	audiofile[2] = "..\\Arkanoid\\Audio\\block_destroy.wav";
-	audiofile[3] = "..\\Arkanoid\\Audio\\ball_death.wav";
-	audiofile[4] = "..\\Arkanoid\\Audio\\game_over.wav";
-	audiofile[5] = "..\\Arkanoid\\Audio\\game_win.wav";
+	
+	audiofile[0] = "Audio/music_intro.wav";
+	audiofile[1] = "Audio/block_hit.wav";
+	audiofile[2] = "Audio/block_destroy.wav";
+	audiofile[3] = "Audio/ball_death.wav";
+	audiofile[4] = "Audio/game_over.wav";
+	audiofile[5] = "Audio/game_win.wav";
 
 	//Set Art Asset Paths
-	paddleBallFile = "..\\Arkanoid\\Assets\\paddles_and_balls.png";
-	bricksFile = "..\\Arkanoid\\Assets\\bricks.png";
-	backgroundFile = "..\\Arkanoid\\Assets\\Background_Tiles.png";
+	paddleBallFile = "Assets/paddles_and_balls.png";
+	bricksFile = "Assets/bricks.png";
+	backgroundFile = "Assets/Background_Tiles.png";
 
 	//Load Audio Files
 	if (!audiomanager.load_sound(audiofile[0], musIntro))
@@ -503,22 +509,27 @@ void GameManager::Render(const TSharedPtr<renderer>& nRenderer)
 	//scorescreen->draw_screen(nRenderer);
 	scorescreen->render(nRenderer, scorescreen->get_x(), scorescreen->get_y(),
 		scorescreen->get_w(), scorescreen->get_y(), scoreScreenTexture->getTexture(), &ScreenRects[1]);
-	text->renderText(nRenderer,(scorescreen->get_x() + 10), (scorescreen->get_y() + 30),
+	text->renderText(nRenderer,(scorescreen->get_x() + 5), (scorescreen->get_y() + 5),
 		350, 90);
-	subtext->renderText(nRenderer, (scorescreen->get_x() + 30), (scorescreen->get_y() + 130),
+	subtext->renderText(nRenderer, (scorescreen->get_x() + 25), (scorescreen->get_y() + 80),
 		300, 50);
+	instructions->renderText(nRenderer, (scorescreen->get_x() + 5), (scorescreen->get_h() - 100),
+		scorescreen->get_w() - 10, 50);
+	instructions2->renderText(nRenderer, (scorescreen->get_x() + 5), (scorescreen->get_h() - 50),
+		scorescreen->get_w() - 10, 50);
+
 	//Ball Count Management
 
 	life_count->DrawText(Renderer, "Lives Left: " + toString(ball->get_life()),
-		{ 229, 178, 245, 0 }, 75);
+		{ 229, 178, 245, 0 }, 150);
 	score_count->DrawText(Renderer, "Score: " + toString(gameScore),
-		{ 229, 178, 245, 0 }, 70);
+		{ 229, 178, 245, 0 }, 150);
 
 
-	life_count->renderText(nRenderer, (scorescreen->get_x() + 30),
-		(scorescreen->get_y() + 170), 175, 50);
-	score_count->renderText(nRenderer, (scorescreen->get_x() + 30),
-		(scorescreen->get_y() + 245), 175, 50);
+	life_count->renderText(nRenderer, (scorescreen->get_x() + 25),
+		(scorescreen->get_y() + 200), 300, 50);
+	score_count->renderText(nRenderer, (scorescreen->get_x() + 25),
+		(scorescreen->get_y() + 310), 300, 60);
 	if (ball) {
 		//ball->draw(nRenderer);
 		ball->renderBall(nRenderer, ball->get_x(), ball->get_y(),
@@ -550,27 +561,34 @@ void GameManager::Render(const TSharedPtr<renderer>& nRenderer)
 		}
 	}
 
-	if (ball->get_life() == 0)
+	if (ball && ball->get_life() == 0)
 	{
 		nRenderer->clear(255, 255, 255, 255);
 		nRenderer->renderBackground(mainScreenTexture->getTexture(), &ScreenRects[0],
 			SCREEN_WIDTH - (scorescreen->get_w()), SCREEN_HEIGHT);
 		scorescreen->render(nRenderer, scorescreen->get_x(), scorescreen->get_y(),
 			scorescreen->get_w(), scorescreen->get_y(), scoreScreenTexture->getTexture(), &ScreenRects[1]);
-		text->renderText(nRenderer, (scorescreen->get_x() + 10), (scorescreen->get_y() + 30),
+		text->renderText(nRenderer, (scorescreen->get_x() + 5), (scorescreen->get_y() + 5),
 			350, 90);
-		subtext->renderText(nRenderer, (scorescreen->get_x() + 30), (scorescreen->get_y() + 130),
+		subtext->renderText(nRenderer, (scorescreen->get_x() + 25), (scorescreen->get_y() + 80),
 			300, 50);
+		instructions->renderText(nRenderer, (scorescreen->get_x() + 5), (scorescreen->get_h() - 100),
+			scorescreen->get_w() - 10, 50);
+		instructions2->renderText(nRenderer, (scorescreen->get_x() + 5), (scorescreen->get_h() - 50),
+			scorescreen->get_w() - 10, 50);
+
 		//Ball Count Management
 
 		life_count->DrawText(Renderer, "Lives Left: " + toString(ball->get_life()),
-			{ 229, 178, 245, 0 }, 75);
+			{ 229, 178, 245, 0 }, 150);
 		score_count->DrawText(Renderer, "Score: " + toString(gameScore),
-			{ 229, 178, 245, 0 }, 70);
-		life_count->renderText(nRenderer, (scorescreen->get_x() + 30),
-			(scorescreen->get_y() + 170), 175, 50);
-		score_count->renderText(nRenderer, (scorescreen->get_x() + 30),
-			(scorescreen->get_y() + 245), 175, 50);
+			{ 229, 178, 245, 0 }, 150);
+
+
+		life_count->renderText(nRenderer, (scorescreen->get_x() + 25),
+			(scorescreen->get_y() + 200), 300, 50);
+		score_count->renderText(nRenderer, (scorescreen->get_x() + 25),
+			(scorescreen->get_y() + 310), 300, 60);
 
 		game_over->renderText(nRenderer, (int)((SCREEN_WIDTH * .5) - 400), (int)(SCREEN_HEIGHT * .5), 400, 100);
 	}

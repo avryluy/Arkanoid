@@ -47,7 +47,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>Application</ConfigurationType>
-    <UseDebugLibraries>false</UseDebugLibraries>
+    <UseDebugLibraries>true</UseDebugLibraries>
     <PlatformToolset>v143</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>Unicode</CharacterSet>
@@ -90,9 +90,9 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\SDL2_ttf\include;C:\SDL2\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\CPP Libraries\SDL2_image-2.8.2\lib;C:\Users\avryl\Documents\CODE\Arkanoid\lib;C:\SDL2\lib\x64;$(LibraryPath)</LibraryPath>
-    <ExternalIncludePath>C:\CPP Libraries\SDL2_image-2.8.2\include;C:\Users\avryl\Documents\CODE\Arkanoid\lib;$(ExternalIncludePath)</ExternalIncludePath>
+    <IncludePath>$(SolutionDir)\lib;$(SolutionDir);C:\CPP Libraries\SDL2_image-2.8.2\include;C:\CPP Libraries\SDL2_ttf\include;C:\CPP Libraries\SDL2\include;C:\CPP Libraries\libsndfile-1.2.2-win64\include;C:\CPP Libraries\portaudio\include;C:\libsndfile-1.2.2-win64\include;C:\portaudio\include;C:\SDL2_ttf\include;C:\SDL2\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\CPP Libraries\SDL2_image-2.8.2\lib\x64;C:\CPP Libraries\SDL2_ttf\lib\x64;C:\CPP Libraries\SDL2\lib\x64;C:\CPP Libraries\portaudio\lib;C:\CPP Libraries\libsndfile-1.2.2-win64\lib;C:\libsndfile-1.2.2-win64\lib;C:\portaudio\lib;C:\SDL2_ttf\lib\x64;C:\SDL2\lib\x64;$(LibraryPath)</LibraryPath>
+    <ExternalIncludePath>C:\CPP Libraries\SDL2_image-2.8.2\include;$(SolutionDir)\lib;$(ExternalIncludePath)</ExternalIncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -139,17 +139,24 @@
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <IntrinsicFunctions>true</IntrinsicFunctions>
+      <IntrinsicFunctions>false</IntrinsicFunctions>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <WholeProgramOptimization>false</WholeProgramOptimization>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
+      <AdditionalDependencies>$(CoreLibraryDependencies);SDL2_image.lib;SDL2.lib;SDL2_ttf.lib;SDL2main.lib;portaudio_x64.lib;sndfile.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <PostBuildEvent>
+      <Command>xcopy "$(ProjectDir)Assets" "$(TargetDir)Assets" /E /I /Y
+xcopy "$(ProjectDir)Audio" "$(TargetDir)Audio" /E /I /Y
+</Command>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Data\AudioManager.cpp" />

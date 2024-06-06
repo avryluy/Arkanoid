@@ -1,6 +1,7 @@
 #pragma once
 
 #include <lib\x64\SDL.h>
+#include <resource.h>
 #include <vector>
 #include <list>
 #include "Data\AudioManager.h"
@@ -60,6 +61,8 @@ private:
 	std::vector<Block> targets;
 	TextTextures* text;
 	TextTextures* subtext;
+	TextTextures* instructions;
+	TextTextures* instructions2;
 	TextTextures* life_count;
 	TextTextures* score_count;
 	TextTextures* game_over;
@@ -75,5 +78,7 @@ private:
 	SDL_Rect mainScreenRect;
 	SDL_Rect ScreenRects[2]; //Main window and score screen
 	const char* backgroundFile;
+	const char* instructionsText = "Left/Right Arrow to move | Space to Launch ball";
+	const char* instructions2Text = "R to reset game | Esc to Quit";
 };
 
