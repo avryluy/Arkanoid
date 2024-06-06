@@ -4,12 +4,12 @@
 TextTextures::TextTextures(std::string name)
 {
 	this->name = name;
-	SDL_Log("%s()\n", name.c_str());
+	//SDL_Log("%s()\n", name.c_str());
 }
 
 TextTextures::~TextTextures()
 {
-	SDL_Log("~%s()\n", name.c_str());
+	//SDL_Log("~%s()\n", name.c_str());
 	closeText();
 
 }
@@ -21,7 +21,7 @@ void TextTextures::DrawText(const TSharedPtr<renderer>& nRenderer, std::string t
 	mFont = TTF_OpenFont("Assets\\Pixel Digivolve.otf", fontSize);
 	if (mFont == NULL)
 	{
-		SDL_Log("Font failed to load. SDL_ttf error: %s\n", TTF_GetError());
+		SDL_LogError(6, "Font failed to load. SDL_ttf error: %s\n", TTF_GetError());
 	}
 	else
 	{
@@ -30,14 +30,14 @@ void TextTextures::DrawText(const TSharedPtr<renderer>& nRenderer, std::string t
 		SDL_Surface* textSurf = TTF_RenderText_Solid(mFont, textureText.c_str(), textColor);
 		if (textSurf == NULL)
 		{
-			SDL_Log("Unable to render text surface: %s", TTF_GetError());
+			SDL_LogError(6, "Unable to render text surface: %s", TTF_GetError());
 		}
 		else
 		{
 			mTexture = SDL_CreateTextureFromSurface(nRenderer->GetNativeRenderer(), textSurf);
 			if (mTexture == NULL)
 			{
-				SDL_Log("Unable to render texture: %s", TTF_GetError());
+				SDL_LogError(6, "Unable to render texture: %s", TTF_GetError());
 			}
 			else
 			{

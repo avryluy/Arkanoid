@@ -12,24 +12,24 @@ AudioManager::AudioManager():sndfile(nullptr), stream(nullptr), deviceInfo(nullp
 	
 
 	if (err != paNoError) {
-		printf("Problem Initializing PortAudio\n");
+		SDL_LogError(5, "Problem Initializing PortAudio\n");
 		Pa_Terminate();
 	}
 
 	numDevices = Pa_GetDeviceCount();
 	if (numDevices == 0) {
-		printf("No Audio Devices Found");
+		SDL_LogError(5, "No Audio Devices Found");
 		Pa_Terminate();
 	}
 
-	printf("/***************/\n");
+	//printf("/***************/\n");
 	int defaultdev = Pa_GetDefaultOutputDevice();
 	deviceInfo = Pa_GetDeviceInfo(defaultdev);
-	printf("Default Device Index %i\n", PaDeviceIndex(defaultdev));
-	printf("Default Device name: %s\n", deviceInfo->name);
-	printf("Default Max Input Channels: %i\n", deviceInfo->maxInputChannels);
-	printf("Default Max Outut Channels: %i\n", deviceInfo->maxOutputChannels);
-	printf("Default Sample Rate: %f\n", deviceInfo->defaultSampleRate);
+	//printf("Default Device Index %i\n", PaDeviceIndex(defaultdev));
+	//printf("Default Device name: %s\n", deviceInfo->name);
+	//printf("Default Max Input Channels: %i\n", deviceInfo->maxInputChannels);
+	//printf("Default Max Outut Channels: %i\n", deviceInfo->maxOutputChannels);
+	//printf("Default Sample Rate: %f\n", deviceInfo->defaultSampleRate);
 	defaultParam.device = defaultdev;
 	defaultParam.channelCount = 2;
 	defaultParam.sampleFormat = paFloat32;
@@ -52,7 +52,7 @@ AudioManager::~AudioManager() {
 void AudioManager::checkerr(PaError err) {
 	if (err != paNoError)
 	{
-		printf("Port Audio Failed to Initialize");
+		SDL_LogError(5,"Port Audio Failed to Initialize");
 		exit(EXIT_FAILURE);
 	}
 
@@ -65,7 +65,7 @@ bool AudioManager::load_sound(const char* file_path, soundData& soundData)
 	
 	if (!sndfile)
 	{
-		printf("Error opening sound file: %s\n", sf_strerror(nullptr));
+		SDL_LogError(5,"Error opening sound file: %s\n", sf_strerror(nullptr));
 		return false;
 	}
 
@@ -78,16 +78,16 @@ bool AudioManager::load_sound(const char* file_path, soundData& soundData)
 
 	if (soundData.data == nullptr)
 	{
-		printf("Issue with soundData object\n");
+		SDL_LogError(5, "Issue with soundData object\n");
 	}
 
 	if (!sfinfo.frames)
 	{
-		printf("Issue with SFINFO frames\n");
+		SDL_LogError(5, "Issue with SFINFO frames\n");
 	}
 	if (!sfinfo.channels)
 	{
-		printf("Issue with SFINFO channels\n");
+		SDL_LogError(5, "Issue with SFINFO channels\n");
 	}
 	sf_readf_float(sndfile, soundData.data, sfinfo.frames);
 	sf_close(sndfile);

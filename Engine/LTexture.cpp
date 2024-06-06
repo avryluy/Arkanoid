@@ -7,7 +7,7 @@ LTexture::LTexture() {
 	mTexture = NULL;
 	mWidth = 0;
 	mHeight = 0;
-	printf("LTexture values --- w: %i | h: %i\n", mWidth, mHeight);
+	//SDL_Log("LTexture values --- w: %i | h: %i\n", mWidth, mHeight);
 };
 
 LTexture::~LTexture() {
@@ -24,7 +24,7 @@ bool LTexture::loadImage(const TSharedPtr<renderer>& nRenderer, std::string path
 	SDL_Surface* mSurface = IMG_Load(path.c_str());
 	if (mSurface == NULL)
 	{
-		printf("Cannot load image: %s\n", path.c_str());
+		SDL_LogError(6, "Cannot load image: %s\n", path.c_str());
 		exit(EXIT_FAILURE);
 	}
 	else {
@@ -34,12 +34,12 @@ bool LTexture::loadImage(const TSharedPtr<renderer>& nRenderer, std::string path
 		newTexture = SDL_CreateTextureFromSurface(nRenderer->GetNativeRenderer(), mSurface);
 		if (newTexture == NULL)
 		{
-			printf("Cannot load texture\n");
+			SDL_LogError(6, "Cannot load texture\n");
 			exit(EXIT_FAILURE);
 		}
 		else
 		{
-			printf("Settings w/h vals\n");
+			//SDL_Log("Settings w/h vals\n");
 			mWidth = mSurface->w;
 			mHeight = mSurface->h;
 			//printf("LTexture values --- w: %i | h: %i\n", mWidth, mHeight);
@@ -82,10 +82,10 @@ void LTexture::render(const TSharedPtr<renderer>& nRenderer, int x, int y, SDL_R
 
 };
 
-int LTexture::getWidth() {
+int LTexture::getWidth() const {
 	return mWidth;
 };
 
-int LTexture::getHeight() {
+int LTexture::getHeight() const {
 	return mHeight;
 };

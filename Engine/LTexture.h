@@ -14,8 +14,8 @@ class LTexture {
 		void freeTexture();
 
 		void render(const TSharedPtr<renderer>& nRenderer, int x, int y, SDL_Rect* clip = NULL);
-		int getWidth();
-		int getHeight();
+		int getWidth() const;
+		int getHeight() const;
 
 		SDL_Texture* getTexture();
 

@@ -11,12 +11,12 @@ ScoreScreen::ScoreScreen()
 	this->g = 120;
 	this->b = 186;
 	this->a = 255;
-	SDL_Log("ScoreScreen()\n");
+	//SDL_Log("ScoreScreen()\n");
 }
 
 ScoreScreen::~ScoreScreen()
 {
-	SDL_Log("~ScoreScreen()\n");
+	//SDL_Log("~ScoreScreen()\n");
 }
 
 void ScoreScreen::draw_screen(const TSharedPtr<renderer>& nRenderer)

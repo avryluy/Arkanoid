@@ -17,7 +17,7 @@ Ball::Ball(int w, int h, float scale) {
 	this->ballLaunched = false;
 	this->life_Changed = false;
 	this->ball_bool = false;
-	SDL_Log("Ball()\n");
+	//SDL_Log("Ball()\n");
 }
 
 Ball::~Ball(){
@@ -152,14 +152,13 @@ void Ball::move(Platform* platform, SDL_Rect mCol) {
 	if (mPosX < 0) {
 		set_XDirection(get_xDirection() + speed + (int)abs(random_number / 3));
 		this->ball_bool = true;
-		SDL_Log("Hit Left side of screen");
+		//SDL_Log("Hit Left side of screen");
 	}
 	else if (ballRight > 720) {
 		mPosX -= int(get_rad() * .5);
 		set_XDirection(get_xDirection() - speed - (int)abs(random_number / 3));
 		this->ball_bool = true;
-
-		SDL_Log("Hit Right side of screen");
+		//SDL_Log("Hit Right side of screen");
 	}
 
 	int framesToChange = 3; // Adjust as needed
@@ -186,7 +185,7 @@ void Ball::move(Platform* platform, SDL_Rect mCol) {
 		int yDirectionChange = speed + (int)abs(random_number / 3);
 		mPosY += int(get_rad() * .5);
 		this->ball_bool = true;
-		SDL_Log("Hit Top of screen");
+		//SDL_Log("Hit Top of screen");
 	}
 	else if (collision(bCol, mCol)) {
 		if (ballBottom >= (plat_y - (plat_h / 2)) && ballBottom <= (plat_y + (plat_h / 2))) {
@@ -195,19 +194,19 @@ void Ball::move(Platform* platform, SDL_Rect mCol) {
 				xDirectionChange = -speed + (int)abs(random_number / 2);
 				yDirectionChange = -speed - (int)abs(random_number / 3);
 				mPosY -= int(get_rad() * .5);
-				SDL_Log("Hit Left Side of Platform");
+				//SDL_Log("Hit Left Side of Platform");
 			}
 			else if (mPosX >= platTopLeft && mPosX < platTopMiddle) {
 				xDirectionChange = 4 + (int)abs(random_number / 2);
 				yDirectionChange = -speed - (int)abs(random_number / 2);
 				mPosY -= int(get_rad() * .5);
-				SDL_Log("Hit Center of Platform");
+				//SDL_Log("Hit Center of Platform");
 			}
 			else {
 				xDirectionChange = speed - (int)abs(random_number / 2);
 				yDirectionChange = -speed - (int)abs(random_number / 3);
 				mPosY -= int(get_rad() * .5);
-				SDL_Log("Hit Right Side of Platform");
+				//SDL_Log("Hit Right Side of Platform");
 			}
 
 			// Gradually adjust the speed over a few frames
@@ -232,14 +231,14 @@ void Ball::move(Platform* platform, SDL_Rect mCol) {
 		}
 	}
 	else if (ballBottom > 720 && mVelY > 0) {
-		SDL_Log("Hit Bottom of Screen");
+		//SDL_Log("Hit Bottom of Screen");
 		life_Changed = true;
 		ballLaunched = false;
 		mVelX = 0;
 		mVelY = 0;
 		this->life -= 1;
-		SDL_Log("Lives left: %i", this->life);
-		SDL_Log("Life Changed: %s", this->life_Changed ? "true" : "false");
+		//SDL_Log("Lives left: %i", this->life);
+		//SDL_Log("Life Changed: %s", this->life_Changed ? "true" : "false");
 	}
 	// Update Collider Position
 	bCol.x = mPosX;

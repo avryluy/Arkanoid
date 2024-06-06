@@ -12,7 +12,7 @@ Platform::Platform(int w, int h, float scale)
 	this->g = 0;
 	this->b = 0;
 	this->a = 255;
-	SDL_Log("Platform()\n");
+	//SDL_Log("Platform()\n");
 	mPosX = this->x;
 	mVelX = 0;
 	this->plat_bool = true;

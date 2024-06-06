@@ -9,7 +9,7 @@ TSharedPtr<renderer> renderer::Construct(struct SDL_Window* window){
 		SDL_Log("Unable to load Renderer: %s", SDL_GetError());
 		return nullptr;
 	}
-	SDL_Log("renderer created\n");
+	//SDL_Log("renderer created\n");
 	return std::make_shared<renderer>(NativeRenderer);
 
 

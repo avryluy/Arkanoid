@@ -35,7 +35,7 @@ void FPSManager::pause_time()
 
 void FPSManager::unpause_time()
 {
-	if (mStarted & mPaused)
+	if (mStarted && mPaused)
 	{
 		mPaused = false;
 		mStartTime = SDL_GetTicks() - mPausedTime;
@@ -72,7 +72,7 @@ void FPSManager::frame_limit(Uint32 loop_frames)
 	}
 }
 
-int FPSManager::get_time()
+int FPSManager::get_time() const
 {
 	Uint32 time = 0;
 
@@ -95,12 +95,12 @@ int FPSManager::get_time()
 
 
 
-bool FPSManager::isPaused()
+bool FPSManager::isPaused() const
 {
 	return mPaused;
 }
 
-bool FPSManager::isStarted()
+bool FPSManager::isStarted() const
 {
 	return mStarted;
 }

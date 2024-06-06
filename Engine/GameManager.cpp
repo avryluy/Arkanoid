@@ -57,9 +57,9 @@ GameManager::~GameManager()
 }
 
 int GameManager::Init() {
-	printf("Running GameManager::Init()\n");
+	//SDL_Log("Running GameManager::Init()\n");
 	//Initialize Game window, renderer, and text
-	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
+	if (SDL_Init(SDL_INIT_TIMER & SDL_INIT_VIDEO) == 0)
 	{
 		window = SDL_CreateWindow(TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN);
 		TTF_Init();
@@ -83,7 +83,7 @@ int GameManager::Init() {
 }
 
 void GameManager::Init_Level() {
-	printf("Running GameManager::Init_Level()\n");
+	//SDL_Log("Running GameManager::Init_Level()\n");
 	audiomanager.play_sound(&musIntro);
 	platform = new Platform(pballarray[1].w, pballarray[1].h, 3.6f);
 	ball = new Ball(pballarray[0].w, pballarray[0].h, 2.1f);
@@ -150,7 +150,7 @@ void GameManager::Init_Level() {
 		}
 	}
 	remainingBlocks.reserve(targets.size());
-	printf("Targets size: %I64i\n", targets.size());
+	//SDL_Log("Targets size: %I64i\n", targets.size());
 }
 
 int GameManager::loadAssets() {
@@ -174,38 +174,38 @@ int GameManager::loadAssets() {
 	//Load Audio Files
 	if (!audiomanager.load_sound(audiofile[0], musIntro))
 	{
-		printf("Failed to load sound: %s\n", audiofile[0]);
+		SDL_LogError(5, "Failed to load sound: %s\n", audiofile[0]);
 		return -1;
 	}
 	if (!audiomanager.load_sound(audiofile[1], blockHitSnd))
 	{
-		printf("Failed to load sound: %s\n", audiofile[1]);
+		SDL_LogError(5, "Failed to load sound: %s\n", audiofile[1]);
 		return -1;
 	}
 	if (!audiomanager.load_sound(audiofile[2], blockDestroySnd))
 	{
-		printf("Failed to load sound: %s\n", audiofile[2]);
+		SDL_LogError(5, "Failed to load sound: %s\n", audiofile[2]);
 		return -1;
 	}
 	if (!audiomanager.load_sound(audiofile[3], ballDeathSnd))
 	{
-		printf("Failed to load sound: %s\n", audiofile[3]);
+		SDL_LogError(5, "Failed to load sound: %s\n", audiofile[3]);
 		return -1;
 	}
 	if (!audiomanager.load_sound(audiofile[4], gameOverSnd))
 	{
-		printf("Failed to load sound: %s\n", audiofile[4]);
+		SDL_LogError(5, "Failed to load sound: %s\n", audiofile[4]);
 		return -1;
 	}
 	if (!audiomanager.load_sound(audiofile[5], gameCompleteSnd))
 	{
-		printf("Failed to load sound: %s\n", audiofile[5]);
+		SDL_LogError(5, "Failed to load sound: %s\n", audiofile[5]);
 		return -1;
 	}
 
 	if (!audiomanager.load_sound(audiofile[6], colHitSnd))
 	{
-		printf("Failed to load sound: %s\n", audiofile[6]);
+		SDL_LogError(5, "Failed to load sound: %s\n", audiofile[6]);
 		return -1;
 	}
 
@@ -213,25 +213,25 @@ int GameManager::loadAssets() {
 	// Load Art Files
 	if (!paddle_ball->loadImage(Renderer, paddleBallFile))
 	{
-		printf("Couldn't load image into Texture: %s\n", paddleBallFile);
+		SDL_LogError(6, "Couldn't load image into Texture: %s\n", paddleBallFile);
 		exit(EXIT_FAILURE);
 	}
 
 	if (!block_texture->loadImage(Renderer, bricksFile))
 	{
-		printf("Couldn't load image into Texture: %s\n", bricksFile);
+		SDL_LogError(6, "Couldn't load image into Texture: %s\n", bricksFile);
 		exit(EXIT_FAILURE);
 	}
 
 	if (!scoreScreenTexture->loadImage(Renderer, backgroundFile))
 	{
-		printf("Couldn't load image into Texture: %s\n", backgroundFile);
+		SDL_LogError(6, "Couldn't load image into Texture: %s\n", backgroundFile);
 		exit(EXIT_FAILURE);
 	}
 
 	if (!mainScreenTexture->loadImage(Renderer, backgroundFile))
 	{
-		printf("Couldn't load image into Texture: %s\n", "..\\Arkanoid\\Assets\\mainbackground.png");
+		SDL_LogError(6, "Couldn't load image into Texture: %s\n", "..\\Arkanoid\\Assets\\mainbackground.png");
 		exit(EXIT_FAILURE);
 	}
 
@@ -400,7 +400,7 @@ void GameManager::GameLoop()
 							gameScore += block.get_block_score();
 							block.Destroy();
 							audiomanager.play_sound(&blockDestroySnd);
-							printf("Targets size: %I64i\n", targets.size());
+							//SDL_Log("Targets size: %I64i\n", targets.size());
 							
 						}
 						else
@@ -419,8 +419,8 @@ void GameManager::GameLoop()
 						}
 
 						// Log debug info
-						SDL_Log("Hit Target :%i\n", block.get_block_id());
-						SDL_Log("Block Health :%i\n", block.getHealth());
+						//SDL_Log("Hit Target :%i\n", block.get_block_id());
+						//SDL_Log("Block Health :%i\n", block.getHealth());
 					}
 					else {
 						remainingBlocks.push_back(block);
@@ -440,7 +440,7 @@ void GameManager::GameLoop()
 			if (ball->lifeChanged() == true && ballExist == true)
 			{
 
-				printf("lifeChanged: %s | BlockExist: %s\n", ball->lifeChanged() ? "true":"false", ballExist ? "true":"false");
+				//SDL_Log("lifeChanged: %s | BlockExist: %s\n", ball->lifeChanged() ? "true":"false", ballExist ? "true":"false");
 				ballExist = false;
 
 				audiomanager.play_sound(&ballDeathSnd);
@@ -459,7 +459,7 @@ void GameManager::GameLoop()
 		{
 			// Win condition
 			gameState = false;
-			printf("Targets Empty condition\n");
+			//SDL_Log("Targets Empty condition\n");
 			ball->set_XDirection(0);
 			ball->set_YDirection(0);
 			if (!gameOver)
@@ -495,10 +495,6 @@ void GameManager::HandleEvents()
 		{
 			gameRunning = false;
 		
-		}
-		else if (event.key.keysym.sym == SDLK_j && event.key.type == SDL_KEYDOWN)
-		{
-			printf("J pressed \n");
 		}
 		else if (event.key.keysym.sym == SDLK_r)
 		{

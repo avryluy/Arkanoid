@@ -15,9 +15,9 @@ public:
 	void frame_avg(int in_frames, int main_timer);
 	void frame_limit(Uint32 loop_frames);
 
-	int get_time();
-	bool isPaused();
-	bool isStarted();
+	int get_time() const;
+	bool isPaused() const;
+	bool isStarted() const;
 
 
 
