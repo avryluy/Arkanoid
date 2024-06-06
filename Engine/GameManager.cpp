@@ -15,7 +15,7 @@ GameManager::GameManager()
 	block_texture = new LTexture();
 	scoreScreenTexture = new LTexture();
 	mainScreenTexture = new LTexture();
-
+	gameState = true;
 }
 
 GameManager::~GameManager()
@@ -60,9 +60,9 @@ void GameManager::Init_Level() {
 	//Block* blocks = new Block(blockColor[currentblocktype], blockHealth[currentblocktype]);
 
 
-	for (int row = 0; row < 1; ++row)
+	for (int row = 0; row < 5; ++row)
 	{
-		for (int col = 0; col < 2; ++col)
+		for (int col = 0; col < 10; ++col)
 		{
 			switch (row)
 			{
@@ -393,16 +393,25 @@ void GameManager::GameLoop()
 			gameOver = true;
 			// Add lose condition
 		}
-		else if (targets.empty() && ball->get_life() > 0)
+		if (targets.empty())
 		{
 			// Win condition
-			audiomanager.play_sound(&gameCompleteSnd);
-			gameOver = true;
+			gameState = false;
+			printf("Targets Empty condition\n");
+			ball->set_XDirection(0);
+			ball->set_YDirection(0);
+			if (!gameOver)
+			{
+				audiomanager.play_sound(&gameCompleteSnd);
+				gameOver = true;
+			}
+
+
 		}
 		Render(Renderer);
 		++countedframes;
 		cfps.frame_limit(cfps.get_time());
-
+		
 	};
 	//Quits game and destroys objects when game loop is exited
 	Quit();
@@ -410,11 +419,16 @@ void GameManager::GameLoop()
 
 void GameManager::HandleEvents()
 {
+	//printf("Init Game State: %s\n", gameState ? "true" : "false");
 	SDL_Event event;
 	while (SDL_PollEvent(&event))
 	{
-		platform->update(event);
-		ball->update(event);
+		if (gameState)
+		{
+			platform->update(event, gameState);
+			ball->update(event);
+		}
+		
 		if (event.type == SDL_QUIT || (event.key.keysym.sym == SDLK_ESCAPE))
 		{
 			gameRunning = false;
@@ -423,7 +437,6 @@ void GameManager::HandleEvents()
 		else if (event.key.keysym.sym == SDLK_j && event.key.type == SDL_KEYDOWN)
 		{
 			printf("J pressed \n");
-			audiomanager.play_sound(&sound1);
 		}
 		else if (event.key.keysym.sym == SDLK_r)
 		{
@@ -518,13 +531,14 @@ void GameManager::Render(const TSharedPtr<renderer>& nRenderer)
 		score_count->renderText(nRenderer, (scorescreen->get_x() + 30),
 			(scorescreen->get_y() + 245), 175, 50);
 
-		game_over->renderText(nRenderer, (SCREEN_WIDTH * .5) - 400, SCREEN_HEIGHT * .5, 400, 100);
+		game_over->renderText(nRenderer, (int)((SCREEN_WIDTH * .5) - 400), (int)(SCREEN_HEIGHT * .5), 400, 100);
 	}
 	else if (targets.empty())
 	{
 		// Win con
-		game_win->update_text("Congrats, you won! Score:" + toString(gameScore));
-		game_win->renderText(nRenderer, (SCREEN_WIDTH * .5) - 400, SCREEN_HEIGHT * .5, 400, 100);
+		game_win->DrawText(nRenderer,"Congrats, you won! Score:" + toString(gameScore), { 229, 178, 245, 0 }, 350);
+		game_win->renderText(nRenderer, (int)(SCREEN_WIDTH * .3)- 150, (int)(SCREEN_HEIGHT * .3), 400, 100);
+	
 	}
 	nRenderer->Present();
 }

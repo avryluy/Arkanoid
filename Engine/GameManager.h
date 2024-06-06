@@ -32,6 +32,7 @@ public:
 
 private:
 	bool gameRunning = false;
+	bool gameState;
 	SDL_Window* window = nullptr;
 	TSharedPtr<class renderer> Renderer = nullptr;
 	SDL_Surface* main_surf = nullptr;

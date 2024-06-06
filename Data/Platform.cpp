@@ -123,44 +123,47 @@ int Platform::get_plat_center() {
 }
 
 //Keyboard handler for platform movement
-void Platform::update(SDL_Event& event){
-	if (event.type == SDL_KEYDOWN && event.key.repeat == 0)
+void Platform::update(SDL_Event& event, bool gameState){
+	if (gameState)
 	{
-		switch (event.key.keysym.sym)
+		if (event.type == SDL_KEYDOWN && event.key.repeat == 0)
 		{
-		case SDLK_LEFT:
-			//SDL_Log("Left key pressed");
-			//SDL_Log("Platform X :%i Y:%i", get_x(), get_y());
-			mVelX -= speed;
-			break;
-		case SDLK_RIGHT:
-			//SDL_Log("Right key pressed");
-			//SDL_Log("Platform X :%i Y:%i", get_x(), get_y());
-			mVelX += speed;
-			break;
-		default:
-			break;
+			switch (event.key.keysym.sym)
+			{
+			case SDLK_LEFT:
+				//SDL_Log("Left key pressed");
+				//SDL_Log("Platform X :%i Y:%i", get_x(), get_y());
+				mVelX -= speed;
+				break;
+			case SDLK_RIGHT:
+				//SDL_Log("Right key pressed");
+				//SDL_Log("Platform X :%i Y:%i", get_x(), get_y());
+				mVelX += speed;
+				break;
+			default:
+				break;
+			}
 		}
-	}
-	if (event.type == SDL_KEYUP && event.key.repeat == 0)
-	{
-		switch (event.key.keysym.sym)
+		if (event.type == SDL_KEYUP && event.key.repeat == 0)
 		{
-		case SDLK_LEFT:
-			//SDL_Log("Left key released");
-			//SDL_Log("Platform X :%i Y:%i", get_x(), get_y());
-			mVelX += speed;
-			break;
-		case SDLK_RIGHT:
-			//SDL_Log("Right key released");
-			//SDL_Log("Platform X :%i Y:%i", get_x(), get_y());
-			mVelX -= speed;
-			break;
+			switch (event.key.keysym.sym)
+			{
+			case SDLK_LEFT:
+				//SDL_Log("Left key released");
+				//SDL_Log("Platform X :%i Y:%i", get_x(), get_y());
+				mVelX += speed;
+				break;
+			case SDLK_RIGHT:
+				//SDL_Log("Right key released");
+				//SDL_Log("Platform X :%i Y:%i", get_x(), get_y());
+				mVelX -= speed;
+				break;
 
-		default:
-			break;
+			default:
+				break;
+			}
+
 		}
-
 	}
 }
 

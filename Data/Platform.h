@@ -19,7 +19,7 @@ public:
 	SDL_Rect get_collider();
 	void draw_screen(const TSharedPtr<renderer>& nRenderer);
 	void renderPlat(const TSharedPtr<renderer>& nRenderer, int x, int y, int platWidth, int platHeight, SDL_Texture* mTexture, SDL_Rect* clip, float scale);
-	void update(SDL_Event &event);
+	void update(SDL_Event &event, bool gameState);
 	void move_plat(int boundary);
 
 	int scale_size(int dim, float scale);
