@@ -6,7 +6,8 @@ This project has definitely taken me longer than anticipated, but it has been a 
 
 ----------------------------------------------------------
 
-![image](https://github.com/avryluy/Arkanoid/assets/40475826/3cf233dc-39eb-4a1c-b2d5-13d117b30288)
+![image](https://github.com/avryluy/Arkanoid/assets/40475826/afd802e8-3223-42bc-9ab8-43003b682c96)
+
 
 ----------------------------------------------------------
 
