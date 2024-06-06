@@ -47,8 +47,9 @@ private:
 	std::vector<Block> remainingBlocks;
 
 	AudioManager audiomanager;
-	const char* audiofile[6]; //music intro, collision hit, brick destroy, ball death, life equal zero, level completed
+	const char* audiofile[7]; //music intro, block hit, brick destroy, ball death, life equal zero, level completed, collision hit
 	soundData musIntro;
+	soundData blockHitSnd;
 	soundData colHitSnd;
 	soundData blockDestroySnd;
 	soundData ballDeathSnd;

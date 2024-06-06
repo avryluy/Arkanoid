@@ -23,6 +23,8 @@ public:
 	int get_yDirection() const;
 
 	bool isBallLaunched() const;
+	bool ballCollideWall() const;
+	void setBallBool();
 	bool lifeChanged() const;
 	
 	void move(Platform* platform, SDL_Rect mCol);

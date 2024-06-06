@@ -149,6 +149,7 @@ void GameManager::Init_Level() {
 			currentblocktype = (currentblocktype + 1) % NUMBLOCKTYPES;
 		}
 	}
+	remainingBlocks.reserve(targets.size());
 	printf("Targets size: %I64i\n", targets.size());
 }
 
@@ -163,6 +164,7 @@ int GameManager::loadAssets() {
 	audiofile[3] = "Audio/ball_death.wav";
 	audiofile[4] = "Audio/game_over.wav";
 	audiofile[5] = "Audio/game_win.wav";
+	audiofile[6] = "Audio/col_hit.wav";
 
 	//Set Art Asset Paths
 	paddleBallFile = "Assets/paddles_and_balls.png";
@@ -175,7 +177,7 @@ int GameManager::loadAssets() {
 		printf("Failed to load sound: %s\n", audiofile[0]);
 		return -1;
 	}
-	if (!audiomanager.load_sound(audiofile[1], colHitSnd))
+	if (!audiomanager.load_sound(audiofile[1], blockHitSnd))
 	{
 		printf("Failed to load sound: %s\n", audiofile[1]);
 		return -1;
@@ -201,6 +203,11 @@ int GameManager::loadAssets() {
 		return -1;
 	}
 
+	if (!audiomanager.load_sound(audiofile[6], colHitSnd))
+	{
+		printf("Failed to load sound: %s\n", audiofile[6]);
+		return -1;
+	}
 
 
 	// Load Art Files
@@ -369,7 +376,13 @@ void GameManager::GameLoop()
 		if (ball->get_life() > 0)
 		{
 			ball->move(platform, platform->get_collider());
+			if (ball->ballCollideWall())
+			{
+				audiomanager.play_sound(&colHitSnd);
+				ball->setBallBool();
+			}
 			platform->move_plat(scorescreen->get_x());
+
 
 			for (Block& block : targets) {
 				if (block.isActive() && !block.getCollision()) {
@@ -381,7 +394,7 @@ void GameManager::GameLoop()
 
 						// Apply damage and play sound
 						block.damage(1);
-						audiomanager.play_sound(&colHitSnd);
+						audiomanager.play_sound(&blockHitSnd);
 
 						if (block.getHealth() < 1) {
 							gameScore += block.get_block_score();

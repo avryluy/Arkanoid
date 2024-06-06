@@ -100,7 +100,10 @@ void AudioManager::play_sound(const soundData* soundData)
 	{
 		if (instance.active && instance.sound == soundData)
 		{
-			return;
+			if (instance.sound->filename == "Audio/music_intro.wav" || instance.sound->filename == "Audio/game_over.wav"  || instance.sound->filename == "Audio/game_win.wav")
+			{
+				return;
+			}
 		}
 	}
 	instances.emplace_back(soundData);
