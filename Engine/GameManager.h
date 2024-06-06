@@ -43,6 +43,7 @@ private:
 	Platform* platform;
 	Ball* ball;
 	Block *blocks;
+	std::vector<Block> remainingBlocks;
 
 	AudioManager audiomanager;
 	const char* audiofile[6]; //music intro, collision hit, brick destroy, ball death, life equal zero, level completed

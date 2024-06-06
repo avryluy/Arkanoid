@@ -48,7 +48,7 @@ int GameManager::Init() {
 
 void GameManager::Init_Level() {
 	printf("Running GameManager::Init_Level()\n");
-
+	audiomanager.play_sound(&musIntro);
 	platform = new Platform(pballarray[1].w, pballarray[1].h, 3.6f);
 	ball = new Ball(pballarray[0].w, pballarray[0].h, 2.1f);
 
@@ -349,9 +349,13 @@ void GameManager::GameLoop()
 						if (block.getHealth() < 1) {
 							gameScore += block.get_block_score();
 							block.Destroy();
-							targets.erase(targets.begin() + block.get_block_id());
 							audiomanager.play_sound(&blockDestroySnd);
 							printf("Targets size: %I64i\n", targets.size());
+							
+						}
+						else
+						{
+							remainingBlocks.push_back(block);
 						}
 
 						// Move the ball out of collision to avoid subsequent hits
@@ -365,12 +369,20 @@ void GameManager::GameLoop()
 						}
 
 						// Log debug info
-						SDL_Log("Hit Target :%i", block.get_block_id());
-						SDL_Log("Block Health :%i", block.getHealth());
+						SDL_Log("Hit Target :%i\n", block.get_block_id());
+						SDL_Log("Block Health :%i\n", block.getHealth());
 					}
+					else {
+						remainingBlocks.push_back(block);
+					}
+				}
+				else
+				{
+					remainingBlocks.push_back(block);
 				}
 			}
 
+			targets = std::move(remainingBlocks);
 			// After checking all blocks, reset their hit status
 			for (Block& block : targets) {
 				block.setCollision(false);

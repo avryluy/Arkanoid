@@ -116,6 +116,13 @@ bool AudioManager::load_sound(const char* file_path, soundData& soundData)
 
 void AudioManager::play_sound(const soundData* soundData)
 {
+	for (const auto instance: instances)
+	{
+		if (instance.active && instance.sound == soundData)
+		{
+			return;
+		}
+	}
 	instances.emplace_back(soundData);
 }
 
@@ -131,6 +138,7 @@ int AudioManager::PA_Callback(const void* input
 
 	//Set outbut buffer to zero
 	std::fill(out, out + frameCount * 2, 0.0f);
+	std::vector<PlaybackInstance*> InactiveInstances;
 
 	for (auto& instance : audiomanager->instances) {
 		if (!instance.active) continue;
@@ -138,7 +146,6 @@ int AudioManager::PA_Callback(const void* input
 		const soundData* sound = instance.sound;
 		//printf("Playing Sound: %s\n", instance.sound->filename);
 
-		std::vector<PlaybackInstance*> InactiveInstances;
 		//printf("Callback receiving channels: %d", instance.sound->channels);
 
 		unsigned long framesToRead = std::min(static_cast<unsigned long>(sound->frames - instance.position), frameCount);
@@ -182,6 +189,7 @@ int AudioManager::PA_Callback(const void* input
 			out[i] = -1.0f;
 		}
 	}
+	
 	if (!audiomanager->instances.empty())
 	{
 		audiomanager->instances.erase(
