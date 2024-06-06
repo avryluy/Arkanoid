@@ -155,7 +155,7 @@ void Ball::move(Platform* platform, SDL_Rect mCol) {
 		SDL_Log("Hit Left side of screen");
 	}
 	else if (ballRight > 720) {
-		mPosX -= get_rad() * .5;
+		mPosX -= int(get_rad() * .5);
 		set_XDirection(get_xDirection() - speed - (int)abs(random_number / 3));
 		this->ball_bool = true;
 
@@ -184,7 +184,7 @@ void Ball::move(Platform* platform, SDL_Rect mCol) {
 	// Handle Y-Axis collisions
 	if (mPosY < 0) {
 		int yDirectionChange = speed + (int)abs(random_number / 3);
-		mPosY += get_rad() * .5;
+		mPosY += int(get_rad() * .5);
 		this->ball_bool = true;
 		SDL_Log("Hit Top of screen");
 	}
@@ -194,19 +194,19 @@ void Ball::move(Platform* platform, SDL_Rect mCol) {
 			if (mPosX < platTopLeft) {
 				xDirectionChange = -speed + (int)abs(random_number / 2);
 				yDirectionChange = -speed - (int)abs(random_number / 3);
-				mPosY -= get_rad() * .5;
+				mPosY -= int(get_rad() * .5);
 				SDL_Log("Hit Left Side of Platform");
 			}
 			else if (mPosX >= platTopLeft && mPosX < platTopMiddle) {
 				xDirectionChange = 4 + (int)abs(random_number / 2);
 				yDirectionChange = -speed - (int)abs(random_number / 2);
-				mPosY -= get_rad() * .5;
+				mPosY -= int(get_rad() * .5);
 				SDL_Log("Hit Center of Platform");
 			}
 			else {
 				xDirectionChange = speed - (int)abs(random_number / 2);
 				yDirectionChange = -speed - (int)abs(random_number / 3);
-				mPosY -= get_rad() * .5;
+				mPosY -= int(get_rad() * .5);
 				SDL_Log("Hit Right Side of Platform");
 			}
 
