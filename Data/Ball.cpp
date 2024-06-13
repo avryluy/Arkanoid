@@ -179,15 +179,10 @@ void Ball::move(Platform* platform, SDL_Rect mCol) {
 
 	// Handle Y-Axis collisions
 	if (mPosY < 0) {
-<<<<<<< HEAD
-		int yDirectionChange = speed + (int)abs(random_number / 3);
-		mPosY += int(get_rad() * .5);
-=======
 		//int yDirectionChange = speed + (int)abs(random_number / 3);
 		set_YDirection(-get_yDirection());
-		mPosY = get_rad() * .5;
+		mPosY = (int)(get_rad() * .5);
 		bCol.y = mPosY;
->>>>>>> 28f1526 (Fix top screen collision loop bug)
 		this->ball_bool = true;
 		//SDL_Log("Hit Top of screen");
 	}
