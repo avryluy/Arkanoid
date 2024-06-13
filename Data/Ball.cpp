@@ -141,10 +141,6 @@ void Ball::move(Platform* platform, SDL_Rect mCol) {
 	}
 
 	// Ball Movement
-	mPosX += mVelX;
-	this->x = mPosX;
-	mPosY += mVelY;
-	this->y = mPosY;
 	int xDirectionChange = 0;
 	int yDirectionChange = 0;
 
@@ -180,10 +176,18 @@ void Ball::move(Platform* platform, SDL_Rect mCol) {
 		set_YDirection(get_yDirection() > 0 ? minSpeed : -minSpeed);
 	}
 
+
 	// Handle Y-Axis collisions
 	if (mPosY < 0) {
+<<<<<<< HEAD
 		int yDirectionChange = speed + (int)abs(random_number / 3);
 		mPosY += int(get_rad() * .5);
+=======
+		//int yDirectionChange = speed + (int)abs(random_number / 3);
+		set_YDirection(-get_yDirection());
+		mPosY = get_rad() * .5;
+		bCol.y = mPosY;
+>>>>>>> 28f1526 (Fix top screen collision loop bug)
 		this->ball_bool = true;
 		//SDL_Log("Hit Top of screen");
 	}
@@ -240,6 +244,11 @@ void Ball::move(Platform* platform, SDL_Rect mCol) {
 		//SDL_Log("Lives left: %i", this->life);
 		//SDL_Log("Life Changed: %s", this->life_Changed ? "true" : "false");
 	}
+	mPosX += mVelX;
+	this->x = mPosX;
+	mPosY += mVelY;
+	this->y = mPosY;
+
 	// Update Collider Position
 	bCol.x = mPosX;
 	bCol.y = mPosY;
