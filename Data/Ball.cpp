@@ -250,6 +250,11 @@ void Ball::move(Platform* platform, SDL_Rect mCol) {
 
 }
 
+void Ball::winCon() {
+
+	ballLaunched = false;
+}
+
 void Ball::update(SDL_Event& event) {
 	// Hitting Space launches ball
 	if (event.type == SDL_KEYDOWN && event.key.repeat == 0)

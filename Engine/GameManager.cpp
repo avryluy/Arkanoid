@@ -459,12 +459,14 @@ void GameManager::GameLoop()
 		{
 			// Win condition
 			gameState = false;
+			
 			//SDL_Log("Targets Empty condition\n");
 			ball->set_XDirection(0);
 			ball->set_YDirection(0);
 			if (!gameOver)
 			{
 				audiomanager.play_sound(&gameCompleteSnd);
+				ball->winCon();
 				gameOver = true;
 			}
 

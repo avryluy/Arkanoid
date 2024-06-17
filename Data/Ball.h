@@ -25,6 +25,7 @@ public:
 	bool isBallLaunched() const;
 	bool ballCollideWall() const;
 	void setBallBool();
+	void winCon();
 	bool lifeChanged() const;
 	
 	void move(Platform* platform, SDL_Rect mCol);
